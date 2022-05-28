@@ -22,7 +22,7 @@ class Rule:
         """
         if Rule.min_weight is None or Rule.max_weight is None:
             cfg = configparser.ConfigParser()
-            cfg.read('config.ini')
+            cfg.read('core\\config.ini')
             try:
                 Rule.min_weight = float(cfg['ANALYSER']['min_weight'])
                 Rule.max_weight = float(cfg['ANALYSER']['max_weight'])

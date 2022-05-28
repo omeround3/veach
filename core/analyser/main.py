@@ -19,7 +19,8 @@ if __name__ == '__main__':
 
     cve_data = []
     for i in range(2022, 2023):
-        str = f'jsons/nvdcve-1.1-{i}.json'
+        
+        str = f'core\\analyser\\jsons\\nvdcve-1.1-{i}.json'
         cve_file_22 = open(str, encoding='utf-8')
         cve_data_22 = json.load(cve_file_22)
         # test = Analyser()
