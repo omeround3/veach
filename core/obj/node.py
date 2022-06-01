@@ -1,10 +1,10 @@
-from obj.cpe_record import CPERecord
+from core.obj.cpe_record import CPERecord
 
 
 class Node:
     def __init__(self, node: dict) -> None:
         self.operator = None
-        self.cpe_match = []
+        self.cpe_match = list([CPERecord])
 
         if 'operator' in node:
             self.operator = node['operator']

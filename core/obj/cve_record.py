@@ -1,8 +1,9 @@
-from node import Node
+from core.obj.node import Node
 
 
 class CVERecord:
     def __init__(self, cve_raw: dict) -> None:
+        # no need to keep this much info, will be trimmed later
         self._id = None
         self._cve = None
         self._configurations = None
@@ -13,7 +14,7 @@ class CVERecord:
         self._base_metric_v2 = None
         self._base_metric_v3 = None
 
-        self._nodes = list[Node]
+        self.nodes = list()
 
         if 'cve' in cve_raw:
             self._cve = cve_raw['cve']
@@ -27,7 +28,7 @@ class CVERecord:
             if 'nodes' in self._configurations:
                 nodes = self._configurations['nodes']
                 for node in nodes:
-                    self._nodes.append(Node(node))
+                    self.nodes.append(Node(node))
 
         if 'impact' in cve_raw:
             self._impact = cve_raw['impact']
@@ -41,3 +42,9 @@ class CVERecord:
 
         if 'publishedDate' in cve_raw:
             self._lastModified_date = cve_raw['publishedDate']
+
+    def __str__(self) -> str:
+        return self._id
+
+    def get_nodes(self):
+        return self.nodes

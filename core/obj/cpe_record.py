@@ -13,6 +13,11 @@ class CPERecord:
         if tmp[0] != "cpe" or len(tmp) != 13:
             raise InvalidCPEStringFormat(cpe[Attributes.CPE_23_URI])
 
+        self.version_end_excluding = None
+        self.version_start_excluding = None
+        self.version_end_including = None
+        self.version_start_including = None
+
         self._cpe_version = tmp[1]
         self._part = tmp[2]
         self._vendor = tmp[3]
@@ -37,3 +42,24 @@ class CPERecord:
 
         if Attributes.VERSION_START_INCLUDING in cpe:
             self.version_start_including = cpe[Attributes.VERSION_START_INCLUDING]
+
+    def get_query_str(self):
+        query = dict()
+        my_str = "configurations.nodes.cpe_match."
+        query[f"{my_str}{Attributes.CPE_23_URI.value}"] = str(self)
+
+        if self.version_end_excluding:
+            query[f"{my_str}{Attributes.VERSION_END_EXCLUDING.value}"] = self.version_end_excluding
+
+        if self.version_end_including:
+            query[f"{my_str}{Attributes.VERSION_END_INCLUDING.value}"] = self.version_end_including
+
+        if self.version_start_excluding:
+            query[f"{my_str}{Attributes.VERSION_START_EXCLUDING.value}"] = self.version_start_excluding
+
+        if self.version_start_including:
+            query[f"{my_str}{Attributes.VERSION_START_INCLUDING.value}"] = self.version_start_including
+        return query
+
+    def __str__(self) -> str:
+        return f"cpe:{self._cpe_version}:{self._part}:{self._vendor}:{self._product}:{self._version}:{self._update}:{self._edition}:{self._language}:{self._sw_edition}:{self._target_sw}:{self._target_hw}:{self._other}"

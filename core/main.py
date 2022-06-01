@@ -104,18 +104,43 @@
 
 
 ### --- MATCHER --- ###
-
+import json
 from core.obj.cpe_record import CPERecord
 from core.matcher.enums import Attributes
+from core.obj.cve_record import CVERecord
+from core.matcher.matcher import Matcher
+import pymongo
+import urllib
+from core.matcher.fake_db import FakeCPE
 
 if __name__ == "__main__":
-    # client = pymongo.MongoClient("mongodb+srv://veach:"+urllib.parse.quote_plus(
-    #     "lol2kLOL@K")+"@cluster0.gnukl.mongodb.net/?retryWrites=true&w=majority")
-    # db = client['nvdcve']
-    # print(db)
 
-    cpe = "cpe:2.3:o:freebsd:freebsd:1.0:*:*:*:*:*:*:*"
-    cpe_rec = CPERecord(
-        {Attributes.CPE_23_URI: cpe})
+    # print(type(db))
 
-    print("OK")
+    # cpe = "cpe:2.3:o:freebsd:freebsd:1.0:*:*:*:*:*:*:*"
+    # cpe_rec = CPERecord(
+    #     {Attributes.CPE_23_URI: cpe})
+    # m = Matcher()
+
+    # m.match(CPERecord({
+    #     "cpe23Uri": "cpe:2.3:a:calamares:calamares:3.1:*:*:*:*:*:*:*"
+    # }))
+    cpe = CPERecord({
+        "vulnerable": True,
+        "cpe23Uri": "cpe:2.3:a:calamares:calamares:*:*:*:*:*:*:*:*",
+        "versionStartIncluding": "3.1",
+        "versionEndIncluding": "3.2.10",
+        "cpe_name": []
+    })
+
+client = pymongo.MongoClient(
+    "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
+db = client['nvdcve']
+my_coll = db['cvedetails']
+
+# json.dumps(str(cpe.get_query_str()))
+
+m = Matcher(db)
+m.match("cpe:2.3:a:101_project:101:1.6.2:*:*:*:*:node.js:*:*")
+print("DONE")
+# json.dumps(m.matches)
