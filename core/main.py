@@ -1,119 +1,74 @@
 ### --- ANALYSER --- ###
 
-# import json
-# from cvss.cvss_record_template_v3 import *
-# from rule import *
-# from analyser import Analyser
-
-
-# def print_dict(item: dict):
-#     print(json.dumps(item, indent=4))
-
-
-# if __name__ == '__main__':
-#     rec1 = RecordTemplateV3(Version.V3_1, AttackVector.NETWORK, AttackComplexity.LOW)
-#     rule1 = Rule(rec1, Severity.HIGH, "Someone can easliy access your PC from outside")
-
-#     rec2 = RecordTemplateV3(Version.V3_1, AttackVector.NETWORK, AttackComplexity.HIGH)
-#     rule2 = Rule(rec2, Severity.MEDIUM, "HIGH Complex - Network Vuln")
-
-#     analyser = Analyser([rule1, rule2])
-
-#     cve_data = []
-#     for i in range(2022, 2023):
-
-#         str = f'core\\analyser\\jsons\\nvdcve-1.1-{i}.json'
-#         cve_file_22 = open(str, encoding='utf-8')
-#         cve_data_22 = json.load(cve_file_22)
-#         # test = Analyser()
-#         cve_data_22 = cve_data_22["CVE_Items"]
-#         cve_data = cve_data + cve_data_22
-
-#     flag_v3 = True
-#
-#     flag_v2 = True
-#
-#     for record in cve_data:
-#         if 'impact' not in record:
-#             record_impact = record['impact']
-#             if 'baseMetricV3' in record_impact:
-#                 base_metric = record_impact['baseMetricV3']
-#                 if 'cvssV3' in base_metric:
-#                     cvss = base_metric['cvssV3']
-#                     if 'baseScore' in cvss.keys():
-#                         base_score = float(cvss['baseScore'])
-#                         if base_score <= 0:
-#                             print(record['cve']['CVE_data_meta']['ID'])
-#                     else:
-#                         flag_v3 = False
-#
-#     for record in cve_data:
-#         if 'impact' in record:
-#             record_impact = record['impact']
-#             if 'baseMetricV2' in record_impact:
-#                 base_metric = record_impact['baseMetricV2']
-#                 if 'cvssV2' in base_metric:
-#                     cvss = base_metric['cvssV2']
-#                     if 'baseScore' in cvss.keys():
-#                         base_score = float(cvss['baseScore'])
-#                         if base_score <= 0:
-#                             print(record['cve']['CVE_data_meta']['ID'])
-#                     else:
-#                         flag_v2 = False
-#
-# print('Done')
-# for i in range(0, len(cve_data), 17):
-#     analyser.add(cve_data[i])
-# analyser.analyse()
-#
-# print(rule1)
-# print(rule2)
-
-# v3_headers = {}
-# v2_headers = {}
-# for i in cve_data:
-#     if 'baseMetricV3' in i['impact'].keys():
-#         tmp = dict(i['impact']['baseMetricV3']['cvssV3'])
-#         for j in tmp.keys():
-#             if j not in v3_headers.keys():
-#                 v3_headers[j] = set()
-#             v3_headers[j].add(tmp[j])
-#
-#     if 'baseMetricV2' in i['impact'].keys():
-#         tmp = dict(i['impact']['baseMetricV2']['cvssV2'])
-#         for j in tmp.keys():
-#             if j not in v2_headers.keys():
-#                 v2_headers[j] = set()
-#             v2_headers[j].add(tmp[j])
-#
-# print("V2 Headers: ")
-# for key, value in v2_headers.items():
-#     upper = key[0].upper() + key[1::]
-#     print(f"class {upper}(Enum):")
-#     for v in value:
-#         print(f"    {v} = '{v}'")
-#     print("\n\n")
-#
-# print("V3 Headers: ")
-# for key, value in v3_headers.items():
-#     upper = key[0].upper() + key[1::]
-#     print(f"class {upper}(Enum):")
-#     for v in value:
-#         print(f"    {v} = '{v}'")
-#     print("\n\n")
-
-
-### --- MATCHER --- ###
 import json
+import csv
+import pymongo
+import unittest
+from core.analyser.rule import Rule
+from core.analyser.cvss.cvss_record_template_v3 import *
+from core.analyser.enums import *
+from core.analyser.analyser import Analyser
 from core.obj.cpe_record import CPERecord
-from core.matcher.enums import Attributes
 from core.obj.cve_record import CVERecord
 from core.matcher.matcher import Matcher
-import pymongo
-import urllib
-from core.matcher.fake_db import FakeCPE
+from core.matcher.mongo_matcher import MongoMatcher
+from core.matcher.tests import *
 
-if __name__ == "__main__":
+
+def print_dict(item: dict):
+    print(json.dumps(item, indent=4))
+
+
+if __name__ == '__main__':
+    client = pymongo.MongoClient(
+        "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
+    db = client['nvdcve']
+
+    matcher: Matcher = MongoMatcher(db)
+
+    csv_file = open(
+        'C:\\Users\\Daniel\\Documents\\veach\\core\\scanner\\fake_scanner.csv')
+    cpe_uris = list(csv.reader(csv_file, delimiter=','))
+
+    rec1 = RecordTemplateV3(
+        Version.V3_1, AttackVector.NETWORK, AttackComplexity.LOW)
+    rule1 = Rule(rec1, Severity.HIGH,
+                 "Someone can easliy access your PC from outside")
+
+    rec2 = RecordTemplateV3(
+        Version.V3_1, AttackVector.NETWORK, AttackComplexity.HIGH)
+    rule2 = Rule(rec2, Severity.MEDIUM, "HIGH Complex - Network Vuln")
+
+    analyser = Analyser([rule1, rule2])
+
+    for cpe_uri in cpe_uris:
+        matcher.match(cpe_uri[0])
+    if matcher.matches:
+        for match in matcher.matches.keys():
+            analyser.add(matcher.matches[match])
+        analyser.analyse
+
+    for key in matcher.matches.keys():
+        for cve in matcher.matches[key]:
+            print(cve._impact)
+
+    print("DONW")
+    # # analyser.add(cve)
+
+    # analyser.analyse()
+    # cpe1 = CPERecord(
+    #     {"cpe23Uri": "cpe:2.3:o:freebsd:freebsd:2.1.7:*:*:*:*:*:*:*"})
+    # cpe2 = CPERecord(
+    #     {"cpe23Uri": "cpe:2.3:o:freebsd:freebsd:2.1.7:*:*:*:*:*:*:*"})
+    # print(cpe1 == cpe2)
+    # print("Done")
+
+    ### --- MATCHER --- ###
+    # from core.matcher.mongo_matcher import MongoMatcher
+    # import pymongo
+    # import time
+
+    # if __name__ == "__main__":
 
     # print(type(db))
 
@@ -125,22 +80,16 @@ if __name__ == "__main__":
     # m.match(CPERecord({
     #     "cpe23Uri": "cpe:2.3:a:calamares:calamares:3.1:*:*:*:*:*:*:*"
     # }))
-    cpe = CPERecord({
-        "vulnerable": True,
-        "cpe23Uri": "cpe:2.3:a:calamares:calamares:*:*:*:*:*:*:*:*",
-        "versionStartIncluding": "3.1",
-        "versionEndIncluding": "3.2.10",
-        "cpe_name": []
-    })
 
-client = pymongo.MongoClient(
-    "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
-db = client['nvdcve']
-my_coll = db['cvedetails']
+    # client = pymongo.MongoClient(
+    #     "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
+    # db = client['nvdcve']
+    # my_coll = db['cvedetails']
 
-# json.dumps(str(cpe.get_query_str()))
+    # start = time.time()
+    # m = MongoMatcher(db)
+    # m.match("cpe:2.3:a:google:chrome:6.0.466.2:*:*:*:*:*:*:*")
+    # end = time.time()
 
-m = Matcher(db)
-m.match("cpe:2.3:a:101_project:101:1.6.2:*:*:*:*:node.js:*:*")
-print("DONE")
-# json.dumps(m.matches)
+    # print(end-start)
+    # print("DONE")

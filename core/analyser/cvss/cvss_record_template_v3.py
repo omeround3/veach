@@ -74,6 +74,7 @@ class RecordTemplateV3(RecordTemplate):
                  # base_score: float = None,
                  # base_severity: BaseSeverity = None
                  ):
+        """deserialization class for cvssV3 record"""
         # self.version = version
         # self.attack_vector = attack_vector
         # self.attack_complexity = attack_complexity
@@ -89,21 +90,28 @@ class RecordTemplateV3(RecordTemplate):
         if version:
             self.vector_string_attributes.append(f"CVSS:{version.value}")
         if attack_vector:
-            self.vector_string_attributes.append(f"AV:{attack_vector.value[0]}")
+            self.vector_string_attributes.append(
+                f"AV:{attack_vector.value[0]}")
         if attack_complexity:
-            self.vector_string_attributes.append(f"AC:{attack_complexity.value[0]}")
+            self.vector_string_attributes.append(
+                f"AC:{attack_complexity.value[0]}")
         if privileges_required:
-            self.vector_string_attributes.append(f"PR:{privileges_required.value[0]}")
+            self.vector_string_attributes.append(
+                f"PR:{privileges_required.value[0]}")
         if user_interaction:
-            self.vector_string_attributes.append(f"UI:{user_interaction.value[0]}")
+            self.vector_string_attributes.append(
+                f"UI:{user_interaction.value[0]}")
         if scope:
             self.vector_string_attributes.append(f"S:{scope.value[0]}")
         if confidentiality_impact:
-            self.vector_string_attributes.append(f"C:{confidentiality_impact.value[0]}")
+            self.vector_string_attributes.append(
+                f"C:{confidentiality_impact.value[0]}")
         if integrity_impact:
-            self.vector_string_attributes.append(f"I:{integrity_impact.value[0]}")
+            self.vector_string_attributes.append(
+                f"I:{integrity_impact.value[0]}")
         if availability_impact:
-            self.vector_string_attributes.append(f"A:{availability_impact.value[0]}")
+            self.vector_string_attributes.append(
+                f"A:{availability_impact.value[0]}")
     #
     # def __str__(self):
     #     ret_str = str()

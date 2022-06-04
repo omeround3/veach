@@ -53,6 +53,7 @@ class RecordTemplateV2(RecordTemplate):
                  availability_impact: AvailabilityImpact = None,
                  # base_score: float = None,
                  ):
+        """deserialization class for cvssV2 record"""
         self.version = version
         self.access_vector = access_vector
         self.access_complexity = access_complexity

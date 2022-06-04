@@ -1,7 +1,9 @@
-from enums import Severity
-from errors import *
-from cvss.cvss_record_template import RecordTemplate
+from core.analyser.enums import Severity
+from core.errors import *
+from core.analyser.cvss.cvss_record_template import RecordTemplate
 import configparser
+
+from core.obj.cve_record import CVERecord
 
 
 class Rule:
@@ -32,7 +34,7 @@ class Rule:
                 else:
                     raise MissingConfigFileOption(e)
 
-        self.affected_records = []
+        self.affected_records: list[CVERecord] = []
         self.record_scheme = record_scheme
         self.severity = severity
         self.is_critical = is_critical
@@ -45,7 +47,8 @@ class Rule:
         :param score: The record baseScore value from the CVSS
         :return: None
         """
-        self.average = self.average + ((score - self.average) / (len(self.affected_records) + 1))
+        self.average = self.average + \
+            ((score - self.average) / (len(self.affected_records) + 1))
         self.affected_records.append(record)
 
     def get_severity_value(self) -> float:
