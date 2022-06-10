@@ -35,7 +35,7 @@ class Analyser:
                 if 'cvss' + self.base_metric.name in base_metrics:
                     cvss = base_metrics['cvss' + self.base_metric.name]
                     if 'baseScore' in cvss and 'vectorString' in cvss:
-                        base_score = cvss
+                        base_score = cvss['baseScore']
                         vector_string = cvss['vectorString']
             if vector_string and base_score:
                 for rule in self.rules:
