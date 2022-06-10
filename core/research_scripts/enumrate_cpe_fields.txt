@@ -1,0 +1,7 @@
+versionStartExcluding
+versionEndIncluding
+vulnerable
+versionStartIncluding
+versionEndExcluding
+cpe_name
+cpe23Uri
