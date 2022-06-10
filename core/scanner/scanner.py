@@ -1,15 +1,12 @@
 from abc import ABC,abstractmethod
 
 class Scanner(ABC):
-    """
-    Scanner interface declares a method for executing a command shell for software/hardware
-    """
+    """ Scanner interface declares a method for executing a command shell for software/hardware """
 
     @abstractmethod
-    def execute(self) -> []:
+    def execute(self) -> list:
         """
-        abstract method that every child will have to implement
-        :return:
-        array of scanned modules
+        Abstract method that every child will have to implement
+        :return: List of scanned modules
         """
         pass

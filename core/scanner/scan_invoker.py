@@ -1,24 +1,21 @@
-from scanner import Scanner
+from core.scanner.scanner import Scanner
 
 class Scan_Invoker:
 
     def __init__(self):
-        """
-        The Scan Invoker send a request to execute component scan
-        """
+        """ The Scan Invoker send a request to execute scan components """
         self.start = None
 
     def set_on_start(self, scanner: Scanner):
         """
-        :param scanner: one of scanner children e.g. software, hardware
+        :param scanner: One of scanner children e.g. software, hardware
         """
         self.start = scanner
 
-    def invoke(self) -> []:
+    def invoke(self) -> list:
         """
-        execute scanning components
-        :return:
-        array of dictionaries in the following structure : {"vendor": "", "product": "", "version" : ""}
+        Execute scanning components
+        :return: List of dictionaries in the following structure : {"vendor": "", "product": "", "version" : ""}
         """
         if isinstance(self.start, Scanner):
             return self.start.execute()
