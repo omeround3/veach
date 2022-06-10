@@ -1,3 +1,4 @@
 venv
 __pycache__
-nvdcve-1.1*
+nvdcve-1.1*.json
+nvdcpematch*.json
