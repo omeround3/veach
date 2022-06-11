@@ -2,11 +2,12 @@ from pyrsistent import immutable
 from core.analyser.enums import BaseMetricAttributes
 from core.analyser.rule import Rule
 from core.obj.cve_record import CVERecord
+from core.utils import get_attribute, settings_value
 
 
 class Analyser:
 
-    def __init__(self, rules: list[Rule] = [], base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
+    def __init__(self, base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
         """
         A class used to analyse and evaluate the risk of the existing CVEs
         :param rules: List of rules which every record will be compared and categorised to
@@ -14,7 +15,21 @@ class Analyser:
         """
         self.records: list[CVERecord] = []
         self.base_metric = base_metric
-        self.rules = rules
+
+        self.rules: list[Rule] = self.get_rules_from_file()
+
+    def get_rules_from_file(self):
+        rules: list[Rule] = []
+        raw_rules = {
+            "ConfidentialityImpact": settings_value('STATIC_RULES', 'confidentiality_impact'),
+            "IntegrityImpact": settings_value('STATIC_RULES', 'integrity_impact'),
+            "AvailabilityImpact": settings_value('STATIC_RULES', 'availability_impact'),
+            "AttackVector": {
+                "ADJACENT_NETWORK": settings_value('STATIC_RULES', 'adjacent_network'),
+                "NETWORK": settings_value('STATIC_RULES', 'network'),
+                "LOCAL": settings_value('STATIC_RULES', 'local'),
+                "PHYSICAL": settings_value('STATIC_RULES', 'physical')
+            }}
 
     def add(self, records: list[CVERecord]):
         """

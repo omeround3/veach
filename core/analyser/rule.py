@@ -1,7 +1,7 @@
 from core.analyser.enums import Severity
 from core.errors import *
 from core.analyser.cvss.cvss_record_template import RecordTemplate
-import configparser
+from core.utils import *
 
 from core.obj.cve_record import CVERecord
 
@@ -23,16 +23,11 @@ class Rule:
         :param is_critical: if True, the CVE record severity will be same as the attributes severity
         """
         if Rule.min_weight is None or Rule.max_weight is None:
-            cfg = configparser.ConfigParser()
-            cfg.read('core\\config.ini')
-            try:
-                Rule.min_weight = float(cfg['ANALYSER']['min_weight'])
-                Rule.max_weight = float(cfg['ANALYSER']['max_weight'])
-            except KeyError as e:
-                if e.args[0] == 'ANALYSER':
-                    raise MissingConfigFileSection(e)
-                else:
-                    raise MissingConfigFileOption(e)
+
+            Rule.min_weight = float(
+                settings_value(self.__name__, 'min_weight'))
+            Rule.max_weight = float(
+                settings_value(self.__name__, 'max_weight'))
 
         self.affected_records: list[CVERecord] = []
         self.record_scheme = record_scheme

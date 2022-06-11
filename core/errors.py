@@ -20,3 +20,9 @@ class InvalidCPEFormat(Exception):
     def __init__(self, msg):
         self.msg = f"\"{msg}\" is not a valid CPE structure"
         super().__init__(self.msg)
+
+
+class InvalidStringFormat(Exception):
+    def __init__(self, msg):
+        self.msg = f"\"{msg}\" is not a valid format"
+        super().__init__(self.msg)

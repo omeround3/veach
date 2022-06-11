@@ -3,9 +3,10 @@ from enum import Enum
 
 class CVEAttributes(str, Enum):
     """An enum class for CVE fields"""
-    CVE = "cve"
-    CONFIGURATION = "configurations"
-    IMPACT = "impact"
+    ID = "cve.CVE_data_meta.ID"
+    NODES = "configurations.nodes"
+    CVSSV2 = "impact.baseMetricV2.cvssV2"
+    CVSSV3 = "impact.baseMetricV3.cvssV3"
     PUBLISHED_DATE = "publishedDate"
     LAST_MODIFIED_DATE = "lastModifiedDate"
 

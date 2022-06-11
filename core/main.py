@@ -13,6 +13,7 @@ from core.obj.cve_record import CVERecord
 from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 from core.matcher.tests import *
+from core.utils import *
 
 
 def print_dict(item: dict):
