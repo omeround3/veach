@@ -4,10 +4,6 @@ from software import Software
 from hardware import Hardware
 
 def main():
-    """
-    This method will invoke software/hardware scanning
-    and pass the result to parser component
-    """
     scan = -1
     scan_software = -1
     scan_hardware = -1
