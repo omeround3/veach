@@ -1,6 +1,6 @@
+from core.analyser.cvss.cvss_record_template_v3 import RecordTemplateV3
 from core.analyser.enums import Severity
 from core.errors import *
-from core.analyser.cvss.cvss_record_template import RecordTemplate
 from core.utils import *
 
 from core.obj.cve_record import CVERecord
@@ -15,7 +15,7 @@ class Rule:
     min_weight = None
     max_weight = None
 
-    def __init__(self, record_scheme: RecordTemplate, severity: Severity, tag: str = None, is_critical: bool = False):
+    def __init__(self, record_scheme: RecordTemplateV3, severity: Severity, tag: str = None, is_critical: bool = False):
         """
         :param record_scheme: CVSS record with critical attributes
         :param severity: Determine the weight of those attributes
@@ -25,9 +25,9 @@ class Rule:
         if Rule.min_weight is None or Rule.max_weight is None:
 
             Rule.min_weight = float(
-                settings_value(self.__name__, 'min_weight'))
+                get_settings_value('RULE', 'min_weight'))
             Rule.max_weight = float(
-                settings_value(self.__name__, 'max_weight'))
+                get_settings_value('RULE', 'max_weight'))
 
         self.affected_records: list[CVERecord] = []
         self.record_scheme = record_scheme
@@ -58,3 +58,9 @@ class Rule:
         for rec in self.affected_records:
             ret_str += f"   {rec['cve']['CVE_data_meta']['ID']}\n"
         return ret_str
+
+    def __hash__(self) -> int:
+        return self.record_scheme.__hash__()
+
+    def __eq__(self, __o: object) -> bool:
+        return self.record_scheme == __o.record_scheme

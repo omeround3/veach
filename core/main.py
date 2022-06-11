@@ -1,5 +1,5 @@
 ### --- ANALYSER --- ###
-
+import pickle
 import json
 import csv
 import pymongo
@@ -14,6 +14,7 @@ from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 from core.matcher.tests import *
 from core.utils import *
+import core.analyser.rules_generator
 
 
 def print_dict(item: dict):
@@ -21,6 +22,9 @@ def print_dict(item: dict):
 
 
 if __name__ == '__main__':
+
+    anal = Analyser()
+    print("OK")
     cve = CVERecord({
         "cve": {
             "data_type": "CVE",
@@ -459,6 +463,7 @@ if __name__ == '__main__':
 
     for cpe_uri in cpe_uris:
         matcher.match(cpe_uri[0].lower())
+
     if matcher.matches:
         for match in matcher.matches.keys():
             analyser.add(matcher.matches[match])

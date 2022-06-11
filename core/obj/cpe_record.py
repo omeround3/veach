@@ -1,6 +1,5 @@
 import json
 
-from pyrsistent import immutable
 from core.errors import InvalidCPEStringFormat, InvalidCPEFormat
 from core.matcher.enums import CPEAttributes
 from core.utils import get_attribute

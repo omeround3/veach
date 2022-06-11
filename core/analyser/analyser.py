@@ -1,13 +1,13 @@
-from pyrsistent import immutable
+import pickle
 from core.analyser.enums import BaseMetricAttributes
 from core.analyser.rule import Rule
 from core.obj.cve_record import CVERecord
-from core.utils import get_attribute, settings_value
+from core.utils import get_settings_value
 
 
 class Analyser:
 
-    def __init__(self, base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
+    def __init__(self, rules: list[Rule] = [], base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
         """
         A class used to analyse and evaluate the risk of the existing CVEs
         :param rules: List of rules which every record will be compared and categorised to
@@ -16,20 +16,16 @@ class Analyser:
         self.records: list[CVERecord] = []
         self.base_metric = base_metric
 
-        self.rules: list[Rule] = self.get_rules_from_file()
+        self.rules: list[Rule] = rules
+        self._load_rules_from_files()
 
-    def get_rules_from_file(self):
-        rules: list[Rule] = []
-        raw_rules = {
-            "ConfidentialityImpact": settings_value('STATIC_RULES', 'confidentiality_impact'),
-            "IntegrityImpact": settings_value('STATIC_RULES', 'integrity_impact'),
-            "AvailabilityImpact": settings_value('STATIC_RULES', 'availability_impact'),
-            "AttackVector": {
-                "ADJACENT_NETWORK": settings_value('STATIC_RULES', 'adjacent_network'),
-                "NETWORK": settings_value('STATIC_RULES', 'network'),
-                "LOCAL": settings_value('STATIC_RULES', 'local'),
-                "PHYSICAL": settings_value('STATIC_RULES', 'physical')
-            }}
+    def _load_rules_from_files(self, override: bool = False):
+        if override:
+            self.rules = []
+        file = open(get_settings_value("RULES", "veach_rules"), 'rb')
+        self.rules += (pickle.load(file))
+        file.close
+        return self.rules
 
     def add(self, records: list[CVERecord]):
         """

@@ -1,5 +1,5 @@
 from enum import Enum
-from .cvss_record_template import RecordTemplate
+from ntpath import join
 
 
 class Version(Enum):
@@ -60,7 +60,7 @@ class AvailabilityImpact(Enum):
 #     LOW = 'LOW'
 
 
-class RecordTemplateV3(RecordTemplate):
+class RecordTemplateV3():
     def __init__(self,
                  version: Version = None,
                  attack_vector: AttackVector = None,
@@ -71,22 +71,9 @@ class RecordTemplateV3(RecordTemplate):
                  confidentiality_impact: ConfidentialityImpact = None,
                  integrity_impact: IntegrityImpact = None,
                  availability_impact: AvailabilityImpact = None,
-                 # base_score: float = None,
-                 # base_severity: BaseSeverity = None
                  ):
         """deserialization class for cvssV3 record"""
-        # self.version = version
-        # self.attack_vector = attack_vector
-        # self.attack_complexity = attack_complexity
-        # self.privileges_required = privileges_required
-        # self.user_interaction = user_interaction
-        # self.scope = scope
-        # self.confidentiality_impact = confidentiality_impact
-        # self.integrity_impact = integrity_impact
-        # self.availability_impact = availability_impact
-        # self.base_score = base_score
-        # self.base_severity = base_severity
-        super().__init__()
+        self.vector_string_attributes = []
         if version:
             self.vector_string_attributes.append(f"CVSS:{version.value}")
         if attack_vector:
@@ -112,6 +99,17 @@ class RecordTemplateV3(RecordTemplate):
         if availability_impact:
             self.vector_string_attributes.append(
                 f"A:{availability_impact.value[0]}")
+        self.vector_string = '/'.join(str(a)
+                                      for a in self.vector_string_attributes)
+
+    def __hash__(self) -> int:
+        return self.vector_string.__hash__()
+
+    def __eq__(self, __o: object) -> bool:
+        return self.vector_string == __o.vector_string
+
+    def __str__(self) -> str:
+        return self.vector_string
     #
     # def __str__(self):
     #     ret_str = str()
