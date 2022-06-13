@@ -1,12 +1,11 @@
 import json
-
-from pyrsistent import immutable
+from typing import Dict
 from core.errors import InvalidCPEStringFormat, InvalidCPEFormat
 from core.matcher.enums import CPEAttributes
 
 
 class CPERecord():
-    def __init__(self, cpe: dict[str, str]) -> None:
+    def __init__(self, cpe: Dict[str, str]) -> None:
         """deserialization class for CPE record"""
         if CPEAttributes.CPE_23_URI in cpe:
             tmp = cpe[CPEAttributes.CPE_23_URI].split(':')

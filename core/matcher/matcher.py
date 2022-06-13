@@ -1,6 +1,5 @@
 import configparser
 from gc import collect
-from msilib.schema import Error
 
 from core.errors import MissingConfigFileOption, MissingConfigFileSection
 from core.matcher.enums import CPEAttributes

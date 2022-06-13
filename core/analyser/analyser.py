@@ -1,12 +1,11 @@
-from pyrsistent import immutable
 from core.analyser.enums import BaseMetricAttributes
 from core.analyser.rule import Rule
 from core.obj.cve_record import CVERecord
-
+from typing import List
 
 class Analyser:
 
-    def __init__(self, rules: list[Rule] = [], base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
+    def __init__(self, rules: List[Rule] = [], base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
         """
         A class used to analyse and evaluate the risk of the existing CVEs
         :param rules: List of rules which every record will be compared and categorised to
@@ -16,7 +15,7 @@ class Analyser:
         self.base_metric = base_metric
         self.rules = rules
 
-    def add(self, records: list[CVERecord]):
+    def add(self, records: List[CVERecord]):
         """
         Adds a CVE record to the analyser engine
         :param record: a CVE record to add for analysis

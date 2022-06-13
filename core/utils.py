@@ -10,7 +10,7 @@ cfg = configparser.ConfigParser()
 cfg.read('core\\config.ini')
 
 
-def settings_value(class_name: str, key: str):
+def get_settings_value(class_name: str, key: str):
     class_name = class_name.upper()
     key = key.lower()
     try:
@@ -27,7 +27,7 @@ def get_attribute(dict: dict, path: str):
     if isinstance(path, Enum):
         path = path.value
 
-    pattern = settings_value('OTHER', 'attributes_string_pattern')
+    pattern = get_settings_value('OTHER', 'attributes_string_pattern')
     pattern = re.compile(pattern)
     match = pattern.match(path)
     if match:

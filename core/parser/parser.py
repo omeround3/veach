@@ -7,7 +7,7 @@ class Parser:
     """
 
     def __init__(self):
-        self.cpe_list = []
+        self.cpe_list = set()
 
     def parse_string(self, tmp: str) -> str:
         tmp = tmp.replace(",", "")
@@ -55,7 +55,7 @@ class Parser:
             cpe_str += version + ":"
         return cpe_str
 
-    def parse_data_to_cpe(self, data: list) -> list:
+    def parse_data_to_cpe(self, data: list):
         """
         Take list of data and parse him to CPE format
         :param data: List of dictionaries in the following structure : {"part": "", vendor": "", "product": "", "version": ""}
@@ -71,7 +71,7 @@ class Parser:
             cpe_str = self.parse_product(cpe, cpe_str)
             cpe_str = self.parse_version(cpe, cpe_str)
             cpe_str += "*:*:*:*:*"
-            self.cpe_list.append(cpe_str)
-        return self.cpe_list
+            self.cpe_list.add(cpe_str)
+        
 
 
