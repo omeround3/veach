@@ -3,6 +3,7 @@ from enum import Enum
 import re
 import configparser
 import codecs
+from typing import Iterable
 from core.errors import MissingConfigFileOption, MissingConfigFileSection, InvalidStringFormat
 
 cfg = configparser.ConfigParser()
@@ -39,3 +40,9 @@ def get_attribute(dict: dict, path: str):
         return dict
     else:
         raise InvalidStringFormat(path)
+
+
+def distinct_append_list(arr: list, items: Iterable):
+    for item in items:
+        if item not in arr:
+            arr.append(item)

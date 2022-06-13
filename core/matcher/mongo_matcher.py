@@ -4,6 +4,7 @@ from msilib.schema import Error
 from core.matcher.matcher import Matcher
 from core.errors import MissingConfigFileOption, MissingConfigFileSection
 from core.matcher.enums import CPEAttributes
+from core.utils import distinct_append_list
 from ..obj.cve_record import CVERecord
 from ..obj.cpe_record import CPERecord
 from pymongo import database
@@ -43,26 +44,30 @@ class MongoMatcher(Matcher):
         cpe_matches = self._get_cpe_matches(cpe_uri)
         if cpe_matches:
             for cpe_match in cpe_matches:
-                cve_matches = self._get_cve_matches(CPERecord(cpe_match))
+                cve_matches = list(self._get_cve_matches(CPERecord(cpe_match)))
                 if cve_matches:
                     for cve_match in cve_matches:
-                        try:
-                            self.matches[cpe_uri].add(CVERecord(cve_match))
-                        except KeyError:
-                            self.matches[cpe_uri] = set()
-                            self.matches[cpe_uri].add(CVERecord(cve_match))
+                        self.matches[cpe_uri].add(CVERecord(cve_match))
         return self.matches
 
     def _get_cpe_matches(self, cpe: str):
-        query = self._gen_cpe_query(cpe)
-        return self._cpe_collection.find(query)
+        result: list[dict[str, str]] = []
+        query = self._gen_cpe_query_1(cpe)
+        distinct_append_list(result, self._cpe_collection.find(query))
+
+        query = self._gen_cpe_query_2(cpe)
+        distinct_append_list(result, self._cpe_collection.find(query))
+        return result
 
     def _get_cve_matches(self, cpe: CPERecord):
         query = self._gen_cve_query(cpe)
         return self._cve_collection.find(query)
 
-    def _gen_cpe_query(self, cpe: str):
+    def _gen_cpe_query_1(self, cpe: str):
         return {self._cpe_path_to_cpe_uri: cpe}
+
+    def _gen_cpe_query_2(self, cpe: str):
+        return {self._cpe_path_to_cpe_uri.split(".")[1]: cpe}
 
     def _gen_cve_query(self, cpe: CPERecord):
         query = {

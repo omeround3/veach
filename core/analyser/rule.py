@@ -1,5 +1,5 @@
 from core.analyser.cvss.cvss_record_template_v3 import RecordTemplateV3
-from core.analyser.enums import Severity
+from core.analyser.enums import CVSSV3Attributes, Severity
 from core.errors import *
 from core.utils import *
 
@@ -36,14 +36,15 @@ class Rule:
         self.tag = tag
         self.average = float(0.0)
 
-    def add_affected_record(self, record, score) -> None:
+    def add_affected_record(self, record: CVERecord) -> None:
         """
         :param record: A record that meets the rule condition/s
         :param score: The record baseScore value from the CVSS
         :return: None
         """
         self.average = self.average + \
-            ((score - self.average) / (len(self.affected_records) + 1))
+            ((float(get_attribute(record.get_metrics(), CVSSV3Attributes.BASE_SCORE)) -
+             self.average) / (len(self.affected_records) + 1))
         self.affected_records.append(record)
 
     def get_severity_value(self) -> float:

@@ -1,8 +1,9 @@
 import pickle
-from core.analyser.enums import BaseMetricAttributes
+from core.analyser.enums import BaseMetricAttributes, CVSSV3Attributes
 from core.analyser.rule import Rule
+from core.errors import InvalidCVEFormat
 from core.obj.cve_record import CVERecord
-from core.utils import get_settings_value
+from core.utils import get_attribute, get_settings_value
 
 
 class Analyser:
@@ -27,13 +28,13 @@ class Analyser:
         file.close
         return self.rules
 
-    def add(self, records: list[CVERecord]):
+    def add(self, records: set[CVERecord]):
         """
         Adds a CVE record to the analyser engine
         :param record: a CVE record to add for analysis
         :return: None
         """
-        self.records.append(records)
+        self.records += records
 
     def analyse(self):
         """
@@ -43,13 +44,12 @@ class Analyser:
         for record in self.records:
             base_metrics = record.get_metrics(self.base_metric)
             if base_metrics:
-                if 'cvss' + self.base_metric.name in base_metrics:
-                    cvss = base_metrics['cvss' + self.base_metric.name]
-                    if 'baseScore' in cvss and 'vectorString' in cvss:
-                        base_score = cvss['baseScore']
-                        vector_string = cvss['vectorString']
+                base_score = get_attribute(
+                    base_metrics, CVSSV3Attributes.BASE_SCORE)
+                vector_string = get_attribute(
+                    base_metrics, CVSSV3Attributes.VECTOR_STRING)
             if vector_string and base_score:
                 for rule in self.rules:
                     record_scheme = rule.record_scheme
                     if all(x in vector_string for x in record_scheme.vector_string_attributes):
-                        rule.add_affected_record(record, base_score)
+                        rule.add_affected_record(record)

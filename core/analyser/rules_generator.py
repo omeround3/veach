@@ -20,8 +20,12 @@ def add_rule(rule: Rule):
 add_rule(Rule(RecordTemplateV3(attack_vector=AttackVector.NETWORK,
                                attack_complexity=AttackComplexity.LOW), Severity.HIGH, "A kid might be able to hack your PC remotly"))
 
+add_rule(Rule(RecordTemplateV3(attack_vector=AttackVector.LOCAL,
+                               attack_complexity=AttackComplexity.LOW), Severity.HIGH, "A ninja hacker might be able to hack your PC remotly"))
+
 add_rule(Rule(RecordTemplateV3(attack_vector=AttackVector.NETWORK,
-                               attack_complexity=AttackComplexity.HIGH), Severity.HIGH, "A ninja hacker might be able to hack your PC remotly"))
+                               attack_complexity=AttackComplexity.LOW, confidentiality_impact=ConfidentialityImpact.NONE), Severity.HIGH, "If someone gained access to your machine, he can mess up your file but can't read them"))
+
 
 file = open(get_settings_value("RULES", "veach_rules"), "wb")
 pickle.dump(veach_rules, file)

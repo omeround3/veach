@@ -8,12 +8,11 @@ from core.utils import get_attribute
 class CPERecord():
     def __init__(self, cpe: dict[str, str]) -> None:
         """deserialization class for CPE record"""
-        cpe_uri = get_attribute(cpe, CPEAttributes.CPE_23_URI)
+        cpe_uri: str = get_attribute(cpe, CPEAttributes.CPE_23_URI)
 
-        if not cpe_uri:
-            raise InvalidCPEFormat(json.dumps(cpe))
+        cpe_uri = cpe_uri.split(":")
 
-        if cpe_uri[0] != "cpe" or len(cpe_uri) != 13:
+        if not cpe_uri or cpe_uri[0] != "cpe" or len(cpe_uri) != 13:
             raise InvalidCPEStringFormat(cpe[CPEAttributes.CPE_23_URI])
 
         self._cpe_version = cpe_uri[1]
