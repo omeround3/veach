@@ -2,9 +2,11 @@
 import pickle
 import json
 import csv
+from unicodedata import category
 import pymongo
 import unittest
-from core.analyser.rule import Rule
+import time
+from core.analyser.category import Category
 from core.analyser.cvss.cvss_record_template_v3 import *
 from core.analyser.enums import *
 from core.analyser.analyser import Analyser
@@ -14,7 +16,6 @@ from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 from core.matcher.tests import *
 from core.utils import *
-import core.analyser.rules_generator
 
 
 def print_dict(item: dict):
@@ -22,30 +23,40 @@ def print_dict(item: dict):
 
 
 if __name__ == '__main__':
-    client = pymongo.MongoClient(
-        "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
-    db = client['nvdcve']
+
+    # client = pymongo.MongoClient(
+    #     "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
+    client = pymongo.MongoClient("localhost", 27017)
+
+    db = client['VEACH']
 
     matcher: Matcher = MongoMatcher(db)
-
+    cpe_uris = []
     csv_file = open(
         'C:\\Users\\Daniel\\Documents\\veach\\core\\scanner\\fake_scanner.csv')
-    cpe_uris = list(csv.reader(csv_file, delimiter=','))
+    reader = csv.reader(csv_file, delimiter=',')
+    for row in reader:
+        cpe_uris.append(row[0].lower())
 
     analyser = Analyser()
-
+    counter = 0
     for cpe_uri in cpe_uris:
-        matcher.match(cpe_uri[0].lower())
+        start = time.time()
+        matcher.match(cpe_uri.lower())
+        end = time.time()
+        print(counter, ":", end-start)
+        counter += 1
 
     if matcher.matches:
         for key in matcher.matches.keys():
             analyser.add(matcher.matches[key])
         analyser.analyse()
 
-    for rule in analyser.rules:
-        print(rule.tag)
-        if rule.affected_records:
-            for cve in rule.affected_records:
+    for key in analyser.cve_categories.keys():
+        category = analyser.cve_categories[key]
+        print(category.tag)
+        if category.affected_records:
+            for cve in category.affected_records:
                 print(" "+str(cve._id))
         else:
             print(" None")

@@ -18,5 +18,5 @@ class BaseMetricAttributes(str, Enum):
 
 class CVSSV3Attributes(str, Enum):
     """An enum class for Common Vulnerability Scoring System (CVSS) options"""
-    BASE_SCORE = "cvssV3.baseScore"
-    VECTOR_STRING = "cvssV3.vectorString"
+    BASE_SCORE = "baseScore"
+    VECTOR_STRING = "vectorString"

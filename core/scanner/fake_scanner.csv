@@ -1,1 +1,15 @@
-"cpe:2.3:a:swhkd_project:swhkd:1.1.5:*:*:*:*:*:*:*"
+cpe:2.3:a:*:accountsservice:0.6.45-1ubuntu1.3:*:*:*:*:*
+cpe:2.3:a:*:acl:2.2.52-3build1:*:*:*:*:*
+cpe:2.3:a:*:acpi-support:0.142:*:*:*:*:*
+cpe:2.3:a:*:acpid:1:2.0.28-1ubuntu1:*:*:*:*:*
+cpe:2.3:a:*:adduser:3.116ubuntu1:*:*:*:*:*
+cpe:2.3:a:*:adium-theme-ubuntu:0.3.4-0ubuntu4:*:*:*:*:*
+cpe:2.3:a:*:adwaita-icon-theme:3.28.0-1ubuntu1:*:*:*:*:*
+cpe:2.3:a:*:alsa-base:1.0.25+dfsg-0ubuntu5:*:*:*:*:*
+cpe:2.3:a:*:alsa-utils:1.1.3-1ubuntu1:*:*:*:*:*
+cpe:2.3:a:*:amd64-microcode:3.20191021.1+really3.20181128.1~ubuntu0.18.04.1:*:*:*:*:*
+cpe:2.3:a:*:anacron:2.3-24:*:*:*:*:*
+cpe:2.3:a:*:apg:2.2.3.dfsg.1-5:*:*:*:*:*
+cpe:2.3:a:*:app-install-data-partner:16.04:*:*:*:*:*
+cpe:2.3:a:*:apparmor:2.12-4ubuntu5.1:*:*:*:*:*
+cpe:2.3:a:*:apport:2.20.9-0ubuntu7.28:*:*:*:*:*

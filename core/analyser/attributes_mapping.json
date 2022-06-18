@@ -1,0 +1,62 @@
+{
+    "AC": {
+        "L_prefix": "An",
+        "L": "amateur attacker",
+        "H_prefix": "An",
+        "H": "experienced attacker"
+    },
+    "PR": {
+        "N_prefix": "",
+        "N": "without prior authentication",
+        "L_prefix": "",
+        "L": "with prior user authentication",
+        "H_prefix": "",
+        "H": "with prior root authentication"
+    },
+    "AV": {
+        "N_prefix": "and",
+        "N": "access to the internet, can:",
+        "A_prefix": "and",
+        "A": "access to your local network (Wi-Fi, Bluetooth, etc.), can:",
+        "L_prefix": "and",
+        "L": "previously gained access to your machine, can:",
+        "P_prefix": "and",
+        "P": "physical access to your machine, can:"
+    },
+    "C": {
+        "N_prefix": "",
+        "N": "",
+        "L_prefix": "\n- ",
+        "L": "read some data",
+        "H_prefix": "\n- ",
+        "H": "read all data"
+    },
+    "I": {
+        "N_prefix": "",
+        "N": "",
+        "L_prefix": "\n- ",
+        "L": "modify some data",
+        "H_prefix": "\n- ",
+        "H": "modify all data"
+    },
+    "A": {
+        "N_prefix": "",
+        "N": "",
+        "L_prefix": "\n- ",
+        "L": "partialy deny access to resources/services",
+        "H_prefix": "\n- ",
+        "H": "fully deny acccess to resources/services"
+    },
+    "S": {
+        "U_prefix": "\n",
+        "U": "*** ON THIS APPLICATION ONLY ***",
+        "C_prefix": "\n",
+        "C": "*** ON THE ENTIRE MACHINE ***"
+    },
+    "UI": {
+        "N_prefix": "\n",
+        "N": "The attack can take place without interaction from any user.",
+        "R_prefix": "\n",
+        "R": "The attack can requires a user to take some action (e.g click a link in email)."
+    }
+}
