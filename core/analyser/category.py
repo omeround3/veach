@@ -9,7 +9,20 @@ import json
 from core.obj.cve_record import CVERecord
 
 
-class Category:
+class Rule:
+    def __init__(self, record_scheme: CVSSRecordV3, severity: Severity = Severity.MEDIUM, is_critical: bool = False):
+        self.record_scheme = record_scheme
+        self.severity = severity
+        self.is_critical = is_critical
+
+    def __hash__(self) -> int:
+        return self.record_scheme.__hash__()
+
+    def __eq__(self, __o: object) -> bool:
+        return self.record_scheme == __o.record_scheme
+
+
+class Category(Rule):
     """
     A class used to set weighted values to security attributes
     E.G Weight([("attackVector", "NETWORK"),("attackComplexity", "LOW")], HIGH, True) - a CVE with this
@@ -17,6 +30,7 @@ class Category:
     """
     min_weight = None
     max_weight = None
+    attribute_mapping = None
 
     def __init__(self, record_scheme: CVSSRecordV3, severity: Severity = Severity.MEDIUM, is_critical: bool = False):
         """
@@ -30,47 +44,52 @@ class Category:
                 get_settings_value('RULE', 'min_weight'))
             Category.max_weight = float(
                 get_settings_value('RULE', 'max_weight'))
-        try:
-            with open("core\\analyser\\attributes_mapping.json", "r", encoding='utf-8') as json_file:
-                self.attribute_mapping = json.load(json_file)
-        except FileNotFoundError as e:
-            print(e)
-            quit()
+            try:
+                with open("core\\analyser\\attributes_mapping.json", "r", encoding='utf-8') as json_file:
+                    Category.attribute_mapping = json.load(json_file)
+            except FileNotFoundError as e:
+                print(e)
+                quit()
 
+        super().__init__(record_scheme, severity, is_critical)
+        self.rules: list[Rule] = []
         self.affected_records: list[CVERecord] = []
-        self.record_scheme = record_scheme
-        self.severity = severity
-        self.is_critical = is_critical
         self.average = float(0.0)
         self.tag = self.generate_tag()
 
     def generate_tag(self):
-        attr_list = list(self.attribute_mapping.keys())
+        attr_list = list(Category.attribute_mapping.keys())
         tag_list = [str("")]*len(attr_list)
 
         for key, val in self.record_scheme.vector_string_attributes.items():
-            if key in self.attribute_mapping:
-                if self.attribute_mapping[key][val + "_prefix"] != "":
+            if key in Category.attribute_mapping:
+                if Category.attribute_mapping[key][val + "_prefix"] != "":
                     tag_list[attr_list.index(
-                        key)] += str(self.attribute_mapping[key][val + "_prefix"])+" "
-                if self.attribute_mapping[key][val] != "":
+                        key)] += str(Category.attribute_mapping[key][val + "_prefix"])+" "
+                if Category.attribute_mapping[key][val] != "":
                     tag_list[attr_list.index(
-                        key)] += self.attribute_mapping[key][val]
+                        key)] += Category.attribute_mapping[key][val]
         self.tag = " ".join(tag_list)
         self.tag = self.tag.replace("\n ", "\n")
         self.tag = self.tag.title()
         return self.tag
 
-    def add_affected_record(self, record: CVERecord) -> None:
+    def add_affected_record(self, record: CVERecord) -> bool:
         """
         :param record: A record that meets the rule condition/s
         :param score: The record baseScore value from the CVSS
         :return: None
         """
-
-        self.average = self.average + ((float(get_attribute(record.get_metrics(self.record_scheme.type), CVSSV3Attributes.BASE_SCORE)) -
-                                        self.average) / (len(self.affected_records) + 1))
-        self.affected_records.append(record)
+        metric = record.get_metrics(self.record_scheme.type)
+        if metric:
+            base_score = float(get_attribute(
+                metric, CVSSV3Attributes.BASE_SCORE))
+            if base_score:
+                self.average = self.average + \
+                    ((base_score - self.average) / (len(self.affected_records) + 1))
+                self.affected_records.append(record)
+                return True
+        return False
 
     def get_severity_value(self) -> float:
         """
@@ -85,8 +104,11 @@ class Category:
             ret_str += f"   {rec['cve']['CVE_data_meta']['ID']}\n"
         return ret_str
 
-    def __hash__(self) -> int:
-        return self.record_scheme.__hash__()
+    def meets(self, rule: Rule) -> bool:
+        if self.record_scheme.meets(rule.record_scheme):
+            self.rules.append(rule)
+            if not self.is_critical and rule.is_critical:
+                self.is_critical = rule.is_critical
 
-    def __eq__(self, __o: object) -> bool:
-        return self.record_scheme == __o.record_scheme
+            if rule.severity > self.severity:
+                self.severity = rule.severity

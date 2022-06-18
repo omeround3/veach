@@ -1,11 +1,12 @@
 from collections import defaultdict
 import pickle
 
-from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
-from core.analyser.enums import BaseMetricAttributes, CVSSV3Attributes
-from core.analyser.category import Category
+from core.analyser.cvss.cvss_record_template_v3 import AttackComplexity, AttackVector, CVSSRecordV3, UserInteraction
+from core.analyser.enums import BaseMetricAttributes, CVSSV3Attributes, Severity
+from core.analyser.category import Category, Rule
 from core.errors import InvalidCVEFormat
 from core.obj.cve_record import CVERecord
+from core.obj.vector_string import VectorString
 from core.utils import get_attribute, get_settings_value
 
 
@@ -20,19 +21,15 @@ class Analyser:
         self.records: set[CVERecord] = set()
         self.base_metric = base_metric
 
-        self.priority_categories: set[Category] = set()
-        self.cve_categories: dict[str, Category] = defaultdict(lambda: None)
+        self.cve_categories: dict[str, Category] = defaultdict(None)
 
-        self._load_rules_from_files()
+        self.rules = self._load_rules_from_files()
 
     def _load_rules_from_files(self, override: bool = False):
-        pass
-        # if override:
-        #     self.priority_categories = []
-        # file = open(get_settings_value("RULES", "veach_rules"), 'rb')
-        # self.priority_categories += (pickle.load(file))
-        # file.close
-        # return self.priority_categories
+        file = open("core\\analyser\\veach_rules", 'rb')
+        rules = pickle.load(file)
+        file.close
+        return rules
 
     def add(self, records: set[CVERecord]):
         """
@@ -54,11 +51,11 @@ class Analyser:
                     base_metrics, CVSSV3Attributes.BASE_SCORE)
                 vector_string = get_attribute(
                     base_metrics, CVSSV3Attributes.VECTOR_STRING)
-            if vector_string and base_score:
-                self.cve_categories[vector_string] = Category(
-                    CVSSRecordV3(vector_string))
-                self.cve_categories[vector_string].add_affected_record(record)
-                # for rule in self.rules:
-                #     record_scheme = rule.record_scheme
-                #     if all(x in vector_string for x in record_scheme.vector_string_attributes):
-                #         rule.add_affected_record(record)
+                if vector_string and base_score:
+                    self.cve_categories[vector_string] = Category(
+                        CVSSRecordV3(vector_string))
+                    if not self.cve_categories[vector_string].add_affected_record(record):
+                        del self.cve_categories[vector_string]
+                    else:
+                        for rule in self.rules:
+                            self.cve_categories[vector_string].meets(rule)

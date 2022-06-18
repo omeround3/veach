@@ -23,7 +23,10 @@ def get_settings_value(class_name: str, key: str):
     return ret_val
 
 
-def get_attribute(dict: dict, path: str):
+def get_attribute(my_dict: dict, path: str):
+    if not my_dict or not path:
+        return None
+
     if isinstance(path, Enum):
         path = path.value
 
@@ -34,10 +37,10 @@ def get_attribute(dict: dict, path: str):
         path = path.split(".")
         for p in path:
             try:
-                dict = dict[p]
+                my_dict = my_dict[p]
             except KeyError:
                 return None
-        return dict
+        return my_dict
     else:
         raise InvalidStringFormat(path)
 

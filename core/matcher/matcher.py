@@ -15,7 +15,7 @@ class Matcher:
 
     def __init__(self, database: database.Database = None) -> None:
         self._database = database
-        self.matches: dict[str, set[CVERecord]] = defaultdict(lambda: set())
+        self.matches: dict[str, set[CVERecord]] = defaultdict(set)
 
     def match(self, cpe: str):
         pass

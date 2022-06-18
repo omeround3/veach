@@ -6,16 +6,17 @@ from unicodedata import category
 import pymongo
 import unittest
 import time
-from core.analyser.category import Category
+from core import analyser
+from core.analyser.category import Category, Rule
 from core.analyser.cvss.cvss_record_template_v3 import *
 from core.analyser.enums import *
 from core.analyser.analyser import Analyser
-from core.obj.cpe_record import CPERecord
-from core.obj.cve_record import CVERecord
 from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 from core.matcher.tests import *
 from core.utils import *
+
+from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
 
 
 def print_dict(item: dict):
@@ -26,31 +27,45 @@ if __name__ == '__main__':
 
     # client = pymongo.MongoClient(
     #     "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
-    client = pymongo.MongoClient("localhost", 27017)
+    # client = pymongo.MongoClient("localhost", 27017)
 
-    db = client['VEACH']
+    # db = client['VEACH']
 
-    matcher: Matcher = MongoMatcher(db)
-    cpe_uris = []
-    csv_file = open(
-        'C:\\Users\\Daniel\\Documents\\veach\\core\\scanner\\fake_scanner.csv')
-    reader = csv.reader(csv_file, delimiter=',')
-    for row in reader:
-        cpe_uris.append(row[0].lower())
+    # matcher: Matcher = MongoMatcher(db)
+    # cpe_uris = []
+    # csv_file = open(
+    #     'C:\\Users\\Daniel\\Documents\\veach\\core\\scanner\\fake_scanner.csv')
+    # reader = csv.reader(csv_file, delimiter=',')
+    # for row in reader:
+    #     cpe_uris.append(row[0].lower())
+
+    # analyser = Analyser()
+    # counter = 0
+    # for cpe_uri in cpe_uris:
+    #     start = time.time()
+    #     matcher.match(cpe_uri.lower())
+    #     end = time.time()
+    #     print(counter, ":", end-start)
+    #     counter += 1
+
+    # if matcher.matches:
+    #     for key in matcher.matches.keys():
+    #         analyser.add(matcher.matches[key])
+    #     # analyser.analyse()
 
     analyser = Analyser()
-    counter = 0
-    for cpe_uri in cpe_uris:
-        start = time.time()
-        matcher.match(cpe_uri.lower())
-        end = time.time()
-        print(counter, ":", end-start)
-        counter += 1
+    # pic = analyser.records
+    file = open("records", "rb")
+    records = pickle.load(file)
+    file.close()
 
-    if matcher.matches:
-        for key in matcher.matches.keys():
-            analyser.add(matcher.matches[key])
-        analyser.analyse()
+    analyser.add(records)
+    analyser.analyse()
+    count = 0
+
+    for record in records:
+        print(count, " - ", record._id)
+        count += 1
 
     for key in analyser.cve_categories.keys():
         category = analyser.cve_categories[key]
@@ -60,6 +75,7 @@ if __name__ == '__main__':
                 print(" "+str(cve._id))
         else:
             print(" None")
+    print("DONE")
     # # analyser.add(cve)
 
     # analyser.analyse()
