@@ -1,13 +1,11 @@
-
-
 from enum import Enum
 import re
 import configparser
 import codecs
-from core.errors import MissingConfigFileOption, MissingConfigFileSection, InvalidStringFormat
+from core.errors import MissingConfigFileOption, MissingConfigFileSection
 
 cfg = configparser.ConfigParser()
-cfg.read('core\\config.ini')
+cfg.read('core/config.ini')
 
 
 def get_settings_value(class_name: str, key: str):

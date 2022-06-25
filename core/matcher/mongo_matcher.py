@@ -18,7 +18,7 @@ class MongoMatcher(Matcher):
         """
         super().__init__(database)
         cfg = configparser.ConfigParser()
-        cfg.read('core\\config.ini')
+        cfg.read('core/config.ini')
 
         try:
             self._cpe_path_to_cpe_uri = cfg['MATCHER']['cpe_path_to_cpe_uri']

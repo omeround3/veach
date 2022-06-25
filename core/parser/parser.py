@@ -74,7 +74,7 @@ class Parser:
             cpe_str = self._parse_version(cpe, cpe_str)
             cpe_str += "*:*:*:*:*:*:*" 
             cpe_list.add(cpe_str)
-            return cpe_list
+        return cpe_list
         
 
 
