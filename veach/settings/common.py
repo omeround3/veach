@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 import os
 
 
-load_dotenv() # loads the configs from .env
+load_dotenv()  # loads the configs from .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -126,22 +126,34 @@ LOGGING = {
     },
     'handlers': {
         'console': {
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': os.getenv("LOG_FORMATTER", "simple")
         },
         'file': {
+            'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.getenv('DJANGO_LOG_LOCATION', '/logs/veach.log'),
+            'filename': os.getenv('DJANGO_LOG_LOCATION', str(BASE_DIR) + '/logs/veach.log'),
             'maxBytes': 52428800,
             'backupCount': 2,
-            'formatter': os.getenv("LOG_FORMATTER", "simple")
+            'formatter': 'simple'
         },
     },
     'loggers': {
-        'root': {
-            'handlers': ['file', 'console'],
+        'veach': {
+            'handlers': ['console', 'file'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'WARN',
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
         },
     }
 }
