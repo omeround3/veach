@@ -47,6 +47,7 @@ class MongoMatcher(Matcher):
         :param cpe_uri: a cpe string 
         :return: dictionary [cpe_uri : cve_matches]
         """
+        cve_matches = None
         cpe_matches: set[CPERecord] = set()
 
         if cpe_uri in self.matches_cache.keys():
@@ -67,10 +68,12 @@ class MongoMatcher(Matcher):
                 end = time.time()
                 print(f"Get CVE: {end-start}")
                 if cve_matches:
+                    cve_matches = list(
+                        map(lambda x: CVERecord(x), cve_matches))
                     for cve_match in cve_matches:
-                        self.matches[cpe_uri].add(CVERecord(cve_match))
+                        self.matches[cpe_uri].add(cve_match)
         self._save_cache()
-        return self.matches
+        return cve_matches
 
     def _save_cache(self) -> None:
         """saves last_match dictionary to file"""

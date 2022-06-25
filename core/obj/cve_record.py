@@ -27,7 +27,7 @@ class CVERecord():
     def __str__(self) -> str:
         return self._id
 
-    def get_metrics(self, cvss: BaseMetricAttributes):
+    def get_metrics(self, cvss: BaseMetricAttributes = BaseMetricAttributes.V3):
         if cvss == BaseMetricAttributes.V3:
             return self._base_metric_v3
         elif cvss == BaseMetricAttributes.V2:

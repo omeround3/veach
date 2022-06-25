@@ -5,6 +5,7 @@ import csv
 from unicodedata import category
 import pymongo
 from core import analyser
+from core.mitigator.mitigator import Mitigator
 from core.analyser.category import Category, Rule
 from core.analyser.cvss.cvss_record_template_v3 import *
 from core.analyser.enums import *
@@ -13,6 +14,7 @@ from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 from core.matcher.tests import *
 from core.obj.cpe_record import CPERecord
+from core.scanner.parser import Parser
 from core.utils import *
 
 from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
@@ -36,7 +38,6 @@ if __name__ == '__main__':
 
     # --- Initiallize Matcher
     matcher: Matcher = MongoMatcher(db, cpe_collection, cve_collection)
-
     # --- "Scanner" - Read CPE URIs from file (on windows systems)
     cpe_uris = []
     csv_file = open(
@@ -46,8 +47,13 @@ if __name__ == '__main__':
         cpe_uris.append(row[0].lower())
 
     # --- Initiallize Analyser
-    analyser = Analyser()
+    my_cpe = CPERecord(
+        {"cpe23Uri": "cpe:2.3:a:*:orca:3.28.0-3ubuntu1:*:*:*:*:*:*:*"})
+    parser = Parser()
+    mitigator = Mitigator(matcher, parser)
 
+    for cpe in cpe_uris:
+        mitigator.mitigate_package(CPERecord({"cpe23Uri": cpe}))
     # --- Send CPE URIs to Matcher.match() to find CVE matches
     counter = 0
     for cpe_uri in cpe_uris:
@@ -66,6 +72,7 @@ if __name__ == '__main__':
     file.close()
 
     analyser = Analyser()
+
     # pic = analyser.records
     file = open("records", "rb")
     records = pickle.load(file)

@@ -42,6 +42,11 @@ class Analyser:
         """
         self.records.update(records)
 
+    def get_cve_category(self, cve: CVERecord) -> Category:
+        vector_string = get_attribute(
+            cve.get_metrics(), CVSSV3Attributes.VECTOR_STRING)
+        return self.cve_categories[vector_string]
+
     def analyse(self) -> dict:
         """
         Perform the analysis on records added to the analyser engine
