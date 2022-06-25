@@ -44,7 +44,7 @@ def get_local_db():
 
     db_handle = client[db_name]
 
-    return db_handle, client
+    return db_handle, client, connection_string
 
 
 def get_remote_db():
@@ -66,7 +66,7 @@ def get_remote_db():
     dns_srv_record = cfg['REMOTE-DATABASE']['dns_srv_record']
 
     if hostname == "localhost" and not username and not password:
-        connection_string = f'mongodb://{hostname}:{port}/'
+        connection_string = f'mongodb://{hostname}:{port}/{db_name}?'
     elif dns_srv_record:
         if username and password:
             connection_string = f'mongodb+srv://{username}:{password}@{hostname}/{db_name}?retryWrites=true&w=majority'
