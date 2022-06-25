@@ -25,24 +25,27 @@ class Analyser:
 
         self.rules = self._load_rules_from_files()
 
-    def _load_rules_from_files(self, override: bool = False):
+    def _load_rules_from_files(self) -> None:
+        """
+        Loads rules defined in setting to mark CVE Records
+        :return: None
+        """
         file = open("core\\analyser\\veach_rules", 'rb')
         rules = pickle.load(file)
         file.close
         return rules
 
-    def add(self, records: set[CVERecord]):
+    def add(self, records: set[CVERecord]) -> None:
         """
         Adds a CVE record to the analyser engine
         :param record: a CVE record to add for analysis
-        :return: None
         """
         self.records.update(records)
 
-    def analyse(self):
+    def analyse(self) -> dict:
         """
         Perform the analysis on records added to the analyser engine
-        :return:
+        :return: dictionary of CVE categories and CVE Records
         """
         for record in self.records:
             base_metrics = record.get_metrics(self.base_metric)
@@ -59,3 +62,4 @@ class Analyser:
                     else:
                         for rule in self.rules:
                             self.cve_categories[vector_string].meets(rule)
+        return self.cve_categories

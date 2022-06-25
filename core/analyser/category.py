@@ -10,7 +10,16 @@ from core.obj.cve_record import CVERecord
 
 
 class Rule:
+    """
+    A class used to set Rules to compare with categories, if category meets rule, it inherits the rule sevirity
+    """
+
     def __init__(self, record_scheme: CVSSRecordV3, severity: Severity = Severity.MEDIUM, is_critical: bool = False):
+        """
+        :param record_scheme: CVSS record with critical attributes
+        :param severity: Determine the weight of those attributes
+        :param is_critical: if True, the CVE record severity will be same as the attributes severity
+        """
         self.record_scheme = record_scheme
         self.severity = severity
         self.is_critical = is_critical
@@ -32,7 +41,7 @@ class Category(Rule):
     max_weight = None
     attribute_mapping = None
 
-    def __init__(self, record_scheme: CVSSRecordV3, severity: Severity = Severity.MEDIUM, is_critical: bool = False):
+    def __init__(self, record_scheme: CVSSRecordV3, severity: Severity = Severity.MEDIUM, is_critical: bool = False) -> None:
         """
         :param record_scheme: CVSS record with critical attributes
         :param severity: Determine the weight of those attributes
@@ -57,7 +66,11 @@ class Category(Rule):
         self.average = float(0.0)
         self.tag = self.generate_tag()
 
-    def generate_tag(self):
+    def generate_tag(self) -> str:
+        """
+        Genereate a text describing the category
+        :return: a string of the description
+        """
         attr_list = list(Category.attribute_mapping.keys())
         tag_list = [str("")]*len(attr_list)
 
@@ -98,17 +111,25 @@ class Category(Rule):
         delta = Category.max_weight - Category.min_weight
         return Category.min_weight + (self.severity * (delta / (len(Severity) - 1)))
 
-    def __str__(self):
-        ret_str = f"[{self.severity}] - {self.tag}\n"
-        for rec in self.affected_records:
-            ret_str += f"   {rec['cve']['CVE_data_meta']['ID']}\n"
-        return ret_str
-
     def meets(self, rule: Rule) -> bool:
+        """
+        Checks if this Category meets the conditions of a certain Rule, if so, the Category Severity will be changed accordingly
+        :param rule: Rule class
+        :return: True if category meets rule conditions, otherwise, False
+        """
+        ret_val = False
         if self.record_scheme.meets(rule.record_scheme):
+            ret_val = True
             self.rules.append(rule)
             if not self.is_critical and rule.is_critical:
                 self.is_critical = rule.is_critical
 
             if rule.severity > self.severity:
                 self.severity = rule.severity
+        return ret_val
+
+    def __str__(self) -> str:
+        ret_str = f"[{self.severity}] - {self.tag}\n"
+        for rec in self.affected_records:
+            ret_str += f"   {rec['cve']['CVE_data_meta']['ID']}\n"
+        return ret_str

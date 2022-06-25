@@ -10,11 +10,16 @@ class CPERecord():
         """deserialization class for CPE record"""
         cpe_uri: str = get_attribute(cpe, CPEAttributes.CPE_23_URI)
 
-        cpe_uri = cpe_uri.split(":")
+        # replace literal colons
+        cpe_uri = cpe_uri.replace("\:", "&colon;")
 
+        cpe_uri = cpe_uri.split(":")
+        for part in cpe_uri:
+            part.replace("&colon;", ":")
         if not cpe_uri or cpe_uri[0] != "cpe" or len(cpe_uri) != 13:
             raise InvalidCPEStringFormat(cpe[CPEAttributes.CPE_23_URI])
 
+        self._id = get_attribute(cpe, CPEAttributes.ID)
         self._cpe_version = cpe_uri[1]
         self._part = cpe_uri[2]
         self._vendor = cpe_uri[3]

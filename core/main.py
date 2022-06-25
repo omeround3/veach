@@ -4,8 +4,6 @@ import json
 import csv
 from unicodedata import category
 import pymongo
-import unittest
-import time
 from core import analyser
 from core.analyser.category import Category, Rule
 from core.analyser.cvss.cvss_record_template_v3 import *
@@ -14,6 +12,7 @@ from core.analyser.analyser import Analyser
 from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 from core.matcher.tests import *
+from core.obj.cpe_record import CPERecord
 from core.utils import *
 
 from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
@@ -25,33 +24,46 @@ def print_dict(item: dict):
 
 if __name__ == '__main__':
 
-    # client = pymongo.MongoClient(
-    #     "mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?authMechanism=DEFAULT")
-    # client = pymongo.MongoClient("localhost", 27017)
+    cpe = CPERecord(
+        {"cpe23Uri": "cpe:2.3:a:archive\:\:tar_project:archive\:\:tar:*:*:*:*:*:perl:*:*"})
+    # --- Connect to DB defined in config
+    client = pymongo.MongoClient(get_settings_value("Matcher", "db_client"))
 
-    # db = client['VEACH']
+    # --- Select DB & Collections from config
+    db = client[get_settings_value("Matcher", "db_name")]
+    cpe_collection = get_settings_value("Matcher", "cpe_collection_name")
+    cve_collection = get_settings_value("Matcher", "cve_collection_name")
 
-    # matcher: Matcher = MongoMatcher(db)
-    # cpe_uris = []
-    # csv_file = open(
-    #     'C:\\Users\\Daniel\\Documents\\veach\\core\\scanner\\fake_scanner.csv')
-    # reader = csv.reader(csv_file, delimiter=',')
-    # for row in reader:
-    #     cpe_uris.append(row[0].lower())
+    # --- Initiallize Matcher
+    matcher: Matcher = MongoMatcher(db, cpe_collection, cve_collection)
 
-    # analyser = Analyser()
-    # counter = 0
-    # for cpe_uri in cpe_uris:
-    #     start = time.time()
-    #     matcher.match(cpe_uri.lower())
-    #     end = time.time()
-    #     print(counter, ":", end-start)
-    #     counter += 1
+    # --- "Scanner" - Read CPE URIs from file (on windows systems)
+    cpe_uris = []
+    csv_file = open(
+        'C:\\Users\\Daniel\\Documents\\veach\\core\\scanner\\fake_scanner.csv')
+    reader = csv.reader(csv_file, delimiter=',')
+    for row in reader:
+        cpe_uris.append(row[0].lower())
 
-    # if matcher.matches:
-    #     for key in matcher.matches.keys():
-    #         analyser.add(matcher.matches[key])
-    #     # analyser.analyse()
+    # --- Initiallize Analyser
+    analyser = Analyser()
+
+    # --- Send CPE URIs to Matcher.match() to find CVE matches
+    counter = 0
+    for cpe_uri in cpe_uris:
+        matcher.match(cpe_uri.lower())
+        counter += 1
+        print(counter, end=": ")
+    # --- If there are CVE matches, send them to Analyser
+    if matcher.matches:
+        for key in matcher.matches.keys():
+            analyser.add(matcher.matches[key])
+        # analyser.analyse()
+
+    # --- Write CVE matches to file, so we no need to wait (for debugging)
+    file = open("records_full", "wb")
+    records = pickle.dump(analyser.records, file)
+    file.close()
 
     analyser = Analyser()
     # pic = analyser.records

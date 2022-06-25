@@ -13,8 +13,8 @@ class Parser:
         tmp = tmp.replace(",", "")
         tmp = tmp.replace(" ", "_")
         tmp = tmp.replace("/", "_")
+        tmp = tmp.replace(":", "&colon;")
         return tmp
-
 
     def parse_vendor(self, cpe: dict, cpe_str: str) -> str:
         """ Parse vendor to CPE format
@@ -73,5 +73,3 @@ class Parser:
             cpe_str += "*:*:*:*:*"
             self.cpe_list.append(cpe_str)
         return self.cpe_list
-
-

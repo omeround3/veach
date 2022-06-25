@@ -20,6 +20,7 @@ class CPEAttributes(str, Enum):
     VULNERABLE = "vulnerable"
     CPE_NAME = "cpe_name"
     CPE_23_URI = "cpe23Uri"
+    ID = "_id"
 
 
 class Operators(Enum):
