@@ -36,12 +36,11 @@ class Orchetrator:
         """ This method will invoke parser to parse data to cpe format """
         parser = Parser()
         if self.software_list is not None:
-            parser.parse_data_to_cpe(self.software_list)
+             self.cpe_list = parser.parse_data_to_cpe(self.software_list)
 
         if self.hardware_list is not None:
-            parser.parse_data_to_cpe(self.hardware_list)
+            self.cpe_list += parser.parse_data_to_cpe(self.hardware_list)
 
-        self.cpe_list = parser.cpe_list
         self.invoke_matcher()
         print(len(self.cpe_list))
 

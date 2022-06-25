@@ -7,16 +7,17 @@ class Parser:
     """
 
     def __init__(self):
-        self.cpe_list = set()
+       pass
 
-    def parse_string(self, tmp: str) -> str:
+    def _parse_string(self, tmp: str) -> str:
         tmp = tmp.replace(",", "")
         tmp = tmp.replace(" ", "_")
         tmp = tmp.replace("/", "_")
+        tmp = tmp.replace(":","&colon")
         return tmp
 
 
-    def parse_vendor(self, cpe: dict, cpe_str: str) -> str:
+    def _parse_vendor(self, cpe: dict, cpe_str: str) -> str:
         """ Parse vendor to CPE format
         :param cpe: Dictionary with CPE data
         :param cpe_str: String in CPE format
@@ -25,11 +26,11 @@ class Parser:
         if cpe[CPEFormat.VENDOR] is None:
             cpe_str += "*:"
         else:
-            vendor = self.parse_string(cpe[CPEFormat.VENDOR].strip())
+            vendor = self._parse_string(cpe[CPEFormat.VENDOR].strip())
             cpe_str += vendor + ":"
         return cpe_str
 
-    def parse_product(self, cpe: dict, cpe_str: str) -> str:
+    def _parse_product(self, cpe: dict, cpe_str: str) -> str:
         """ Parse product to CPE format
         :param cpe: Dictionary with CPE data 
         :param cpe_str: String in CPE format
@@ -38,11 +39,11 @@ class Parser:
         if cpe[CPEFormat.PRODUCT] is None:
             cpe_str += "*:"
         else:
-            product = self.parse_string(cpe[CPEFormat.PRODUCT].strip())
+            product = self._parse_string(cpe[CPEFormat.PRODUCT].strip())
             cpe_str += product + ":"
         return cpe_str
 
-    def parse_version(self, cpe: dict, cpe_str: str) -> str:
+    def _parse_version(self, cpe: dict, cpe_str: str) -> str:
         """ Parse version to CPE format
         :param cpe: Dictionary with CPE data
         :param cpe_str: String in CPE format
@@ -51,7 +52,7 @@ class Parser:
         if cpe[CPEFormat.VERSION] is None or cpe[CPEFormat.VERSION] == "None":
             cpe_str += "*:"
         else:
-            version = self.parse_string(cpe[CPEFormat.VERSION].strip())
+            version = self._parse_string(cpe[CPEFormat.VERSION].strip())
             cpe_str += version + ":"
         return cpe_str
 
@@ -61,17 +62,19 @@ class Parser:
         :param data: List of dictionaries in the following structure : {"part": "", vendor": "", "product": "", "version": ""}
         :return: List of CPE
         """
+        cpe_list = set()
         for cpe in data:
             cpe_str = "cpe:2.3:"
             if cpe[CPEFormat.PART] == CPEPart.SOFTWARE:
                 cpe_str += cpe[CPEFormat.PART].strip() + ":"
             else:
                 cpe_str += cpe[CPEFormat.PART].strip() + ":"
-            cpe_str = self.parse_vendor(cpe, cpe_str)
-            cpe_str = self.parse_product(cpe, cpe_str)
-            cpe_str = self.parse_version(cpe, cpe_str)
-            cpe_str += "*:*:*:*:*"
-            self.cpe_list.add(cpe_str)
+            cpe_str = self._parse_vendor(cpe, cpe_str)
+            cpe_str = self._parse_product(cpe, cpe_str)
+            cpe_str = self._parse_version(cpe, cpe_str)
+            cpe_str += "*:*:*:*:*:*:*" 
+            cpe_list.add(cpe_str)
+            return cpe_list
         
 
 
