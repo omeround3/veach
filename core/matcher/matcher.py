@@ -1,3 +1,4 @@
+from collections import defaultdict
 import configparser
 from gc import collect
 
@@ -13,7 +14,7 @@ class Matcher:
 
     def __init__(self, database: database.Database = None) -> None:
         self._database = database
-        self.matches: dict[str, set[CVERecord]] = {}
+        self.matches: dict[str, set[CVERecord]] = defaultdict(set)
 
     def match(self, cpe: str):
         pass
