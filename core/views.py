@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .db import sync_db
+from .utils import timeit
 
 # Create your views here.
 
-
+@timeit
 def index(request):
-    sync_db.dump(["cvedetails", "cpematches"], "/root/veach")    
     return HttpResponse("VEACH Project")
