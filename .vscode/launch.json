@@ -11,7 +11,8 @@
             "module": "core.main",
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/../"
+                "PYTHONPATH": "${workspaceFolder}/../",
+                "DJANGO_SETTINGS_MODULE": "veach.settings"
             }
         }
     ]

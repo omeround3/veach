@@ -1,23 +1,28 @@
-### --- ANALYSER --- ###
-import pickle
-import json
-import csv
-from unicodedata import category
-import pymongo
-from core import analyser
-from core.mitigator.mitigator import Mitigator
-from core.analyser.category import Category, Rule
-from core.analyser.cvss.cvss_record_template_v3 import *
-from core.analyser.enums import *
-from core.analyser.analyser import Analyser
-from core.matcher.matcher import Matcher
-from core.matcher.mongo_matcher import MongoMatcher
-from core.matcher.tests import *
-from core.obj.cpe_record import CPERecord
-from core.scanner.parser import Parser
-from core.utils import *
 
 from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
+from .encoder import VEACHEncoder
+from core.utils import *
+from core.scanner.parser import Parser
+from core.obj.cve_record import CVERecord
+from core.obj.cpe_record import CPERecord
+from core.matcher.tests import *
+from core.matcher.mongo_matcher import MongoMatcher
+from core.matcher.matcher import Matcher
+from core.analyser.analyser import Analyser
+from core.analyser.enums import *
+from core.analyser.cvss.cvss_record_template_v3 import *
+from core.analyser.category import Category, Rule
+from core.mitigator.mitigator import Mitigator
+from core import analyser
+import pymongo
+from unicodedata import category
+import csv
+import json
+import pickle
+import django
+django.setup()
+
+### --- ANALYSER --- ###
 
 
 def print_dict(item: dict):
@@ -25,9 +30,23 @@ def print_dict(item: dict):
 
 
 if __name__ == '__main__':
+    from core.models import *
+    from core.serializers import *
 
-    cpe = CPERecord(
-        {"cpe23Uri": "cpe:2.3:a:archive\:\:tar_project:archive\:\:tar:*:*:*:*:*:perl:*:*"})
+    cpe = CPERecordSerializer(data={'_generated_id': 'Daniel'})
+    # if cpe.is_valid():
+    cpe.save()
+
+    cpe = CPERecordModel(_product="Windows")
+    cpe.save()
+
+    node = NodeModel(operator="SMOOTH")
+    node.save()
+    node.cpe_match.add(cpe)
+
+    nodes = NodeModel.objects.all()[0]
+    cpes = nodes.cpe_match.all()
+
     # --- Connect to DB defined in config
     client = pymongo.MongoClient(get_settings_value("Matcher", "db_client"))
 
@@ -47,31 +66,26 @@ if __name__ == '__main__':
         cpe_uris.append(row[0].lower())
 
     # --- Initiallize Analyser
-    my_cpe = CPERecord(
-        {"cpe23Uri": "cpe:2.3:a:*:orca:3.28.0-3ubuntu1:*:*:*:*:*:*:*"})
-    parser = Parser()
-    mitigator = Mitigator(matcher, parser)
+    analyser = Analyser()
 
-    for cpe in cpe_uris:
-        mitigator.mitigate_package(CPERecord({"cpe23Uri": cpe}))
     # --- Send CPE URIs to Matcher.match() to find CVE matches
     counter = 0
     for cpe_uri in cpe_uris:
         matcher.match(cpe_uri.lower())
         counter += 1
         print(counter, end=": ")
+
     # --- If there are CVE matches, send them to Analyser
     if matcher.matches:
         for key in matcher.matches.keys():
             analyser.add(matcher.matches[key])
-        # analyser.analyse()
+        analyser.analyse()
 
+    cat = analyser.cve_categories['CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H']
     # --- Write CVE matches to file, so we no need to wait (for debugging)
     file = open("records_full", "wb")
     records = pickle.dump(analyser.records, file)
     file.close()
-
-    analyser = Analyser()
 
     # pic = analyser.records
     file = open("records", "rb")

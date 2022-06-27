@@ -59,7 +59,8 @@ class MongoMatcher(Matcher):
             start = time.time()
             cpe_matches = self._get_cpe_matches_by_name(cpe_uri)
             end = time.time()
-            self.matches_cache[cpe_uri] = {x._id for x in cpe_matches}
+            self.matches_cache[cpe_uri] = {
+                x._generated_id for x in cpe_matches}
         print(f"Get CPE: {end-start}")
         if cpe_matches:
             for cpe_match in cpe_matches:
