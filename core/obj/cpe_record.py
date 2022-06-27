@@ -20,7 +20,7 @@ class CPERecord():
         if not cpe_uri or cpe_uri[0] != "cpe" or len(cpe_uri) != 13:
             raise InvalidCPEStringFormat(cpe[CPEAttributes.CPE_23_URI])
 
-        self._id = get_attribute(cpe, CPEAttributes.ID)
+        self._generated_id = get_attribute(cpe, CPEAttributes.ID)
         self._cpe_version = cpe_uri[1]
         self._part = cpe_uri[2]
         self._vendor = cpe_uri[3]

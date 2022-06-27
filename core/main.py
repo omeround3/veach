@@ -7,8 +7,5 @@ from core.orchestrator import *
 from core.orchestrator.orchestrator import Orchetrator
 
 orchestrator = Orchetrator()
- 
+
 orchestrator.invoke_scanner()
-
-
-
