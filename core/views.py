@@ -1,4 +1,4 @@
-import json
+from core import matcher
 from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.request import Request
@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .encoder import VEACHEncoder
 from .serializers import *
-from core import matcher
+import json
 
 
 @api_view(['POST'])
