@@ -12,5 +12,5 @@ class TestParser(unittest.TestCase):
         """ When : Parser parse the list """
         record = [{'part': 'a', 'vendor': None, 'product': 'apt', 'version': '1.6.14'}]
         """ Then : parser return the data in cpe format"""
-        self.assertEqual(str(self.parser.parse_data_to_cpe((record))),'cpe:2.3:a:*:apt:1.6.14:*:*:*:*:*:*:*')
+        self.assertEqual(self.parser.parse_data_to_cpe(record).pop(),'cpe:2.3:a:*:apt:1.6.14:*:*:*:*:*:*:*')
 

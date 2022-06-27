@@ -7,26 +7,15 @@ class Parser:
     """
 
     def __init__(self):
-<<<<<<< HEAD:core/parser/parser.py
-       pass
-=======
         pass
->>>>>>> analyser_configuration:core/scanner/parser.py
 
     def _parse_string(self, tmp: str) -> str:
         tmp = tmp.replace(",", "")
         tmp = tmp.replace(" ", "_")
         tmp = tmp.replace("/", "_")
-<<<<<<< HEAD:core/parser/parser.py
         tmp = tmp.replace(":","&colon")
         return tmp
 
-
-=======
-        tmp = tmp.replace(":", "&colon")
-        return tmp
-
->>>>>>> analyser_configuration:core/scanner/parser.py
     def _parse_vendor(self, cpe: dict, cpe_str: str) -> str:
         """ Parse vendor to CPE format
         :param cpe: Dictionary with CPE data
@@ -82,15 +71,6 @@ class Parser:
             cpe_str = self._parse_vendor(cpe, cpe_str)
             cpe_str = self._parse_product(cpe, cpe_str)
             cpe_str = self._parse_version(cpe, cpe_str)
-<<<<<<< HEAD:core/parser/parser.py
             cpe_str += "*:*:*:*:*:*:*" 
             cpe_list.add(cpe_str)
         return cpe_list
-        
-
-
-=======
-            cpe_str += "*:*:*:*:*:*:*"
-            cpe_list.add(cpe_str)
-        return cpe_list
->>>>>>> analyser_configuration:core/scanner/parser.py

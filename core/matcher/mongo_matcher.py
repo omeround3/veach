@@ -2,10 +2,6 @@ import pickle
 from collections import defaultdict
 import time
 from gc import collect
-<<<<<<< HEAD
-
-=======
->>>>>>> analyser_configuration
 from core.matcher.matcher import Matcher
 from core.matcher.enums import CPEAttributes
 from core.utils import *
@@ -23,10 +19,6 @@ class MongoMatcher(Matcher):
         :param database: a mongodb database
         """
         super().__init__(database)
-<<<<<<< HEAD
-        cfg = configparser.ConfigParser()
-        cfg.read('core/config.ini')
-=======
 
         self._cpe_path_to_cpe_uri = get_settings_value(
             "Matcher", "cpe_path_to_cpe_uri")
@@ -42,7 +34,6 @@ class MongoMatcher(Matcher):
         self._cpe_collection = self._database[self._cpe_collection_name]
 
         self.matches_cache: defaultdict[str, set[str]] = defaultdict(None)
->>>>>>> analyser_configuration
 
         try:
             with open(self._last_match_file, "rb") as file:
@@ -69,13 +60,13 @@ class MongoMatcher(Matcher):
             cpe_matches = self._get_cpe_matches_by_name(cpe_uri)
             end = time.time()
             self.matches_cache[cpe_uri] = {x._id for x in cpe_matches}
-        print(f"Get CPE: {end-start}")
+        #print(f"Get CPE: {end-start}")
         if cpe_matches:
             for cpe_match in cpe_matches:
                 start = time.time()
                 cve_matches = list(self._get_cve_matches(cpe_match))
                 end = time.time()
-                print(f"Get CVE: {end-start}")
+                #print(f"Get CVE: {end-start}")
                 if cve_matches:
                     cve_matches = list(
                         map(lambda x: CVERecord(x), cve_matches))

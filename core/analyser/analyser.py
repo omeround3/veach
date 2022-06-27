@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-from core.analyser.enums import BaseMetricAttributes
-from core.analyser.rule import Rule
-from core.obj.cve_record import CVERecord
-from typing import List
-
-class Analyser:
-
-    def __init__(self, rules: List[Rule] = [], base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
-=======
 from collections import defaultdict
 import pickle
 
@@ -23,7 +13,6 @@ from core.utils import get_attribute, get_settings_value
 class Analyser:
 
     def __init__(self, base_metric: BaseMetricAttributes = BaseMetricAttributes.V3):
->>>>>>> analyser_configuration
         """
         A class used to analyse and evaluate the risk of the existing CVEs
         :param rules: List of rules which every record will be compared and categorised to
@@ -32,9 +21,6 @@ class Analyser:
         self.records: set[CVERecord] = set()
         self.base_metric = base_metric
 
-<<<<<<< HEAD
-    def add(self, records: List[CVERecord]):
-=======
         self.cve_categories: dict[str, Category] = defaultdict(None)
 
         self.rules = self._load_rules_from_files()
@@ -44,13 +30,12 @@ class Analyser:
         Loads rules defined in setting to mark CVE Records
         :return: None
         """
-        file = open("core\\analyser\\veach_rules", 'rb')
+        file = open("core/analyser/veach_rules", 'rb')
         rules = pickle.load(file)
         file.close
         return rules
 
     def add(self, records: set[CVERecord]) -> None:
->>>>>>> analyser_configuration
         """
         Adds a CVE record to the analyser engine
         :param record: a CVE record to add for analysis

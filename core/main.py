@@ -1,5 +1,3 @@
-import unittest
-from core.analyser.rule import Rule
 from core.analyser.cvss.cvss_record_template_v3 import *
 from core.analyser.enums import *
 

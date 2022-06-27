@@ -1,5 +1,4 @@
 from os import sep
-from attr import attr
 from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
 from core.analyser.enums import CVSSV3Attributes, Severity
 from core.errors import *

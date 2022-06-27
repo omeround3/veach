@@ -1,9 +1,6 @@
 import json
-<<<<<<< HEAD
 from typing import Dict
-=======
 
->>>>>>> analyser_configuration
 from core.errors import InvalidCPEStringFormat, InvalidCPEFormat
 from core.matcher.enums import CPEAttributes
 from core.utils import get_attribute
