@@ -29,7 +29,7 @@
     <img src="https://user-images.githubusercontent.com/45568925/175764349-30c0ffc9-99bb-4e78-832a-83288ef4db90.png" alt="Logo" width="250" height="250">
   </a>
 
-<h3 align="center">VEACH Remote DB</h3>
+<h3 align="center">VEACH Project</h3>
 
   <p align="center">
     VEACH – Vulnerabilities Exposure and Analysis in Code and Hardware
