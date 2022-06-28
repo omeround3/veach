@@ -35,7 +35,8 @@ class Analyser:
         file.close
         return rules
 
-    def add(self, records: set[CVERecord]) -> None:
+    # def add(self, records: set[CVERecord]) -> None:
+    def add(self, records) -> None:
         """
         Adds a CVE record to the analyser engine
         :param record: a CVE record to add for analysis
