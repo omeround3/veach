@@ -1,7 +1,19 @@
-# from rest_framework import serializers
+# from attr import fields
+# from django.urls import path, include
+from django.contrib.auth.models import User, Group
+from rest_framework import serializers
 # from .models import NodeModel, CPERecordModel
 
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'is_staff']
 
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['url', 'name']
+        
 # class CVSSRecordV3Serializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = CPERecordModel
