@@ -20,5 +20,5 @@ from core import views
 urlpatterns = [
     path('api/', include('core.urls')),
     path('admin/', admin.site.urls),
-    path('cpe/', views.cpe)
+    path('api-auth/', include('rest_framework.urls'))
 ]
