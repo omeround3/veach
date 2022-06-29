@@ -78,18 +78,6 @@ WSGI_APPLICATION = 'veach.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'remote-db',
-        'CLIENT': {
-            'host': 'mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?retryWrites=true&w=majority',
-            'name': 'mytestdb',
-            'authMechanism': 'SCRAM-SHA-1'
-        }
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 

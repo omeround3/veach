@@ -17,5 +17,5 @@ class Matcher:
         self._database = database
         self.matches: dict[str, set[CVERecord]] = defaultdict(set)
 
-    def match(self, cpe: str):
+    def match(self, cpe_uri: str):
         pass

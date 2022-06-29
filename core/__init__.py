@@ -16,4 +16,6 @@ cpe_collection = get_settings_value("Matcher", "cpe_collection_name")
 cve_collection = get_settings_value("Matcher", "cve_collection_name")
 
 # # # --- Initiallize Matcher
-matcher: Matcher = MongoMatcher(db, cpe_collection, cve_collection)
+matcher: MongoMatcher = MongoMatcher(db, cpe_collection, cve_collection)
+
+analyser = Analyser()

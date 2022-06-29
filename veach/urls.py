@@ -18,5 +18,7 @@ from django.urls import path
 from core import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('cpe/', views.cpe)
+    path('api/scan/', views.scan),
+    path('api/match/', views.match),
+    path('api/cve_db/', views.cve_db_info)
 ]

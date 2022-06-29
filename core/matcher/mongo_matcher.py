@@ -178,3 +178,11 @@ class MongoMatcher(Matcher):
             cpe = cpe.replace(suffix_match.group(
                 0), ":.*")
         return {"$regex": '^'+cpe}
+
+    def get_cve_collection_info(self) -> dict:
+        """
+        Returns info about the CVE collection"""
+        info = {}
+        info['size'] = self._database.command(
+            "collstats", self._cve_collection_name)['count']
+        return info
