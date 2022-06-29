@@ -3,7 +3,7 @@ from pymongo.errors import ConnectionFailure
 import configparser
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("veach")
 
 
 def get_local_db():
@@ -39,7 +39,7 @@ def get_local_db():
     try:
         client = MongoClient(connection_string)
         logger.info(f'[VEACH DB] Connected to local MongoDB successfully')
-    except ConnectionFailure:
+    except ConnectionFailure as err:
         logger.error(f'[VEACH DB] Could not connect to MongoDB')
 
     db_handle = client[db_name]

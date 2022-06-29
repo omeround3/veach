@@ -1,7 +1,9 @@
 from pymongo.database import *
 from .db_utils import *
 import subprocess
+import logging
 
+logger = logging.getLogger("veach")
 
 
 def dump(collections: str, path: str = None) -> bool:
@@ -22,34 +24,35 @@ def dump(collections: str, path: str = None) -> bool:
 
     try:
         db, client, connection_string = get_remote_db()
-        print(f'[VEACH DB] Dumping remote collections: {collections}')
+        logger.info(f'[VEACH DB] Dumping remote collections: {collections}')
         for coll in collections:
             collection = db[coll]
-            print(
+            logger.debug(
                 f'[VEACH DB] The collection {coll} has {collection.count_documents({})} documents | dumping collections')
             command = f'mongodump --uri="{connection_string}" --collection={coll}'
             if path:
                 command += f' --out={path}'
-            print(f'[VEACH DB] Running command: {command}')
+            logger.debug(f'[VEACH DB] Running command: {command}')
             subprocess.run(["bash", "-c", command],
                            check=True, stdout=subprocess.PIPE)
-            print(f'[VEACH DB] Dumped collection {coll}')
-        print(
+            logger.debug(f'[VEACH DB] Dumped collection {coll}')
+        logger.info(
             f'[VEACH DB] Finished dumping mongo db collections: {collections}')
         return True
     except FileNotFoundError as err:
-        print(
-            f'[VEACH DB] Process failed because the executable could not be found. \n{err}')
+        logger.error(
+            f'[VEACH DB] Process failed because the executable could not be found. \n{err}', exc_info=True)
     except subprocess.CalledProcessError as exc:
-        print(
+        logger.error(
             f"[VEACH DB] Process failed because did not return a successful return code. "
-            f"Returned {exc.returncode}\n{exc}"
+            f"Returned {exc.returncode}\n{exc}",
+            exc_info=True
         )
     except subprocess.TimeoutExpired as exc:
-        print(f"[VEACH DB] Process timed out.\n{exc}")
-    except:
+        logger.error(f"[VEACH DB] Process timed out.\n{exc}")
+    except Exception as err:
         logger.error(
-            f'[VEACH DB] Could not dump remote collections: {collections}')
+            f'[VEACH DB] Could not dump remote collections: {collections} | Error: {err}', exc_info=True)
     return False
 
 def restore(collections: str, path: str = "dump/") -> bool:
@@ -70,29 +73,30 @@ def restore(collections: str, path: str = "dump/") -> bool:
 
     try:
         db, client, connection_string = get_local_db()
-        print(f'[VEACH DB] Restoring remote collections: {collections}')
+        logger.info(f'[VEACH DB] Restoring remote collections: {collections}')
         for coll in collections:
-            print(
+            logger.debug(
                 f'[VEACH DB] Restoring the collection {coll} ')
             command = f'mongorestore --uri="{connection_string}" --drop --nsInclude=nvdcve.{coll} {path}'
-            print(f'[VEACH DB] Running command: {command}')
+            logger.debug(f'[VEACH DB] Running command: {command}')
             subprocess.run(["bash", "-c", command],
                             check=True, stdout=subprocess.PIPE)
-            print(f'[VEACH DB] Restored collection {coll}')
-        print(
+            logger.debug(f'[VEACH DB] Restored collection {coll}')
+        logger.info(
             f'[VEACH DB] Finished restoring mongo db collections: {collections}')
         return True
     except FileNotFoundError as err:
-        print(
-            f'[VEACH DB] Process failed because the executable could not be found. \n{err}')
+        logger.error(
+            f'[VEACH DB] Process failed because the executable could not be found. \n{err}', exc_info=True)
     except subprocess.CalledProcessError as exc:
-        print(
+        logger.error(
             f"[VEACH DB] Process failed because did not return a successful return code. "
-            f"Returned {exc.returncode}\n{exc}"
+            f"Returned {exc.returncode}\n{exc}",
+            exc_info=True
         )
     except subprocess.TimeoutExpired as exc:
-        print(f"[VEACH DB] Process timed out.\n{exc}")
-    except:
+        logger.error(f"[VEACH DB] Process timed out.\n{exc}", exc_info=True)
+    except Exception as err:
         logger.error(
-            f'[VEACH DB] Could not restore collections: {collections}')
+            f'[VEACH DB] Could not restore collections: {collections} | Error: {err}', exc_info=True)
     return False
