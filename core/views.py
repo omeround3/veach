@@ -1,4 +1,5 @@
 from core import matcher
+from core.db import sync_collections
 from core.encoder import VEACHEncoder
 from core.serializers import UserSerializer, GroupSerializer
 from django.contrib.auth.models import User, Group
@@ -8,7 +9,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import json
+import logging
 
+logger = logging.getLogger("veach")
 
 @api_view(['POST'])
 def cpe(request: Request):
@@ -21,9 +24,17 @@ def cpe(request: Request):
     #     return Response(cpe_record.data)
     # nodes = NodeModel.objects.all()
     # serializer = NodeSerializer(nodes, many=True)
+
+@api_view(['GET'])
+def sync_db(request: Request, format=None):
+    content = {
+        'sync-status': False
+    }
     
-def sync_db():
-    pass
+    if sync_collections.dump(["cvedetails", "cpematches"]) \
+    and sync_collections.restore(["cvedetails", "cpematches"]):
+        content['sync-status'] = True
+    return Response(data=content)
 
 class UserViewSet(viewsets.ModelViewSet):
     """
