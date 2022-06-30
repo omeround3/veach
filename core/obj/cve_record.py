@@ -1,5 +1,3 @@
-import json
-from pyrsistent import immutable
 from core.obj.node import Node
 from core.analyser.enums import BaseMetricAttributes
 from core.matcher.enums import CVEAttributes

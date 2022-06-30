@@ -1,15 +1,17 @@
-from core import matcher, analyser
-from core.obj.cpe_record import CPERecord
-from core.analyser.category import Category, Rule
+from core import matcher
+from core.db import sync_collections
+from core.encoder import VEACHEncoder
+from core.serializers import UserSerializer, GroupSerializer
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
-from rest_framework import status
+from rest_framework import status, viewsets, permissions
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .encoder import VEACHEncoder
-from .serializers import *
 import json
-import csv
+import logging
+
+logger = logging.getLogger("veach")
 
 
 @api_view(['GET'])
@@ -41,18 +43,30 @@ def scan(request: Request):
 
 
 @api_view(['GET'])
-def match(request: Request):
-    '''
-    Get a list of CPE URIs, match them to CVE, analyse the CVE and returns a list of Categories (if exists)
-    '''
-    for uri in request.data:
-        if not CPERecord.is_valid(uri):
-            return HttpResponse({"Error": f"{uri} is not a valid CPE URI"}, status=status.HTTP_400_BAD_REQUEST)
+def sync_db(request: Request, format=None):
+    content = {
+        'sync-status': False
+    }
 
-    for uri in request.data:
-        matcher.match(cpe_uri=uri)
-        if matcher.matches[uri]:
-            analyser.add(matcher.matches[uri])
+    if sync_collections.dump(["cvedetails", "cpematches"]) \
+            and sync_collections.restore(["cvedetails", "cpematches"]):
+        content['sync-status'] = True
+    return Response(data=content)
 
-    analyser.analyse()
-    return HttpResponse({json.dumps(analyser.cve_categories, cls=VEACHEncoder, indent=4)}, status=status.HTTP_200_OK)
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all().order_by('-id')
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]

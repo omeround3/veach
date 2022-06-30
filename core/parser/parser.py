@@ -13,7 +13,7 @@ class Parser:
         tmp = tmp.replace(",", "")
         tmp = tmp.replace(" ", "_")
         tmp = tmp.replace("/", "_")
-        tmp = tmp.replace(":", "&colon")
+        tmp = tmp.replace(":","&colon")
         return tmp
 
     def _parse_vendor(self, cpe: dict, cpe_str: str) -> str:
@@ -71,6 +71,6 @@ class Parser:
             cpe_str = self._parse_vendor(cpe, cpe_str)
             cpe_str = self._parse_product(cpe, cpe_str)
             cpe_str = self._parse_version(cpe, cpe_str)
-            cpe_str += "*:*:*:*:*:*:*"
+            cpe_str += "*:*:*:*:*:*:*" 
             cpe_list.add(cpe_str)
         return cpe_list

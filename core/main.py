@@ -1,13 +1,8 @@
-import pymongo
-import csv
-
-from requests import request
-from core.analyser.category import Category
-from core.utils import *
-from core.matcher.matcher import Matcher
-from core.matcher.mongo_matcher import MongoMatcher
-from core.analyser.analyser import Analyser
-from django.core.cache import caches
+from core.orchestrator.orchestrator import Orchetrator
+from core.orchestrator import *
+from core.matcher.tests import *
+from core.analyser.cvss.cvss_record_template_v3 import *
+from core.analyser.enums import *
 
 # # --- Connect to DB defined in config
 
@@ -32,3 +27,13 @@ for uri in request.data:
     matcher.match(cpe_uri=uri)
     if matcher.matches[uri]:
         analyser.add(matcher.matches[uri])
+
+orchestrator = Orchetrator()
+
+# will launch scanner + parser and return cpe_list
+cpe_list = orchestrator.invoke_scanner()
+
+cve_categories = orchestrator.invoke_matcher(cpe_list)
+
+#mitigation_dict = orchestrator.invoke_mitigator()
+print(cve_categories)

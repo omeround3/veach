@@ -18,7 +18,6 @@ class Analyser:
         :param rules: List of rules which every record will be compared and categorised to
         :param base_metric: Determine which Common Vulnerability Scoring System (CVSS) will be used
         """
-        self.records: set[CVERecord] = set()
         self.base_metric = base_metric
 
         self.cve_categories: dict[str, Category] = defaultdict(None)
@@ -30,29 +29,18 @@ class Analyser:
         Loads rules defined in setting to mark CVE Records
         :return: None
         """
-        file = open("core\\analyser\\veach_rules", 'rb')
+        file = open("core/analyser/veach_rules", 'rb')
         rules = pickle.load(file)
         file.close
         return rules
 
-    def add(self, records: set[CVERecord]) -> None:
-        """
-        Adds a CVE record to the analyser engine
-        :param record: a CVE record to add for analysis
-        """
-        self.records.update(records)
-
-    def get_cve_category(self, cve: CVERecord) -> Category:
-        vector_string = get_attribute(
-            cve.get_metrics(), CVSSV3Attributes.VECTOR_STRING)
-        return self.cve_categories[vector_string]
-
-    def analyse(self) -> dict:
+    def analyse(self,records: set[CVERecord]) -> dict:
         """
         Perform the analysis on records added to the analyser engine
         :return: dictionary of CVE categories and CVE Records
         """
-        for record in self.records:
+        cve_categories: dict[str, Category] = defaultdict(None)
+        for record in records:
             base_metrics = record.get_metrics(self.base_metric)
             if base_metrics:
                 base_score = get_attribute(
@@ -60,11 +48,11 @@ class Analyser:
                 vector_string = get_attribute(
                     base_metrics, CVSSV3Attributes.VECTOR_STRING)
                 if vector_string and base_score:
-                    self.cve_categories[vector_string] = Category(
+                    cve_categories[vector_string] = Category(
                         CVSSRecordV3(vector_string))
-                    if not self.cve_categories[vector_string].add_affected_record(record):
-                        del self.cve_categories[vector_string]
+                    if not cve_categories[vector_string].add_affected_record(record):
+                        del cve_categories[vector_string]
                     else:
                         for rule in self.rules:
-                            self.cve_categories[vector_string].meets(rule)
-        return self.cve_categories
+                            cve_categories[vector_string].meets(rule)
+        return cve_categories

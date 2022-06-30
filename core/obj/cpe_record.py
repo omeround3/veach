@@ -1,4 +1,5 @@
 import json
+from typing import Dict
 
 from core.errors import InvalidCPEStringFormat, InvalidCPEFormat
 from core.matcher.enums import CPEAttributes
@@ -6,7 +7,7 @@ from core.utils import get_attribute
 
 
 class CPERecord():
-    def __init__(self, cpe: dict[str, str]) -> None:
+    def __init__(self, cpe: Dict[str, str]) -> None:
         """deserialization class for CPE record"""
         cpe_uri: str = get_attribute(cpe, CPEAttributes.CPE_23_URI)
 
