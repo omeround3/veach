@@ -15,11 +15,9 @@ ALLOWED_HOSTS = ['*']
 # Database
 # https://docs.djangoagents_group.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-#         'NAME': 'comet',
-#         'HOST': 'localhost',
-#         'PORT': 27017,
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'veachdb',
+    }
+}
