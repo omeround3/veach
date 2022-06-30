@@ -1,5 +1,0 @@
-venv
-__pycache__
-nvdcve-1.1*.json
-nvdcpematch*.json
-migrations
