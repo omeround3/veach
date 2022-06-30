@@ -8,7 +8,7 @@ import time
 import re
 
 cfg = configparser.ConfigParser()
-cfg.read('core/config.ini')
+cfg.read('config.ini')
 
 
 def get_settings_value(class_name: str, key: str):

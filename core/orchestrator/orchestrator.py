@@ -1,26 +1,26 @@
+from multiprocessing import connection
+from core.obj.cve_record import CVERecord
 from core.utils import * 
-import pymongo
 from core.scanner.scan_invoker import Scan_Invoker
 from core.scanner.software import Software
 from core.scanner.hardware import Hardware
 from core.parser.parser import Parser
 from core.matcher.mongo_matcher import MongoMatcher
 from core.analyser.analyser import Analyser
-
+from core.db.db_utils import *
+from core.mitigator.mitigator import Mitigator
 class Orchetrator:
     
     def __init__(self):
         self.software_list = []
         self.hardware_list = []
-        self.cpe_list = set()
-        self.matches = []
         self.invoker = Scan_Invoker()
         self.parser = Parser()
-        self.client = pymongo.MongoClient(get_settings_value("MATCHER","db_client"))
-        db = self.client[get_settings_value("MATCHER","db_name")]
-        self.cpe_collection = get_settings_value("MATCHER", "cpe_collection_name")
-        self.cve_collection = get_settings_value("MATCHER", "cve_collection_name")
-        self.matcher = MongoMatcher(db,self.cpe_collection,self.cve_collection)
+        #self.db = get_local_db()[0]
+        self.db = get_remote_db()[0] # temp because no mongodb installed on this machine
+        self.cpe_collection = get_settings_value("COLLECTIONS", "cpe_collection_name")
+        self.cve_collection = get_settings_value("COLLECTIONS", "cve_collection_name")
+        self.matcher = MongoMatcher(self.db, self.cpe_collection, self.cve_collection)
         self.analyser = Analyser()
 
     def invoke_scanner(self):
@@ -35,50 +35,41 @@ class Orchetrator:
             self.hardware_list = self.invoker.invoke()
             
         print("Step 1 : Scanner is Done\n")
-        self.invoke_parser()
+        return self.invoke_parser() 
         
     def invoke_parser(self):
         """ This method will invoke parser to parse data to cpe format """
        
         if self.software_list is not None:
-             self.cpe_list = self.parser.parse_data_to_cpe(self.software_list)
+             cpe_list = self.parser.parse_data_to_cpe(self.software_list)
 
         if self.hardware_list is not None:
-             self.cpe_list.update(self.parser.parse_data_to_cpe(self.hardware_list))
+             cpe_list.update(self.parser.parse_data_to_cpe(self.hardware_list))
         print("Step 2 : Parser is Done\n")
-        self.invoke_matcher()
+        return cpe_list
 
-    def invoke_matcher(self):
+    def invoke_matcher(self, cpe_list):
         """ This method will invoke matcher to find cpe and cve match in the db"""
-        counter = 0 
-        for cpe_uri in self.cpe_list:
-            found = self.matcher.match(cpe_uri.lower())
-            #print(found)
-            counter += 1
-        print(counter, end=": ")
-        if self.matcher.matches:
-            for key in self.matcher.matches.keys():
-                self.analyser.add(self.matcher.matches[key])
+        matches_record : set[CVERecord] = set()
+        for cpe_uri in cpe_list:
+            matches = self.matcher.match(cpe_uri.lower())
+            if matches:
+                print(matches)
+                for key in matches.keys():
+                    matches_record.update(matches[key])
         print("Step 3 : Matcher is Done\n")
-        self.invoke_analyser()
+        return self.invoke_analyser(matches_record)
         
-
-    def invoke_analyser(self):
+    def invoke_analyser(self, records):
         """ This method will analyse .... """
-
-        self.analyser.analyse()
-        for key in self.analyser.cve_categories.keys():
-            category = self.analyser.cve_categories[key]
-            print(category.tag)
-            if category.affected_records:
-                for cve in category.affected_records:
-                    print(" "+str(cve._id))
-            else:
-                print(" None")
-        print("Step 4 : Analyser is Done")
-
         
-    def invoke_mitigator(self):
-        pass 
-        #add here the function 
+        cve_category = self.analyser.analyse(records)
+        print("Step 4 : Analyser is Done")
+        return cve_category
+        
+    def invoke_mitigator(self, cpe):
+        """ This method will search mitigation for packages installed """
+        mitigator = Mitigator(self.matcher, self.parser)
+        return mitigator.mitigate_package
+         
 

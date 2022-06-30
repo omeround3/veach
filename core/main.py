@@ -8,4 +8,10 @@ from core.orchestrator.orchestrator import Orchetrator
 
 orchestrator = Orchetrator()
 
-orchestrator.invoke_scanner()
+# will launch scanner + parser and return cpe_list 
+cpe_list = orchestrator.invoke_scanner()
+
+cve_categories = orchestrator.invoke_matcher(cpe_list)
+
+#mitigation_dict = orchestrator.invoke_mitigator()
+print(cve_categories)

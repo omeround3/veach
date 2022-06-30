@@ -53,7 +53,7 @@ class Category(Rule):
             Category.max_weight = float(
                 get_settings_value('RULE', 'max_weight'))
             try:
-                with open("core\\analyser\\attributes_mapping.json", "r", encoding='utf-8') as json_file:
+                with open("core/analyser/attributes_mapping.json", "r", encoding='utf-8') as json_file:
                     Category.attribute_mapping = json.load(json_file)
             except FileNotFoundError as e:
                 print(e)

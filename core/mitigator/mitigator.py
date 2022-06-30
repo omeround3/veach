@@ -5,8 +5,9 @@ from core.analyser.analyser import Analyser
 from core.obj.cpe_record import CPERecord
 from core.obj.cve_record import CVERecord
 from core.utils import get_settings_value
-from core.scanner.parser import Parser
-
+from core.parser.parser import Parser
+from core.utils import get_attribute
+from core.analyser.enums import CVSSV3Attributes
 
 class Mitigator:
     """
@@ -67,18 +68,18 @@ class Mitigator:
                                                    "version": x["source_package_version"]}for x in sources])
 
         for cpe in cpe_uris:
-            mitigation_dict[cpe] = self.matcher.match(cpe)
+            mitigation_dict[cpe] = self.matcher.match(cpe)[cpe]
             if mitigation_dict[cpe]:
                 cve_matches.update(mitigation_dict[cpe])
 
         if cve_matches:
-            analyser.add(cve_matches)
-        analyser.analyse()
+            cve_categories = analyser.analyse(cve_matches)
 
         for key, val in mitigation_dict.items():
             categories = []
             if val:
                 for cve in val:
-                    categories.append(analyser.get_cve_category(cve))
+                    vector_string = get_attribute(cve.get_metrics(), CVSSV3Attributes.VECTOR_STRING)
+                    categories.append(cve_categories[vector_string])
                 mitigation_dict[key] = categories
         return mitigation_dict

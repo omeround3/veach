@@ -3,7 +3,7 @@ import subprocess
 
 class Authenticator:
     """
-    A class used to check if a certain use in is the sudo group
+    A class used to check if a certain user in is the sudo group
     """
 
     def __init__(self, username, password) -> None:
