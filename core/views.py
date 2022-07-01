@@ -1,18 +1,50 @@
 from core import matcher
+from core.authenticator import authenticator
 from core.db import sync_collections
+from core.authenticator.authenticator import Authenticator
 from core.encoder import VEACHEncoder
 from core.serializers import UserSerializer, GroupSerializer
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import status, viewsets, permissions
+from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework.authtoken.views import ObtainAuthToken
 import json
 import logging
 
 logger = logging.getLogger("veach")
 
+
+
+class Login(ObtainAuthToken):
+    """
+    Authenticates a sudo user and returns authorization token
+    based on existing django superuser
+    
+    * Requires sudo username and password.
+    """
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        password = serializer.validated_data['password']
+        authenticator = Authenticator(user, password)
+        if authenticator.authenticated:
+            token, created = Token.objects.get_or_create(user=user)
+            content = {
+                'token': token.key
+            }
+        else:
+            content = {
+                'token': 'null'
+            }
+        return Response(content)
+    
 
 @api_view(['GET'])
 def cve_db_info(request: Request):
