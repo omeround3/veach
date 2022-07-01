@@ -1,6 +1,6 @@
-let Constants = {
-    API_ROOL_URL: 'http://localhost',
-    API_PORT: 80
+const Constants = {
+    API_ROOT_URL: 'http://localhost',
+    API_PORT: 8000
 };
 
 export default Constants;

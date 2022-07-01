@@ -3,7 +3,7 @@
     <span class="mask bg-gradient-dark opacity-7"></span>
     <div class="container my-auto">
       <div class="row">
-        <div class="mx-auto w-50">
+        <div class="mx-auto w-40">
           <img
             src="@/assets/img/logos/veach-transperent.png"
             class="img-fluid"
@@ -16,9 +16,7 @@
           <div class="card z-index-0 fadeIn3 fadeInBottom">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-veach-bg shadow-dark border-radius-lg py-3 pe-1">
-                <h4
-                  class="text-veach-red font-weight-bolder text-center mt-2 mb-0"
-                >
+                <h4 class="text-veach-red font-weight-bolder text-center mt-2 mb-0">
                   Sign in
                 </h4>
                 <div class="row mt-3">
@@ -39,10 +37,10 @@
               <form role="form" class="text-start mt-3">
                 <div class="mb-3">
                   <material-input
-                    id="email"
-                    type="email"
-                    label="Email"
-                    name="email"
+                    id="username"
+                    type="username"
+                    label="username"
+                    name="username"
                     @input="onUserInput"
                     @keyup.enter="onLoginClicked"
                   />
@@ -61,23 +59,11 @@
                   >Remember me</material-switch
                 >
                 <div class="text-center">
-                  <material-button
-                    class="my-4 mb-2"
-                    variant="gradient"
-                    color="dark"
-                    fullWidth
-                    @click="onLoginClicked"
-                    >Sign in</material-button
-                  >
+                  <button type="button" class="btn w-100 mb-2 bg-gradient-dark active" @click="onLoginClicked">Sign in</button>
                 </div>
-                <div class="h-20">
-                <h1
-                  class="text-center"
-                  style="position: relative"
-                >
-                  {{ loginErrorMessage }}
-                </h1>
-              </div>
+                <div class="h-20 text-center">
+                    {{ loginErrorMessage }}
+                </div>
               </form>
             </div>
           </div>
@@ -101,9 +87,7 @@
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <ul
-              class="nav nav-footer justify-content-center justify-content-lg-end"
-            >
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
               <li class="nav-item">
                 <a
                   href="https://github.com/omeround3/veach"
@@ -131,7 +115,6 @@
 <script>
 import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
-import MaterialButton from "@/components/MaterialButton.vue";
 import { mapMutations } from "vuex";
 import api from "@/api/veach-api";
 
@@ -140,7 +123,6 @@ export default {
   components: {
     MaterialInput,
     MaterialSwitch,
-    MaterialButton,
   },
   data() {
     return {
@@ -168,14 +150,18 @@ export default {
       this.password = input.target.value;
     },
     onLoginClicked() {
-      let response = api.login(this.username, this.password);
-      response.then((res) => {
-        if (typeof res != "number") {
-         
-        } else {
-          this.DisplayLoginError();
-        }
-      });
+      if (!this.username || !this.password) {
+        this.DisplayLoginError();
+      } else {
+        let response = api.login(this.username, this.password);
+        response.then((res) => {
+          if (typeof res != "number") {
+            console.log(res);
+          } else {
+            this.DisplayLoginError();
+          }
+        });
+      }
     },
     DisplayLoginError() {
       let emptyName = this.username == null || this.username == "";
@@ -184,18 +170,16 @@ export default {
       if (!emptyName && !emptyPass)
         this.loginErrorMessage =
           "User and/or password does not match, check your credentials.";
-      else if (emptyName && !emptyPass)
-        this.loginErrorMessage = "Username is required.";
-      else if (!emptyName && emptyPass)
-        this.loginErrorMessage = "Password is required.";
+      else if (emptyName && !emptyPass) this.loginErrorMessage = "Username is required.";
+      else if (!emptyName && emptyPass) this.loginErrorMessage = "Password is required.";
       else this.loginErrorMessage = "Username & Password are required.";
     },
-    getUserDetails(token) {
-      let response = api.getUserDetails(token);
-      response.then((user) => {
-        userState().setUserDetails(user.groups, user);
-      });
-    },
+    // getUserDetails(token) {
+    //   let response = api.getUserDetails(token);
+    //   response.then((user) => {
+    //     userState().setUserDetails(user.groups, user);
+    //   });
+    // },
   },
 };
 </script>

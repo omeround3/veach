@@ -1,16 +1,19 @@
 import axios from "axios";
-import { API_ROOT_URL } from "@utils/api";
+import Constants from "../utils/constants";
+
+const API_ROOT_URL = Constants.API_ROOT_URL
+const API_PORT = Constants.API_PORT
 
 export default {
   login(username, password) {
     return axios
-      .post(`${API_ROOT_URL}/api/login/`, {
+      .post(`${API_ROOT_URL}:${API_PORT}/api/login/`, {
         username: username,
         password: password,
       })
       .then((result) => result.data.token)
       .then((result) => {
-        console.log(`token is ${token}`);
+        console.log(`token is ${result.data.token}`);
         return result;
       })
       .catch((error) => {
