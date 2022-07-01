@@ -15,8 +15,10 @@
 # cve_collection = get_settings_value("Matcher", "cve_collection_name")
 
 # # # --- Initiallize Matcher
-matcher: MongoMatcher = MongoMatcher(db, cpe_collection, cve_collection)
+# matcher: MongoMatcher = MongoMatcher(db, cpe_collection, cve_collection)
 
-analyser = Analyser()
+# analyser = Analyser()
 # # # # --- Initiallize Matcher
 # matcher: Matcher = MongoMatcher(db, cpe_collection, cve_collection)
+
+default_app_config = 'core.apps.CoreConfig'
