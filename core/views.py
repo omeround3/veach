@@ -35,11 +35,13 @@ class Login(ObtainAuthToken):
         password = serializer.validated_data['password']
         authenticator = Authenticator(user, password)
         if authenticator.authenticated:
+            logger.info(f'[LOGIN] User authenticated successfully')
             token, created = Token.objects.get_or_create(user=user)
             content = {
                 'token': token.key
             }
         else:
+            logger.info(f'[LOGIN] User was not authenticated')
             content = {
                 'token': 'null'
             }
