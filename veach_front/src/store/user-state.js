@@ -4,7 +4,8 @@ export default createStore({
     state: {
         username: "",
         password: "",
-        
+        token: null,
+        loggenIn: false,
     
     },
     mutations: {
