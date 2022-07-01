@@ -16,16 +16,21 @@
           <div class="card z-index-0 fadeIn3 fadeInBottom">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-veach-bg shadow-dark border-radius-lg py-3 pe-1">
-                <h4 class="text-veach-red font-weight-bolder text-center mt-2 mb-0">
+                <h4
+                  class="text-veach-red font-weight-bolder text-center mt-2 mb-0"
+                >
                   Sign in
                 </h4>
                 <div class="row mt-3">
                   <div class="text-center ms-auto">
-                      <a class="" href="https://jumpcloud.com/blog/how-to-create-a-new-sudo-user-manage-sudo-access-on-ubuntu-20-04">
+                    <a
+                      class=""
+                      href="https://jumpcloud.com/blog/how-to-create-a-new-sudo-user-manage-sudo-access-on-ubuntu-20-04"
+                    >
                       <p class="text-veach-red text-lg">
                         Please sign in with a sudo user
                       </p>
-                      </a>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -33,7 +38,14 @@
             <div class="card-body">
               <form role="form" class="text-start mt-3">
                 <div class="mb-3">
-                  <material-input id="email" type="email" label="Email" name="email" />
+                  <material-input
+                    id="email"
+                    type="email"
+                    label="Email"
+                    name="email"
+                    @input="onUserInput"
+                    @keyup.enter="onLoginClicked"
+                  />
                 </div>
                 <div class="mb-3">
                   <material-input
@@ -41,6 +53,8 @@
                     type="password"
                     label="Password"
                     name="password"
+                    @input="onPassInput"
+                    @keyup.enter="onLoginClicked"
                   />
                 </div>
                 <material-switch id="rememberMe" name="rememberMe"
@@ -52,9 +66,18 @@
                     variant="gradient"
                     color="dark"
                     fullWidth
+                    @click="onLoginClicked"
                     >Sign in</material-button
                   >
                 </div>
+                <div class="h-20">
+                <h1
+                  class="text-center"
+                  style="position: relative"
+                >
+                  {{ loginErrorMessage }}
+                </h1>
+              </div>
               </form>
             </div>
           </div>
@@ -78,7 +101,9 @@
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+            <ul
+              class="nav nav-footer justify-content-center justify-content-lg-end"
+            >
               <li class="nav-item">
                 <a
                   href="https://github.com/omeround3/veach"
@@ -108,6 +133,7 @@ import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import { mapMutations } from "vuex";
+import api from "@/api/veach-api";
 
 export default {
   name: "sign-in",
@@ -115,6 +141,14 @@ export default {
     MaterialInput,
     MaterialSwitch,
     MaterialButton,
+  },
+  data() {
+    return {
+      username: null,
+      password: null,
+      loginError: false,
+      loginErrorMessage: "",
+    };
   },
   beforeMount() {
     this.toggleEveryDisplay();
@@ -126,6 +160,42 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    onUserInput: function (input) {
+      this.username = input.target.value;
+      // this.$userState.state.commit('setUser', this.username)
+    },
+    onPassInput: function (input) {
+      this.password = input.target.value;
+    },
+    onLoginClicked() {
+      let response = api.login(this.username, this.password);
+      response.then((res) => {
+        if (typeof res != "number") {
+         
+        } else {
+          this.DisplayLoginError();
+        }
+      });
+    },
+    DisplayLoginError() {
+      let emptyName = this.username == null || this.username == "";
+      let emptyPass = this.password == null || this.password == "";
+
+      if (!emptyName && !emptyPass)
+        this.loginErrorMessage =
+          "User and/or password does not match, check your credentials.";
+      else if (emptyName && !emptyPass)
+        this.loginErrorMessage = "Username is required.";
+      else if (!emptyName && emptyPass)
+        this.loginErrorMessage = "Password is required.";
+      else this.loginErrorMessage = "Username & Password are required.";
+    },
+    getUserDetails(token) {
+      let response = api.getUserDetails(token);
+      response.then((user) => {
+        userState().setUserDetails(user.groups, user);
+      });
+    },
   },
 };
 </script>

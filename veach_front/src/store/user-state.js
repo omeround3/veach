@@ -9,11 +9,19 @@ export default createStore({
     
     },
     mutations: {
-      
+      setUser(state, user) {
+        state.username = user
+      },
+      setPassword(state, pass) {
+        state.password = pass
+      },
+      setToken(state, token) {
+        state.token = token
+      }
     },
-    actions: {
+    // actions: {
      
-    },
-    getters: {},
+    // },
+    // getters: {},
   });
   
