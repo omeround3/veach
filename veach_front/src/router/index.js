@@ -13,36 +13,41 @@ const routes = [
     path: "/",
     name: "/",
     redirect: "/dashboard",
-  },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    component: Tables,
-  },
-  {
-    path: "/billing",
-    name: "Billing",
-    component: Billing,
-  },
-  {
-    path: "/rtl-page",
-    name: "RTL",
-    component: RTL,
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    component: Notifications,
-  },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        component: Dashboard,
+      },
+      {
+        path: "/tables",
+        name: "Tables",
+        component: Tables,
+      },
+      {
+        path: "/billing",
+        name: "Billing",
+        component: Billing,
+      },
+      {
+        path: "/rtl-page",
+        name: "RTL",
+        component: RTL,
+      },
+      {
+        path: "/notifications",
+        name: "Notifications",
+        component: Notifications,
+      },
+      {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+      },
+    ]
   },
   {
     path: "/sign-in",
@@ -60,6 +65,26 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "active",
+  // scrollBehavior(to, from, savedPosition) {
+  //   return savedPosition || { left: 0, top: 0 };
+  // },
 });
+
+router.beforeEach((to, from, next) => {
+  // const user = userState()
+  if (to.meta.requiresAuth) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    next({ name: 'SignIn' })
+    // if (!user.isLoggedIn) {
+    //   next({ name: 'SignIn' })
+    // } else {
+    //   next() // go to wherever I'm going
+    // }
+  } else {
+    next() // does not require auth, make sure to always call next()!
+  }
+})
+
 
 export default router;
