@@ -119,32 +119,56 @@ Install system dependencies by running
 
 Install Python dependencies:
 ```
-pip3 install -r requirements.txt
+sudo apt update
+```
+```
+sudo apt install python3.9
+```
+```
+sudo  apt-get install python3.9-dev python3.9-venv
+```
+Create python virutalenv
+```
+python3.9 -m venv venv
+```
+```
+source venv/bin/activate
+```
+```
+pip install -r requirements.txt
 ```
 
 Install MongoDB
-
+Commands are are taken from MongoDB offical docs
 * [Install MongoDB on Ubuntu](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/)
 
 Run the commands:
 
 ```
 wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
-
+```
+Make sure to change the word **focal** to **bionic** if you are running on Ubuntu 18.04 and not 20.04
+```
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
-
+```
+```
 sudo apt-get update
-
+```
+```
 sudo apt-get install -y mongodb-org
-
+```
+```
 sudo systemctl daemon-reload
-
+```
+```
 sudo systemctl start mongod
-
-# Verify status of mongodb
+```
+Verify status of mongodb
+```
 sudo systemctl status mongod
-
-# if all is ok, enable mongodb to start on system startup
+```
+if all is ok, enable mongodb to start on system startup
+```
 sudo systemctl enable mongod
 ```
 
@@ -154,36 +178,7 @@ sudo systemctl enable mongod
 cat requirements.system requirements.prod | sudo xargs apt-get install -y
 ```
 
-#### Install MongoDB
-
-* [Install MongoDB on Ubuntu](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/)
-
-Run the commands:
-
-```
-wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
-
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
-
-sudo apt-get update
-
-sudo apt-get install -y mongodb-org
-
-sudo systemctl daemon-reload
-
-sudo systemctl start mongod
-
-# Verify status of mongodb
-sudo systemctl status mongod
-
-# if all is ok, enable mongodb to start on system startup
-sudo systemctl enable mongod
-```
-
-Install Python dependencies:
-```
-pip3 install -r requirements.txt
-```
+- [] **TODO**
 
 
 
