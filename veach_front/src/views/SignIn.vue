@@ -197,12 +197,6 @@ export default {
         this.loginErrorMessage = "Password is required.";
       else this.loginErrorMessage = "Username & Password are required.";
     },
-    // getUserDetails(token) {
-    //   let response = api.getUserDetails(token);
-    //   response.then((user) => {
-    //     userState().setUserDetails(user.groups, user);
-    //   });
-    // },
   },
 };
 </script>
