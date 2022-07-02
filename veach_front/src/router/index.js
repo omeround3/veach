@@ -7,6 +7,7 @@ import Notifications from "../views/Notifications.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
+import userState from "@/store/user-state";
 
 const routes = [
   {
@@ -17,11 +18,6 @@ const routes = [
       requiresAuth: true
     },
     children: [
-      {
-        path: "/dashboard",
-        name: "Dashboard",
-        component: Dashboard,
-      },
       {
         path: "/tables",
         name: "Tables",
@@ -50,6 +46,14 @@ const routes = [
     ]
   },
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
     path: "/sign-in",
     name: "SignIn",
     component: SignIn,
@@ -71,16 +75,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // const user = userState()
+  const user = userState
   if (to.meta.requiresAuth) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    next({ name: 'SignIn' })
-    // if (!user.isLoggedIn) {
-    //   next({ name: 'SignIn' })
-    // } else {
-    //   next() // go to wherever I'm going
-    // }
+    console.log(`isLogged: ${user.getters.isLoggedIn}`);
+    if (!user.getters.isLoggedIn) {
+      next({ name: 'SignIn' })
+    } else {
+      next() // go to wherever I'm going
+    }
   } else {
     next() // does not require auth, make sure to always call next()!
   }

@@ -1,27 +1,47 @@
 import { createStore } from "vuex";
 
 export default createStore({
-    state: {
-        username: "",
-        password: "",
-        token: null,
-        loggenIn: false,
-    
+  state() {
+    return {
+      username: null,
+      password: null,
+      token: null,
+    };
+  },
+  getters: {
+    getUsername: (state) => state.username,
+    getPassword: (state) => state.password,
+    getToken: (state) => state.token,
+    isLoggedIn: (state) => !!state.token,
+  },
+  mutations: {
+    setUser(state, value) {
+      state.username = value == null ? null : value;
     },
-    mutations: {
-      setUser(state, user) {
-        state.username = user
-      },
-      setPassword(state, pass) {
-        state.password = pass
-      },
-      setToken(state, token) {
-        state.token = token
+    setPassword(state, value) {
+      state.password = value == null ? null : value;
+    },
+    setToken(state, value) {
+      state.token = value == null ? null : value;
+    },
+  },
+  actions: {
+    logout: ({ commit }) => {
+      commit("setToken", null);
+      // setTimeout(() => router.push("/sign-in"), 500);
+    },
+    login({ commit }, { username, password, token }) {
+      console.log(
+        `Username ${username} | Password ${password} | Token ${token}`
+      );
+      if (token != "null") {
+        commit("setUser", username);
+        commit("setPassword", password);
+        commit("setToken", token);
+        window.localStorage.setItem("token", token);
+        // setting timeout for the store to be completed 500 milliseconds in order for user details to load before redirecting to main dashboard
+        // setTimeout(() => router.push("/"), 500);
       }
     },
-    // actions: {
-     
-    // },
-    // getters: {},
-  });
-  
+  },
+});

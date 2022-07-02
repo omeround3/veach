@@ -99,7 +99,7 @@ export default {
     this.totalRecords = { text: 'Total CVE Records', value: "-" }
     this.totalCategories = { text: 'Total Categories', value: "-" }
     this.lastScan = { text: 'Total Vulnerabilities Found', value: '-' }
-    this.getTotalRecords()
+    // this.getTotalRecords()
   },
   methods:
   {

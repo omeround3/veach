@@ -13,7 +13,6 @@ export default {
       })
       .then((result) => result.data.token)
       .then((result) => {
-        console.log(`token is ${result.data.token}`);
         return result;
       })
       .catch((error) => {

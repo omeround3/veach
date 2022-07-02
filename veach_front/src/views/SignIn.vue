@@ -16,7 +16,9 @@
           <div class="card z-index-0 fadeIn3 fadeInBottom">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-veach-bg shadow-dark border-radius-lg py-3 pe-1">
-                <h4 class="text-veach-red font-weight-bolder text-center mt-2 mb-0">
+                <h4
+                  class="text-veach-red font-weight-bolder text-center mt-2 mb-0"
+                >
                   Sign in
                 </h4>
                 <div class="row mt-3">
@@ -59,10 +61,16 @@
                   >Remember me</material-switch
                 >
                 <div class="text-center">
-                  <button type="button" class="btn w-100 mb-2 bg-gradient-dark active" @click="onLoginClicked">Sign in</button>
+                  <button
+                    type="button"
+                    class="btn w-100 mb-2 bg-gradient-dark active"
+                    @click="onLoginClicked"
+                  >
+                    Sign in
+                  </button>
                 </div>
                 <div class="h-20 text-center">
-                    {{ loginErrorMessage }}
+                  {{ loginErrorMessage }}
                 </div>
               </form>
             </div>
@@ -87,7 +95,9 @@
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+            <ul
+              class="nav nav-footer justify-content-center justify-content-lg-end"
+            >
               <li class="nav-item">
                 <a
                   href="https://github.com/omeround3/veach"
@@ -115,7 +125,8 @@
 <script>
 import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
+import userState from "@/store/user-state";
 import api from "@/api/veach-api";
 
 export default {
@@ -140,11 +151,13 @@ export default {
     this.toggleEveryDisplay();
     this.toggleHideConfig();
   },
+  computed: {
+  },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    ...mapActions(["login"]),
     onUserInput: function (input) {
       this.username = input.target.value;
-      // this.$userState.state.commit('setUser', this.username)
     },
     onPassInput: function (input) {
       this.password = input.target.value;
@@ -154,11 +167,19 @@ export default {
         this.DisplayLoginError();
       } else {
         let response = api.login(this.username, this.password);
-        response.then((res) => {
-          if (typeof res != "number") {
-            console.log(res);
+        response.then((token) => {
+          if (token != "null") {
+            this.login({
+              username: this.username,
+              password: this.password,
+              token: token,
+            });
+            if (userState.getters.isLoggedIn) {
+              this.$router.push("/")
+            }
           } else {
-            this.DisplayLoginError();
+            this.loginErrorMessage =
+              "User and/or password does not match, check your credentials.";
           }
         });
       }
@@ -170,8 +191,10 @@ export default {
       if (!emptyName && !emptyPass)
         this.loginErrorMessage =
           "User and/or password does not match, check your credentials.";
-      else if (emptyName && !emptyPass) this.loginErrorMessage = "Username is required.";
-      else if (!emptyName && emptyPass) this.loginErrorMessage = "Password is required.";
+      else if (emptyName && !emptyPass)
+        this.loginErrorMessage = "Username is required.";
+      else if (!emptyName && emptyPass)
+        this.loginErrorMessage = "Password is required.";
       else this.loginErrorMessage = "Username & Password are required.";
     },
     // getUserDetails(token) {
