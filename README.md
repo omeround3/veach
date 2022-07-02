@@ -120,7 +120,7 @@ Clone the repo
 
 Install Python dependencies:
 ```
-pip3 install -r requirements.**txt**
+pip3 install -r requirements.txt
 ```
 
 Install MongoDB
@@ -183,7 +183,7 @@ sudo systemctl enable mongod
 
 Install Python dependencies:
 ```
-pip3 install -r requirements.**txt**
+pip3 install -r requirements.txt
 ```
 
 
