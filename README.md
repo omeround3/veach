@@ -112,9 +112,8 @@ Clone the repo
    git clone https://github.com/omeround3/veach.git
    ```
 ### Standard Installation
-
+Install system dependencies by running
   ```sh
-    # Install system dependencies by running
     xargs sudo apt-get install -y < requirements.system
   ```
 
