@@ -4,7 +4,7 @@
       <div class="col-12">
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 mx-auto" style="width: 60%;">
-            <div class="bg-gradient-success shadow-warning border-radius-lg pt-4 pb-3">
+            <div class="bg-veach-red shadow-warning border-radius-lg pt-4 pb-3">
               <h6 class="text-white text-capitalize ps-3" style="white-space: pre-wrap;">These CVEs (Common
                 Vulnerabilities and Exposures) Were Found On Your Machine.<br />
                 It means That {{ category.tag }}</h6>
