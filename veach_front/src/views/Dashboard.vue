@@ -45,7 +45,7 @@ export default {
   name: "dashboard-default",
   data() {
     return {
-      isScanning: false,
+      isScanning: true,
       totalCVERecordsCard: {},
       totalCPERecordsCard: {},
       totalCategoriesCard: {},
@@ -71,16 +71,33 @@ export default {
     this.getTotalCPERecords()
     this.getCveCategories()
   },
-  // mounted() {
-  //   this.timer = setInterval(() => {
-  //     this.getCveCategories()
-  //   }, 2000)
-  // },
-  // beforeDestroy() {
-  //   clearInterval(this.timer)
-  // },
+  mounted() {
+
+    this.getIsScanning()
+    this.timer = setInterval(() => {
+      this.getIsScanning()
+      if (this.isScanning === true) {
+        this.getCveCategories()
+      }
+    }, 5000)
+  },
+  beforeUnmount() {
+    clearInterval(this.timer)
+  },
   methods:
   {
+    async getIsScanning() {
+      var element = this
+      let config = {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }
+      const res = await axios.get('http://127.0.0.1:8000/api/is_scanning', config)
+      if (res) {
+        element.isScanning = res.data['is_scanning']
+      }
+    },
     async getTotalCVERecords() {
       this.totalCVERecordsCard = { text: 'Total CVE Records In DB', value: "-" }
       let config = {
@@ -107,6 +124,7 @@ export default {
       }
     },
     async startScan() {
+      this.totalCategories = []
       this.isScanning = true
       // var element = this
       await axios.get('http://127.0.0.1:8000/api/start_scan')
@@ -116,9 +134,9 @@ export default {
           }
         })
     },
-    getCveCategories() {
+    async getCveCategories() {
       var element = this
-      axios.get('http://127.0.0.1:8000/api/cve_categories')
+      await axios.get('http://127.0.0.1:8000/api/cve_categories')
         .then(function (res) {
           if (res.status == 200) {
             let numOfCVERecordsFound = 0

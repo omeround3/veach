@@ -14,6 +14,7 @@ urlpatterns = [
     path('cve_categories', views.cve_categories, name='cve_categories'),
     path('num_of_components', views.num_of_components, name='num_of_components'),
     path('mitigate', views.mitigate, name='mitigate'),
+    path('is_scanning', views.is_scanning, name='is_scanning'),
     # path('test_run', views.test_run, name='test_run'),
     # path('test_get', views.test_get, name='test_get'),
 ]

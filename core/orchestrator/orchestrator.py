@@ -16,6 +16,7 @@ from core.mitigator.mitigator import Mitigator
 class Orchetrator:
 
     def __init__(self):
+        self.is_scanning = False
         self.software_list = []
         self.hardware_list = []
         self.invoker = Scan_Invoker()

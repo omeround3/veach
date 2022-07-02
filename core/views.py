@@ -3,6 +3,7 @@ from core import orchestrator
 from core.db import sync_collections
 from core.encoder import VEACHEncoder
 from core.obj.cpe_record import CPERecord
+from core.orchestrator.orchestrator import Orchetrator
 from core.serializers import UserSerializer, GroupSerializer
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
@@ -15,7 +16,7 @@ import logging
 import csv
 
 logger = logging.getLogger("veach")
-
+is_scanned = False
 
 # @api_view(['GET'])
 # def test_run(request: Request):
@@ -72,10 +73,24 @@ def cve_db_info(request: Request):
 
 
 @api_view(['GET'])
+def is_scanning(request: Request):
+    '''
+    Starts the scanning process
+    '''
+    return HttpResponse(json.dumps({"is_scanning": orchestrator.is_scanning}), status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
 def start_scan(request: Request):
     '''
     Starts the scanning process
     '''
+    global is_scanned
+    if is_scanned:
+        global orchestrator
+        orchestrator = Orchetrator()
+    is_scanned = True
+    orchestrator.is_scanning = True
     cpe_uris = []
     csv_file = open("core/scanner/fake_scanner.csv")
     reader = csv.reader(csv_file, delimiter=',')
@@ -87,6 +102,7 @@ def start_scan(request: Request):
     th = threading.Thread(target=orchestrator.invoke_matcher, args=[cpe_uris])
     th.start()
     th.join()
+    orchestrator.is_scanning = False
     return HttpResponse(status=status.HTTP_200_OK)
 
 
