@@ -14,17 +14,12 @@
       ></i>
       <a class="m-0 navbar-brand" href="/">
         <img
-          :src="
-            sidebarType === 'bg-white' ||
-            (sidebarType === 'bg-transparent' && !isDarkMode)
-              ? logoDark
-              : logo
-          "
+          :src="logo"
           class="navbar-brand-img h-100"
           alt="main_logo"
         />
         <span class="ms-2 font-weight-bold text-white"
-          >Material Dashboard 2</span
+          >VEACH System</span
         >
       </a>
     </div>
@@ -34,8 +29,7 @@
 </template>
 <script>
 import SidenavList from "./SidenavList.vue";
-import logo from "@/assets/img/logo-ct.png";
-import logoDark from "@/assets/img/logo-ct-dark.png";
+import logo from "@/assets/img/veach-logo.png";
 import { mapState } from "vuex";
 
 export default {
@@ -46,7 +40,6 @@ export default {
   data() {
     return {
       logo,
-      logoDark,
     };
   },
   computed: {

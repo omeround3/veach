@@ -24,7 +24,7 @@
                   @click="startScan"
                   name=""
                   id=""
-                  class="btn btn-success"
+                  class="btn btn-veach-red"
                   style="font-size: 40px"
                 >
                   SCAN NOW
@@ -34,7 +34,7 @@
                   type="button"
                   name=""
                   id=""
-                  class="btn btn-success disabled"
+                  class="btn btn-veach-red disabled"
                   style="font-size: 40px"
                 >
                   Scanning...
