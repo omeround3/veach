@@ -1,7 +1,9 @@
 import requests
 import re
+from core.db.db_utils import get_remote_db
 from core.matcher.matcher import Matcher
 from core.analyser.analyser import Analyser
+from core.matcher.mongo_matcher import MongoMatcher
 from core.obj.cpe_record import CPERecord
 from core.obj.cve_record import CVERecord
 from core.utils import get_settings_value
@@ -9,17 +11,24 @@ from core.parser.parser import Parser
 from core.utils import get_attribute
 from core.analyser.enums import CVSSV3Attributes
 
+
 class Mitigator:
     """
     A class used to find mitigations for vulnerabilities
     """
 
-    def __init__(self, matcher: Matcher, parser: Parser) -> None:
+    def __init__(self, parser: Parser) -> None:
         """
         :param matcher: A Matcher instance we want to find mitigation in
         :param parser: A Parser instance
         """
-        self.matcher = matcher
+        self.db = get_remote_db()[0]
+        self.cpe_collection = get_settings_value(
+            "COLLECTIONS", "cpe_collection_name")
+        self.cve_collection = get_settings_value(
+            "COLLECTIONS", "cve_collection_name")
+        self.matcher = MongoMatcher(
+            self.db, self.cpe_collection, self.cve_collection)
         self.parser = parser
 
     def _get_alterntive_sources(self, cpe: CPERecord):
@@ -75,11 +84,13 @@ class Mitigator:
         if cve_matches:
             cve_categories = analyser.analyse(cve_matches)
 
-        for key, val in mitigation_dict.items():
+        for cpe, cves in mitigation_dict.items():
             categories = []
-            if val:
-                for cve in val:
-                    vector_string = get_attribute(cve.get_metrics(), CVSSV3Attributes.VECTOR_STRING)
-                    categories.append(cve_categories[vector_string])
-                mitigation_dict[key] = categories
+            if cves:
+                for cve in cves:
+                    vector_string = get_attribute(
+                        cve.get_metrics(), CVSSV3Attributes.VECTOR_STRING)
+                    if vector_string:
+                        categories.append(cve_categories[vector_string])
+                mitigation_dict[cpe] = list(categories)
         return mitigation_dict

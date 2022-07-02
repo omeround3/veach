@@ -19,7 +19,7 @@ const routes = [
     },
     children: [
       {
-        path: "/tables",
+        path: "/tables/:id",
         name: "Tables",
         component: Tables,
       },

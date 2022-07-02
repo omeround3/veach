@@ -34,17 +34,6 @@ export default {
       type: String,
       default: "",
     },
-    icon: {
-      type: Object,
-      required: true,
-      name: String,
-      color: String,
-      background: String,
-      default: () => ({
-        color: "text-white",
-        background: "success",
-      }),
-    },
     directionReverse: {
       type: Boolean,
       default: false,

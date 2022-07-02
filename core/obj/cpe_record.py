@@ -10,6 +10,7 @@ class CPERecord():
     def __init__(self, cpe: Dict[str, str]) -> None:
         """deserialization class for CPE record"""
         cpe_uri: str = get_attribute(cpe, CPEAttributes.CPE_23_URI)
+        self.cpe_uri = cpe_uri
 
         # replace literal colons
         if CPERecord.is_valid(cpe_uri):
@@ -42,7 +43,7 @@ class CPERecord():
                 cpe, CPEAttributes.VERSION_START_INCLUDING)
 
     def __str__(self) -> str:
-        return f"cpe:{self._cpe_version}:{self._part}:{self._vendor}:{self._product}:{self._version}:{self._update}:{self._edition}:{self._language}:{self._sw_edition}:{self._target_sw}:{self._target_hw}:{self._other}"
+        return self.cpe_uri
 
     def __hash__(self) -> int:
         return str(self).__hash__()

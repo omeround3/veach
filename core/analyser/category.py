@@ -61,7 +61,7 @@ class Category(Rule):
 
         super().__init__(record_scheme, severity, is_critical)
         self.rules: list[Rule] = []
-        self.affected_records: list[CVERecord] = []
+        self.affected_records: set[CVERecord] = set()
         self.average = float(0.0)
         self.tag = self.generate_tag()
 
@@ -99,7 +99,7 @@ class Category(Rule):
             if base_score:
                 self.average = self.average + \
                     ((base_score - self.average) / (len(self.affected_records) + 1))
-                self.affected_records.append(record)
+                self.affected_records.add(record)
                 return True
         return False
 

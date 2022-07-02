@@ -20,18 +20,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(
+            <tr :class="[critical ? 'table-danger' : '']" v-for="(
                 {
                 vector,
                 complexity,
                 severity,
                 score,
-                size
+                size,
+                critical,
+                string
               },
                 index
-              ) of projects" :key="index">
+              ) of projects" :key="index" @click="goTo(string)">
               <td>
-                <div class="d-flex px-2 py-1">
+                <div class="d-flex px-2 py-1 border-dark">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ vector }}</h6>
                   </div>
@@ -95,7 +97,13 @@ export default {
       severity: String,
       score: Number,
       size: Number,
-    },
+      critical: Boolean
+    }
   },
+  methods: {
+    goTo(string) {
+      this.$router.push('/tables/' + string)
+    }
+  }
 };
 </script>
