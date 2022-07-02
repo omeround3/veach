@@ -7,11 +7,13 @@ from core.orchestrator.orchestrator import Orchetrator
 from core.serializers import UserSerializer, GroupSerializer, AuthTokenSerializer
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
-from rest_framework import status, viewsets, permissions
+from rest_framework import status, viewsets, permissions, authentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.views import ObtainAuthToken
 import json
 import logging
@@ -38,10 +40,13 @@ is_scanned = False
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def mitigate(request: Request):
     '''
     Returns info on the CVE db (size, last updated, etc..)
     '''
+
     # output = {'num': len(orchestrator.invoke_scanner())}
     cpe_uri = request.data
     output = orchestrator.invoke_mitigator(cpe_uri)
@@ -51,6 +56,8 @@ def mitigate(request: Request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def num_of_components(request: Request):
     '''
     Returns info on the CVE db (size, last updated, etc..)
@@ -107,6 +114,8 @@ class Login(ObtainAuthToken):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def cve_db_info(request: Request):
     '''
     Returns info on the CVE db (size, last updated, etc..)
@@ -115,6 +124,8 @@ def cve_db_info(request: Request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def is_scanning(request: Request):
     '''
     Starts the scanning process
@@ -123,6 +134,8 @@ def is_scanning(request: Request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def start_scan(request: Request):
     '''
     Starts the scanning process
@@ -149,6 +162,8 @@ def start_scan(request: Request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def cve_categories(request: Request):
     '''
     Starts the scanning process
@@ -158,6 +173,8 @@ def cve_categories(request: Request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def sync_db(request: Request, format=None):
     content = {
         'sync-status': False
@@ -173,15 +190,19 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
+
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
+
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = Group.objects.all().order_by('-id')
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]

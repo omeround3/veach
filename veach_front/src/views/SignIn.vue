@@ -151,8 +151,8 @@ export default {
     this.toggleEveryDisplay();
     this.toggleHideConfig();
   },
-  computed: {
-  },
+  // computed: {
+  // },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
     ...mapActions(["login"]),
