@@ -72,6 +72,9 @@ export default createStore({
     },
     logout: ({ commit }) => {
       commit("setToken", null);
+      window.localStorage.removeItem("username")
+      window.localStorage.removeItem("password")
+      window.localStorage.removeItem("token")
       // setTimeout(() => router.push("/sign-in"), 500);
     },
     login({ commit }, { username, password, token }) {

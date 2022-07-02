@@ -24,20 +24,20 @@
       <hr class="my-4 horizontal gray-light" />
       <ul class="list-group">
         <li class="pt-0 text-sm border-0 list-group-item ps-0">
-          <strong class="text-dark">Full Name:</strong> &nbsp;
-          {{ info.fullName }}
+          <strong class="text-dark">CPU:</strong> &nbsp;
+          {{ info.cpu }}
         </li>
         <li class="text-sm border-0 list-group-item ps-0">
-          <strong class="text-dark">Mobile:</strong> &nbsp; {{ info.mobile }}
+          <strong class="text-dark">RAM:</strong> &nbsp; {{ info.ram }}
         </li>
         <li class="text-sm border-0 list-group-item ps-0">
-          <strong class="text-dark">Email:</strong> &nbsp; {{ info.email }}
+          <strong class="text-dark">Storage:</strong> &nbsp; {{ info.storage }}
         </li>
         <li class="text-sm border-0 list-group-item ps-0">
-          <strong class="text-dark">Location:</strong> &nbsp;
-          {{ info.location }}
+          <strong class="text-dark">Linux Distribution:</strong> &nbsp;
+          {{ info.linuxDist }}
         </li>
-        <li class="pb-0 border-0 list-group-item ps-0">
+        <!-- <li class="pb-0 border-0 list-group-item ps-0">
           <strong class="text-sm text-dark">Social:</strong> &nbsp;
           <a
             v-for="({ icon, link }, index) of social"
@@ -47,7 +47,7 @@
           >
             <i :class="`fa fa-brands ${icon}`"></i>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
@@ -67,10 +67,10 @@ export default {
     },
     info: {
       type: Object,
-      fullName: String,
-      mobile: String,
-      email: String,
-      location: String,
+      cpu: String,
+      ram: String,
+      storage: String,
+      linuxDist: String,
       default: () => {},
     },
     social: {

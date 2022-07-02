@@ -6,7 +6,7 @@ import RTL from "../views/Rtl.vue";
 import Notifications from "../views/Notifications.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
-import SignUp from "../views/SignUp.vue";
+// import SignUp from "../views/SignUp.vue";
 import store from "@/store/index";
 
 const routes = [
@@ -46,16 +46,25 @@ const routes = [
     path: "/rtl-page",
     name: "RTL",
     component: RTL,
+    meta: {
+      requiresAuth: true
+    },
   },
   {
     path: "/notifications",
     name: "Notifications",
     component: Notifications,
+    meta: {
+      requiresAuth: true
+    },
   },
   {
-    path: "/profile",
-    name: "Profile",
+    path: "/settings",
+    name: "Settings",
     component: Profile,
+    meta: {
+      requiresAuth: true
+    },
   },
   {
     path: "/dashboard",
@@ -70,11 +79,11 @@ const routes = [
     name: "SignIn",
     component: SignIn,
   },
-  {
-    path: "/sign-up",
-    name: "SignUp",
-    component: SignUp,
-  },
+  // {
+  //   path: "/sign-up",
+  //   name: "SignUp",
+  //   component: SignUp,
+  // },
 ];
 
 const router = createRouter({

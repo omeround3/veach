@@ -1,28 +1,25 @@
 <template>
   <div class="container-fluid">
     <div
-      class="page-header min-height-300 border-radius-xl mt-4"
-      style="
-        background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
-      "
+      class="page-header min-height-100 border-radius-xl mt-4"
     >
-      <span class="mask bg-gradient-success opacity-6"></span>
+      <span class="mask bg-gradient-danger opacity-6"></span>
     </div>
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4">
         <div class="col-auto">
-          <div class="avatar avatar-xl position-relative">
+          <div class="avatar avatar-xxl position-relative">
             <img
-              src="@/assets/img/bruce-mars.jpg"
-              alt="profile_image"
+              src="@/assets/img/veach-transperent.png"
+              alt="veach_image"
               class="shadow-sm w-100 border-radius-lg"
             />
           </div>
         </div>
         <div class="col-auto my-auto">
           <div class="h-100">
-            <h5 class="mb-1">Richard Davis</h5>
-            <p class="mb-0 font-weight-normal text-sm">CEO / Co-Founder</p>
+            <h5 class="mb-1">VEACH Settings</h5>
+            <p class="mb-0 font-weight-normal text-sm">Customize your settings</p>
           </div>
         </div>
         <div
@@ -199,7 +196,7 @@
               </div>
               <div class="p-3 card-body">
                 <h6 class="text-xs text-uppercase text-body font-weight-bolder">
-                  Account
+                  SYSTEM SETTINGS
                 </h6>
                 <ul class="list-group">
                   <li class="px-0 border-0 list-group-item">
@@ -209,7 +206,7 @@
                       name="flexSwitchCheckDefault"
                       label-class="mb-0 text-body text-truncate w-80"
                       checked
-                      >Email me when someone follows me</material-switch
+                      >Auto update local database</material-switch
                     >
                   </li>
                   <li class="px-0 border-0 list-group-item">
@@ -218,7 +215,7 @@
                       class="ps-0 ms-0"
                       name="flexSwitchCheckDefault1"
                       label-class="mb-0 text-body text-truncate w-80"
-                      >Email me when someone answers on my post</material-switch
+                      >Scan software</material-switch
                     >
                   </li>
 
@@ -229,7 +226,7 @@
                       name="flexSwitchCheckDefault2"
                       label-class="mb-0 text-body text-truncate w-80"
                       checked
-                      >Email me when someone mentions me</material-switch
+                      >Scan hardware</material-switch
                     >
                   </li>
                 </ul>
@@ -245,7 +242,7 @@
                       class="ps-0 ms-0"
                       name="flexSwitchCheckDefault3"
                       label-class="mb-0 text-body text-truncate w-80"
-                      >New launches and projects</material-switch
+                      >Remote database status</material-switch
                     >
                   </li>
                   <li class="px-0 border-0 list-group-item">
@@ -255,7 +252,7 @@
                       name="flexSwitchCheckDefault4"
                       label-class="mb-0 text-body text-truncate w-80"
                       checked
-                      >Monthly product updates</material-switch
+                      >Local database status</material-switch
                     >
                   </li>
                   <li class="px-0 pb-0 border-0 list-group-item">
@@ -264,7 +261,7 @@
                       class="ps-0 ms-0"
                       name="flexSwitchCheckDefault5"
                       label-class="mb-0 text-body text-truncate w-80"
-                      >Subscribe to newsletter</material-switch
+                      >Set linux distribution</material-switch
                     >
                   </li>
                 </ul>
@@ -274,13 +271,13 @@
           </div>
           <div class="col-12 col-md-6 col-xl-4 mt-md-0 mt-4 position-relative">
             <profile-info-card
-              title="Profile Information"
-              description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+              title="System Information"
+              description="System information goes here"
               :info="{
-                fullName: 'Alec M. Thompson',
-                mobile: '(44) 123 1234 123',
-                email: 'alecthompson@mail.com',
-                location: 'USA',
+                cpu: 'Intel i5',
+                ram: '4GB',
+                storage: '200GB',
+                linuxDist: 'bionic',
               }"
               :social="[
                 {
@@ -304,7 +301,7 @@
             <hr class="vertical dark" />
           </div>
           <div class="mt-4 col-12 col-xl-4 mt-xl-0">
-            <div class="card card-plain h-100">
+            <!-- <div class="card card-plain h-100">
               <div class="p-3 pb-0 card-header">
                 <h6 class="mb-0">Conversations</h6>
               </div>
@@ -422,10 +419,10 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div class="row mt-4">
+        <!-- <div class="row mt-4">
           <div class="col-12">
             <div class="mb-5 ps-3">
               <h6 class="mb-1">Projects</h6>
@@ -552,7 +549,7 @@
               />
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -560,9 +557,9 @@
 
 <script>
 import ProfileInfoCard from "./components/ProfileInfoCard.vue";
-import DefaultProjectCard from "./components/DefaultProjectCard.vue";
+// import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
-import MaterialAvatar from "@/components/MaterialAvatar.vue";
+// import MaterialAvatar from "@/components/MaterialAvatar.vue";
 import sophie from "@/assets/img/kal-visuals-square.jpg";
 import marie from "@/assets/img/marie.jpg";
 import ivana from "@/assets/img/ivana-square.jpg";
@@ -600,9 +597,9 @@ export default {
   },
   components: {
     ProfileInfoCard,
-    DefaultProjectCard,
+    // DefaultProjectCard,
     MaterialSwitch,
-    MaterialAvatar,
+    // MaterialAvatar,
   },
 
   mounted() {
