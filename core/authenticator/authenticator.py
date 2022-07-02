@@ -33,5 +33,6 @@ class Authenticator:
             login = subprocess.Popen(
                 ["sudo", "-S", "echo", "I AM SUDO"], stdin=password.stdout, stdout=subprocess.PIPE)
 
-        if login.communicate()[0].decode("utf-8") == "I AM SUDO\n":
-            self.authenticated = True
+            result = login.communicate()[0].decode("utf-8")
+            if result == "I AM SUDO\n":
+                self.authenticated = True

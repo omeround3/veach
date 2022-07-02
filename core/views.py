@@ -3,9 +3,10 @@ from core.authenticator import authenticator
 from core.db import sync_collections
 from core.authenticator.authenticator import Authenticator
 from core.encoder import VEACHEncoder
-from core.serializers import UserSerializer, GroupSerializer
+from core.serializers import UserSerializer, GroupSerializer, AuthTokenSerializer
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, viewsets, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
@@ -19,7 +20,6 @@ import logging
 logger = logging.getLogger("veach")
 
 
-
 class Login(ObtainAuthToken):
     """
     Authenticates a sudo user and returns authorization token
@@ -27,16 +27,18 @@ class Login(ObtainAuthToken):
     
     * Requires sudo username and password.
     """
-
+    serializer_class = AuthTokenSerializer
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        username = serializer.validated_data['username']
         password = serializer.validated_data['password']
-        authenticator = Authenticator(user, password)
+        logger.debug(f'[LOGIN] User {username} and password {password}')
+        authenticator = Authenticator(username, password)
         if authenticator.authenticated:
             logger.info(f'[LOGIN] User authenticated successfully')
-            token, created = Token.objects.get_or_create(user=user)
+            token = Token.objects.get(user="veach")
             content = {
                 'token': token.key
             }
