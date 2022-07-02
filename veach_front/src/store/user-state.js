@@ -38,6 +38,8 @@ export default createStore({
         commit("setUser", username);
         commit("setPassword", password);
         commit("setToken", token);
+        window.localStorage.setItem("username", username);
+        window.localStorage.setItem("password", password);
         window.localStorage.setItem("token", token);
         // setting timeout for the store to be completed 500 milliseconds in order for user details to load before redirecting to main dashboard
         // setTimeout(() => router.push("/"), 500);
