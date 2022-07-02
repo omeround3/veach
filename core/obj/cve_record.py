@@ -11,7 +11,7 @@ class CVERecord():
         self._id = get_attribute(cve_raw, CVEAttributes.ID)
         self._base_metric_v2 = get_attribute(cve_raw, CVEAttributes.CVSSV2)
         self._base_metric_v3 = get_attribute(cve_raw, CVEAttributes.CVSSV3)
-
+        self.cpe_uris = []
         self._published_date = get_attribute(
             cve_raw, CVEAttributes.PUBLISHED_DATE)
 

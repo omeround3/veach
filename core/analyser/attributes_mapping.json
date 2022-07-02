@@ -27,31 +27,31 @@
         "N_prefix": "",
         "N": "",
         "L_prefix": "\n- ",
-        "L": "read some data",
+        "L": "read some of your data",
         "H_prefix": "\n- ",
-        "H": "read all data"
+        "H": "read all of your data"
     },
     "I": {
         "N_prefix": "",
         "N": "",
         "L_prefix": "\n- ",
-        "L": "modify some data",
+        "L": "modify some of your data",
         "H_prefix": "\n- ",
-        "H": "modify all data"
+        "H": "modify all of your data"
     },
     "A": {
         "N_prefix": "",
         "N": "",
         "L_prefix": "\n- ",
-        "L": "partialy deny access to resources/services",
+        "L": "partialy deny access to your resources/services",
         "H_prefix": "\n- ",
-        "H": "fully deny acccess to resources/services"
+        "H": "fully deny acccess to your resources/services"
     },
     "S": {
         "U_prefix": "\n",
-        "U": "*** ON THIS APPLICATION ONLY ***",
+        "U": "*** all of the above will apply ON THIS APPLICATION ONLY ***",
         "C_prefix": "\n",
-        "C": "*** ON THE ENTIRE MACHINE ***"
+        "C": "*** all of the above will apply ON THE ENTIRE MACHINE ***"
     },
     "UI": {
         "N_prefix": "\n",

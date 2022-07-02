@@ -29,17 +29,17 @@ class Analyser:
         Loads rules defined in setting to mark CVE Records
         :return: None
         """
-        file = open("core/analyser/veach_rules", 'rb')
+        file = open("veach_rules", 'rb')
         rules = pickle.load(file)
         file.close
         return rules
 
-    def analyse(self,records: set[CVERecord]) -> dict:
+    def analyse(self, records: set[CVERecord]) -> dict:
         """
         Perform the analysis on records added to the analyser engine
         :return: dictionary of CVE categories and CVE Records
         """
-        cve_categories: dict[str, Category] = defaultdict(None)
+        # self.cve_categories: dict[str, Category] = defaultdict(None)
         for record in records:
             base_metrics = record.get_metrics(self.base_metric)
             if base_metrics:
@@ -48,11 +48,12 @@ class Analyser:
                 vector_string = get_attribute(
                     base_metrics, CVSSV3Attributes.VECTOR_STRING)
                 if vector_string and base_score:
-                    cve_categories[vector_string] = Category(
-                        CVSSRecordV3(vector_string))
-                    if not cve_categories[vector_string].add_affected_record(record):
-                        del cve_categories[vector_string]
-                    else:
+                    if vector_string not in self.cve_categories:
+                        self.cve_categories[vector_string] = Category(
+                            CVSSRecordV3(vector_string))
                         for rule in self.rules:
-                            cve_categories[vector_string].meets(rule)
-        return cve_categories
+                            self.cve_categories[vector_string].meets(rule)
+                    else:
+                        self.cve_categories[vector_string].add_affected_record(
+                            record)
+        return self.cve_categories

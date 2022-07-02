@@ -1,3 +1,27 @@
+import time
+from core import orchestrator
+from core.mitigator.mitigator import Mitigator
+from core.orchestrator.orchestrator import Orchetrator
+
+
+# class Test():
+#     def __init__(self, time) -> None:
+#         self.time = time
+#         self.vals = []
+
+#     def wait(self):
+#         for i in range(1000):
+#             time.sleep(self.time)
+#             self.vals.append(i)
+#             print(i, " Added")
+
+#     def get_vals(self):
+#         return self.vals
+
+
+orchestrator = Orchetrator()
+# test = Test(5)
+
 # import pymongo
 # import csv
 # from core.utils import *
@@ -15,8 +39,8 @@
 # cve_collection = get_settings_value("Matcher", "cve_collection_name")
 
 # # # --- Initiallize Matcher
-matcher: MongoMatcher = MongoMatcher(db, cpe_collection, cve_collection)
+# matcher: MongoMatcher = MongoMatcher(db, cpe_collection, cve_collection)
 
-analyser = Analyser()
+# analyser = Analyser()
 # # # # --- Initiallize Matcher
 # matcher: Matcher = MongoMatcher(db, cpe_collection, cve_collection)

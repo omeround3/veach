@@ -8,6 +8,12 @@ router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('cpe', views.cpe, name='cpe'),
+    path('start_scan', views.start_scan, name='start_scan'),
+    path('cve_db_info', views.cve_db_info, name='cve_db_info'),
     path('sync-db', views.sync_db, name='sync_db'),
+    path('cve_categories', views.cve_categories, name='cve_categories'),
+    path('num_of_components', views.num_of_components, name='num_of_components'),
+    path('mitigate', views.mitigate, name='mitigate'),
+    # path('test_run', views.test_run, name='test_run'),
+    # path('test_get', views.test_get, name='test_get'),
 ]

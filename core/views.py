@@ -1,6 +1,8 @@
-from core import matcher
+import threading
+from core import orchestrator
 from core.db import sync_collections
 from core.encoder import VEACHEncoder
+from core.obj.cpe_record import CPERecord
 from core.serializers import UserSerializer, GroupSerializer
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
@@ -10,8 +12,55 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import json
 import logging
+import csv
 
 logger = logging.getLogger("veach")
+
+
+# @api_view(['GET'])
+# def test_run(request: Request):
+#     '''
+#     Returns info on the CVE db (size, last updated, etc..)
+#     '''
+#     test.wait()
+#     return HttpResponse({"OK": "OK"}, status=status.HTTP_200_OK)
+
+
+# @api_view(['GET'])
+# def test_get(request: Request):
+#     '''
+#     Returns info on the CVE db (size, last updated, etc..)
+#     '''
+#     return HttpResponse(json.dumps(test.get_vals()), status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def mitigate(request: Request):
+    '''
+    Returns info on the CVE db (size, last updated, etc..)
+    '''
+    # output = {'num': len(orchestrator.invoke_scanner())}
+    cpe_uri = request.data
+    output = orchestrator.invoke_mitigator(cpe_uri)
+    if not output:
+        output
+    return HttpResponse(json.dumps(output, cls=VEACHEncoder, indent=4), status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def num_of_components(request: Request):
+    '''
+    Returns info on the CVE db (size, last updated, etc..)
+    '''
+    # output = {'num': len(orchestrator.invoke_scanner())}
+    cpe_uris = []
+    csv_file = open("core/scanner/fake_scanner.csv")
+    reader = csv.reader(csv_file, delimiter=',')
+    for row in reader:
+        cpe_uris.append(row[0].lower())
+    output = {'num': len(cpe_uris)}
+
+    return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -19,27 +68,35 @@ def cve_db_info(request: Request):
     '''
     Returns info on the CVE db (size, last updated, etc..)
     '''
-    return HttpResponse(json.dumps(matcher.get_cve_collection_info()), status=status.HTTP_200_OK)
+    return HttpResponse(json.dumps(orchestrator.get_cve_collection_info()), status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
-def scan(request: Request):
+def start_scan(request: Request):
     '''
-    Returns a list of CPE URIs from Scanner module
+    Starts the scanning process
     '''
     cpe_uris = []
     csv_file = open("core/scanner/fake_scanner.csv")
     reader = csv.reader(csv_file, delimiter=',')
     for row in reader:
         cpe_uris.append(row[0].lower())
-    return HttpResponse(json.dumps(cpe_uris), status=status.HTTP_200_OK)
-    # return HttpResponse(json.dumps(list(matcher.matches[request.data]), cls=VEACHEncoder, indent=4), status=status.HTTP_200_OK)
-    # cpe_record = CPERecordSerializer(data=request.data)
-    # if cpe_record.is_valid():
-    #     cpe_record.save()
-    #     return Response(cpe_record.data)
-    # nodes = NodeModel.objects.all()
-    # serializer = NodeSerializer(nodes, many=True)
+
+    # cpe_uris = orchestrator.invoke_scanner()
+
+    th = threading.Thread(target=orchestrator.invoke_matcher, args=[cpe_uris])
+    th.start()
+    th.join()
+    return HttpResponse(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def cve_categories(request: Request):
+    '''
+    Starts the scanning process
+    '''
+    output = orchestrator.get_cve_categories()
+    return HttpResponse(json.dumps(output, cls=VEACHEncoder, indent=4), status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

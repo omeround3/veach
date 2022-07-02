@@ -4,8 +4,8 @@
   "object" == typeof exports && "undefined" != typeof module
     ? (module.exports = e())
     : "function" == typeof define && define.amd
-    ? define(e)
-    : ((t =
+      ? define(e)
+      : ((t =
         "undefined" != typeof globalThis
           ? globalThis
           : t || self).jsVectorMap = e());
@@ -21,38 +21,38 @@
       function (t) {
         for (
           var e = (this.document || this.ownerDocument).querySelectorAll(t),
-            i = e.length;
+          i = e.length;
           --i >= 0 && e.item(i) !== this;
 
         );
         return i > -1;
       }),
     Object.assign ||
-      Object.defineProperty(Object, "assign", {
-        enumerable: !1,
-        configurable: !0,
-        writable: !0,
-        value: function (t) {
-          if (null == t)
-            throw new TypeError("Cannot convert first argument to object");
-          for (var e = Object(t), i = 1; i < arguments.length; i++) {
-            var s = arguments[i];
-            if (null != s) {
-              s = Object(s);
-              for (
-                var a = Object.keys(Object(s)), r = 0, n = a.length;
-                r < n;
-                r++
-              ) {
-                var o = a[r],
-                  h = Object.getOwnPropertyDescriptor(s, o);
-                void 0 !== h && h.enumerable && (e[o] = s[o]);
-              }
+    Object.defineProperty(Object, "assign", {
+      enumerable: !1,
+      configurable: !0,
+      writable: !0,
+      value: function (t) {
+        if (null == t)
+          throw new TypeError("Cannot convert first argument to object");
+        for (var e = Object(t), i = 1; i < arguments.length; i++) {
+          var s = arguments[i];
+          if (null != s) {
+            s = Object(s);
+            for (
+              var a = Object.keys(Object(s)), r = 0, n = a.length;
+              r < n;
+              r++
+            ) {
+              var o = a[r],
+                h = Object.getOwnPropertyDescriptor(s, o);
+              void 0 !== h && h.enumerable && (e[o] = s[o]);
             }
           }
-          return e;
-        },
-      });
+        }
+        return e;
+      },
+    });
   var t = {},
     e = 1,
     i = function (i, s, a, r) {
@@ -106,7 +106,7 @@
           return this.selector.classList
             ? (this.selector.classList.add(t), this)
             : (-1 == this.selector.className.split(" ").indexOf(t) &&
-                (this.selector.className += " " + t),
+              (this.selector.className += " " + t),
               this);
         }),
         (e.append = function (t) {
@@ -171,8 +171,8 @@
       (function (t) {
         return Object.getOwnPropertySymbols
           ? Object.getOwnPropertySymbols(t).filter(function (e) {
-              return t.propertyIsEnumerable(e);
-            })
+            return t.propertyIsEnumerable(e);
+          })
           : [];
       })(t),
     );
@@ -190,9 +190,9 @@
     var s = {};
     return (
       i.isMergeableObject(t) &&
-        c(t).forEach(function (e) {
-          s[e] = h(t[e], i);
-        }),
+      c(t).forEach(function (e) {
+        s[e] = h(t[e], i);
+      }),
       c(e).forEach(function (a) {
         (function (t, e) {
           return (
@@ -205,26 +205,26 @@
         })(t, a) ||
           (u(t, a) && i.isMergeableObject(e[a])
             ? (s[a] = (function (t, e) {
-                if (!e.customMerge) return d;
-                var i = e.customMerge(t);
-                return "function" == typeof i ? i : d;
-              })(a, i)(t[a], e[a], i))
+              if (!e.customMerge) return d;
+              var i = e.customMerge(t);
+              return "function" == typeof i ? i : d;
+            })(a, i)(t[a], e[a], i))
             : (s[a] = h(e[a], i)));
       }),
       s
     );
   }
   var d = function (t, e, i) {
-      ((i = i || {}).arrayMerge = i.arrayMerge || l),
-        (i.isMergeableObject = i.isMergeableObject || n),
-        (i.cloneUnlessOtherwiseSpecified = h);
-      var s = Array.isArray(e);
-      return s === Array.isArray(t)
-        ? s
-          ? i.arrayMerge(t, e, i)
-          : p(t, e, i)
-        : h(e, i);
-    },
+    ((i = i || {}).arrayMerge = i.arrayMerge || l),
+      (i.isMergeableObject = i.isMergeableObject || n),
+      (i.cloneUnlessOtherwiseSpecified = h);
+    var s = Array.isArray(e);
+    return s === Array.isArray(t)
+      ? s
+        ? i.arrayMerge(t, e, i)
+        : p(t, e, i)
+      : h(e, i);
+  },
     f = {
       isImageUrl: function (t) {
         return /\.(jpg|gif|png)$/.test(t);
@@ -288,36 +288,36 @@
       })(t, e);
   }
   var v = (function () {
-      function t(t, e) {
-        (this._name = t), (this.node = this.createElement(t)), e && this.set(e);
-      }
-      var e = t.prototype;
-      return (
-        (e.createElement = function (t) {
-          return document.createElementNS("http://www.w3.org/2000/svg", t);
-        }),
-        (e.addClass = function (t) {
-          this.node.setAttribute("class", t);
-        }),
-        (e.getBBox = function () {
-          return this.node.getBBox();
-        }),
-        (e.set = function (t, e) {
-          if (f.isObj(t)) for (var i in t) this.applyAttr(i, t[i]);
-          else this.applyAttr(t, e);
-        }),
-        (e.get = function (t) {
-          return this.style.initial[t];
-        }),
-        (e.applyAttr = function (t, e) {
-          this.node.setAttribute(f.hyphenate(t), e);
-        }),
-        (e.remove = function () {
-          this.node.parentNode.removeChild(this.node);
-        }),
-        t
-      );
-    })(),
+    function t(t, e) {
+      (this._name = t), (this.node = this.createElement(t)), e && this.set(e);
+    }
+    var e = t.prototype;
+    return (
+      (e.createElement = function (t) {
+        return document.createElementNS("http://www.w3.org/2000/svg", t);
+      }),
+      (e.addClass = function (t) {
+        this.node.setAttribute("class", t);
+      }),
+      (e.getBBox = function () {
+        return this.node.getBBox();
+      }),
+      (e.set = function (t, e) {
+        if (f.isObj(t)) for (var i in t) this.applyAttr(i, t[i]);
+        else this.applyAttr(t, e);
+      }),
+      (e.get = function (t) {
+        return this.style.initial[t];
+      }),
+      (e.applyAttr = function (t, e) {
+        this.node.setAttribute(f.hyphenate(t), e);
+      }),
+      (e.remove = function () {
+        this.node.parentNode.removeChild(this.node);
+      }),
+      t
+    );
+  })(),
     y = (function (t) {
       function e(e, i, s) {
         var a;
@@ -347,7 +347,7 @@
             f.merge(t, this.style.current),
             this.isHovered && f.merge(t, this.style.hover),
             this.isSelected &&
-              (f.merge(t, this.style.selected),
+            (f.merge(t, this.style.selected),
               this.isHovered && f.merge(t, this.style.selectedHover)),
             this.set(t);
         }),
@@ -378,8 +378,8 @@
           var s;
           "image" === e
             ? (f.isObj(i)
-                ? ((s = i.url), (this.offset = i.offset || [0, 0]))
-                : ((s = i), (this.offset = [0, 0])),
+              ? ((s = i.url), (this.offset = i.offset || [0, 0]))
+              : ((s = i), (this.offset = [0, 0])),
               this.node.setAttributeNS(
                 "http://www.w3.org/1999/xlink",
                 "href",
@@ -392,14 +392,14 @@
               this.applyAttr("x", this.cx - this.width / 2 + this.offset[0]),
               this.applyAttr("y", this.cy - this.height / 2 + this.offset[1]))
             : "cx" == e
-            ? ((this.cx = i),
-              this.width &&
+              ? ((this.cx = i),
+                this.width &&
                 this.applyAttr("x", i - this.width / 2 + this.offset[0]))
-            : "cy" == e
-            ? ((this.cy = i),
-              this.height &&
-                this.applyAttr("y", i - this.height / 2 + this.offset[1]))
-            : t.prototype.applyAttr.apply(this, arguments);
+              : "cy" == e
+                ? ((this.cy = i),
+                  this.height &&
+                  this.applyAttr("y", i - this.height / 2 + this.offset[1]))
+                : t.prototype.applyAttr.apply(this, arguments);
         }),
         e
       );
@@ -488,50 +488,50 @@
     );
   }
   var x = (function () {
-      function t() {}
-      var e = t.prototype;
-      return (
-        (e.getLabelText = function (t, e) {
-          if (e) {
-            if (f.isFunc(e.render)) {
-              var i = [];
-              return (
-                this.config.marker && i.push(this.config.marker),
-                i.push(t),
-                e.render.apply(this, i)
-              );
-            }
-            return t;
+    function t() { }
+    var e = t.prototype;
+    return (
+      (e.getLabelText = function (t, e) {
+        if (e) {
+          if (f.isFunc(e.render)) {
+            var i = [];
+            return (
+              this.config.marker && i.push(this.config.marker),
+              i.push(t),
+              e.render.apply(this, i)
+            );
           }
-        }),
-        (e.getLabelOffsets = function (t, e) {
-          return f.isFunc(e.offsets)
-            ? e.offsets(t)
-            : f.isArr(e.offsets)
+          return t;
+        }
+      }),
+      (e.getLabelOffsets = function (t, e) {
+        return f.isFunc(e.offsets)
+          ? e.offsets(t)
+          : f.isArr(e.offsets)
             ? e.offsets[t]
             : [0, 0];
-        }),
-        (e.setStyle = function (t, e) {
-          this.shape.setStyle(t, e);
-        }),
-        (e.remove = function () {
-          this.shape.remove(), this.label && this.label.remove();
-        }),
-        (e.hover = function (t) {
-          this._setStatus("isHovered", t);
-        }),
-        (e.select = function (t) {
-          this._setStatus("isSelected", t);
-        }),
-        (e._setStatus = function (t, e) {
-          (this.shape[t] = e),
-            this.shape.updateStyle(),
-            (this[t] = e),
-            this.label && ((this.label[t] = e), this.label.updateStyle());
-        }),
-        t
-      );
-    })(),
+      }),
+      (e.setStyle = function (t, e) {
+        this.shape.setStyle(t, e);
+      }),
+      (e.remove = function () {
+        this.shape.remove(), this.label && this.label.remove();
+      }),
+      (e.hover = function (t) {
+        this._setStatus("isHovered", t);
+      }),
+      (e.select = function (t) {
+        this._setStatus("isSelected", t);
+      }),
+      (e._setStatus = function (t, e) {
+        (this.shape[t] = e),
+          this.shape.updateStyle(),
+          (this[t] = e),
+          this.label && ((this.label[t] = e), this.label.updateStyle());
+      }),
+      t
+    );
+  })(),
     M = (function (t) {
       function e(e) {
         var i,
@@ -704,8 +704,8 @@
         return (
           this._isImage
             ? (t.initial = {
-                image: this.config.style.initial.image,
-              })
+              image: this.config.style.initial.image,
+            })
             : (t = this.config.style),
           t
         );
@@ -714,66 +714,66 @@
     );
   })(x);
   var O = (function () {
-      function t(t) {
-        void 0 === t && (t = {}),
-          (this._options = t),
-          (this._map = this._options.map),
-          (this._series = this._options.series),
-          (this._body = f.createElement("div", "jvm-legend")),
-          this._options.cssClass &&
-            this._body.setAttribute("class", this._options.cssClass),
-          t.vertical
-            ? this._map.legendVertical.appendChild(this._body)
-            : this._map.legendHorizontal.appendChild(this._body),
-          this.render();
-      }
-      return (
-        (t.prototype.render = function () {
-          var t,
-            e,
-            i,
-            s = this._series.scale.getTicks(),
-            a = f.createElement("div", "jvm-legend-inner");
-          if (((this._body.innderHTML = ""), this._options.title)) {
-            var r = f.createElement(
-              "div",
-              "jvm-legend-title",
-              this._options.title,
-            );
-            this._body.appendChild(r);
+    function t(t) {
+      void 0 === t && (t = {}),
+        (this._options = t),
+        (this._map = this._options.map),
+        (this._series = this._options.series),
+        (this._body = f.createElement("div", "jvm-legend")),
+        this._options.cssClass &&
+        this._body.setAttribute("class", this._options.cssClass),
+        t.vertical
+          ? this._map.legendVertical.appendChild(this._body)
+          : this._map.legendHorizontal.appendChild(this._body),
+        this.render();
+    }
+    return (
+      (t.prototype.render = function () {
+        var t,
+          e,
+          i,
+          s = this._series.scale.getTicks(),
+          a = f.createElement("div", "jvm-legend-inner");
+        if (((this._body.innderHTML = ""), this._options.title)) {
+          var r = f.createElement(
+            "div",
+            "jvm-legend-title",
+            this._options.title,
+          );
+          this._body.appendChild(r);
+        }
+        this._body.appendChild(a);
+        for (var n = 0; n < s.length; n++) {
+          switch (
+          ((t = f.createElement("div", "jvm-legend-tick")),
+            (e = f.createElement("div", "jvm-legend-tick-sample")),
+            this._series.config.attribute)
+          ) {
+            case "fill":
+              f.isImageUrl(s[n].value)
+                ? (e.style.background = "url(" + s[n].value + ")")
+                : (e.style.background = s[n].value);
+              break;
+            case "stroke":
+              e.style.background = s[n].value;
+              break;
+            case "image":
+              (e.style.background =
+                "url(" +
+                (f.isObj(s[n].value) ? s[n].value.url : s[n].value) +
+                ") no-repeat center center"),
+                (e.style.backgroundSize = "cover");
           }
-          this._body.appendChild(a);
-          for (var n = 0; n < s.length; n++) {
-            switch (
-              ((t = f.createElement("div", "jvm-legend-tick")),
-              (e = f.createElement("div", "jvm-legend-tick-sample")),
-              this._series.config.attribute)
-            ) {
-              case "fill":
-                f.isImageUrl(s[n].value)
-                  ? (e.style.background = "url(" + s[n].value + ")")
-                  : (e.style.background = s[n].value);
-                break;
-              case "stroke":
-                e.style.background = s[n].value;
-                break;
-              case "image":
-                (e.style.background =
-                  "url(" +
-                  (f.isObj(s[n].value) ? s[n].value.url : s[n].value) +
-                  ") no-repeat center center"),
-                  (e.style.backgroundSize = "cover");
-            }
-            t.appendChild(e),
-              (i = s[n].label),
-              this._options.labelRender && (i = this._options.labelRender(i));
-            var o = f.createElement("div", "jvm-legend-tick-text", i);
-            t.appendChild(o), a.appendChild(t);
-          }
-        }),
-        t
-      );
-    })(),
+          t.appendChild(e),
+            (i = s[n].label),
+            this._options.labelRender && (i = this._options.labelRender(i));
+          var o = f.createElement("div", "jvm-legend-tick-text", i);
+          t.appendChild(o), a.appendChild(t);
+        }
+      }),
+      t
+    );
+  })(),
     C = (function () {
       function t(t) {
         this._scale = t;
@@ -806,15 +806,15 @@
           t.attributes && this.setAttributes(t.attributes),
           f.isObj(t.scale) && (this.scale = new C(t.scale)),
           this.config.legend &&
-            (this.legend = new O(
-              f.merge(
-                {
-                  map: this._map,
-                  series: this,
-                },
-                this.config.legend,
-              ),
-            )),
+          (this.legend = new O(
+            f.merge(
+              {
+                map: this._map,
+                series: this,
+              },
+              this.config.legend,
+            ),
+          )),
           this.setValues(this._values);
       }
       var e = t.prototype;
@@ -930,11 +930,11 @@
         for (var e, i = "#", s = 0; s < 3; s++)
           i +=
             (1 ===
-            (e = Math.round(
-              this._fromColor[s] +
+              (e = Math.round(
+                this._fromColor[s] +
                 (this._toColor[s] - this._fromColor[s]) *
-                  ((t - this.min) / (this.max - this.min)),
-            ).toString(16)).length
+                ((t - this.min) / (this.max - this.min)),
+              ).toString(16)).length
               ? "0"
               : "") + e;
         return i;
@@ -949,7 +949,7 @@
               (i = "0x" + t[2] + t[2]),
               (s = "0x" + t[3] + t[3]))
             : 7 == t.length &&
-              ((e = "0x" + t[1] + t[2]),
+            ((e = "0x" + t[1] + t[2]),
               (i = "0x" + t[3] + t[4]),
               (s = "0x" + t[5] + t[6])),
           [parseInt(e), parseInt(i), parseInt(s)]
@@ -959,246 +959,246 @@
     );
   })();
   var T = Object.freeze({
-      __proto__: null,
-      handleContainerEvents: function () {
-        var t,
-          e,
-          i = this,
-          s = !1,
-          a = this;
-        this.params.draggable &&
-          (this.container
-            .on("mousemove", function (i) {
-              return (
-                s &&
-                  ((a.transX -= (t - i.pageX) / a.scale),
-                  (a.transY -= (e - i.pageY) / a.scale),
-                  a.applyTransform(),
-                  (t = i.pageX),
-                  (e = i.pageY)),
-                !1
-              );
-            })
-            .on("mousedown", function (i) {
-              return (s = !0), (t = i.pageX), (e = i.pageY), !1;
-            }),
+    __proto__: null,
+    handleContainerEvents: function () {
+      var t,
+        e,
+        i = this,
+        s = !1,
+        a = this;
+      this.params.draggable &&
+        (this.container
+          .on("mousemove", function (i) {
+            return (
+              s &&
+              ((a.transX -= (t - i.pageX) / a.scale),
+                (a.transY -= (e - i.pageY) / a.scale),
+                a.applyTransform(),
+                (t = i.pageX),
+                (e = i.pageY)),
+              !1
+            );
+          })
+          .on("mousedown", function (i) {
+            return (s = !0), (t = i.pageX), (e = i.pageY), !1;
+          }),
           f.$("body").on("mouseup", function () {
             s = !1;
           })),
-          this.params.zoomOnScroll &&
-            this.container.on(
-              "wheel",
-              function (t) {
-                var e = 0;
-                (e = (t.deltaY || -t.wheelDelta || t.detail) >> 10 || 1),
-                  (e *= 75);
-                var s = i.container.selector.getBoundingClientRect(),
-                  r = t.pageX - s.left - window.pageXOffset,
-                  n = t.pageY - s.top - window.pageYOffset,
-                  o = Math.pow(1 + a.params.zoomOnScrollSpeed / 1e3, -1.5 * e);
-                a.tooltip && a.tooltip.hide(), a.setScale(a.scale * o, r, n);
-              },
-              {
-                passive: !0,
-              },
-            );
-      },
-      handleElementEvents: function () {
-        var t = this;
-        this.container.delegate(
-          ".jvm-element",
-          "mouseover mouseout",
-          function (e) {
-            var i = k(t, this, !0),
-              s = t.params.showTooltip;
-            "mouseover" === e.type
-              ? e.defaultPrevented ||
-                (i.element.hover(!0),
-                s &&
-                  (t.tooltip.text(i.tooltipText),
-                  t.tooltip.show(),
-                  t.emit(i.event, [t.tooltip, i.code])))
-              : (i.element.hover(!1), s && t.tooltip.hide());
+        this.params.zoomOnScroll &&
+        this.container.on(
+          "wheel",
+          function (t) {
+            var e = 0;
+            (e = (t.deltaY || -t.wheelDelta || t.detail) >> 10 || 1),
+              (e *= 75);
+            var s = i.container.selector.getBoundingClientRect(),
+              r = t.pageX - s.left - window.pageXOffset,
+              n = t.pageY - s.top - window.pageYOffset,
+              o = Math.pow(1 + a.params.zoomOnScrollSpeed / 1e3, -1.5 * e);
+            a.tooltip && a.tooltip.hide(), a.setScale(a.scale * o, r, n);
           },
-        ),
-          this.container.delegate(".jvm-element", "mouseup", function (e) {
-            var i = k(t, this);
-            if (
-              ("region" === i.type && t.params.regionsSelectable) ||
-              ("marker" === i.type &&
-                t.params.markersSelectable &&
-                !e.defaultPrevented)
-            ) {
-              var s = i.element;
-              t.params[i.type + "sSelectableOne"] &&
-                t.clearSelected(i.type + "s"),
-                i.element.isSelected ? s.select(!1) : s.select(!0),
-                t.emit(i.event, [
-                  i.code,
-                  s.isSelected,
-                  t.getSelected(i.type + "s"),
-                ]);
-            }
-          });
-      },
-      handleZoomButtons: function () {
-        var t = this,
-          e = this,
-          s = f.createElement("div", "jvm-zoom-btn jvm-zoomin", "&#43;", !0),
-          a = f.createElement("div", "jvm-zoom-btn jvm-zoomout", "&#x2212", !0);
-        this.container.append(s).append(a),
-          i(s, "click", function () {
-            t.setScale(
-              e.scale * e.params.zoomStep,
-              e.width / 2,
-              e.height / 2,
-              !1,
-              e.params.zoomAnimate,
-            );
-          }),
-          i(a, "click", function () {
-            t.setScale(
-              e.scale / e.params.zoomStep,
-              e.width / 2,
-              e.height / 2,
-              !1,
-              e.params.zoomAnimate,
-            );
-          });
-      },
-      bindContainerTouchEvents: function () {
-        var t,
-          e,
-          i,
-          s,
-          a,
-          r,
-          n,
-          o = this,
-          h = function (h) {
-            var l,
-              c,
-              u,
-              p,
-              d = h.touches;
-            if (("touchstart" == h.type && (n = 0), 1 == d.length))
-              1 == n &&
-                ((u = o.transX),
+          {
+            passive: !0,
+          },
+        );
+    },
+    handleElementEvents: function () {
+      var t = this;
+      this.container.delegate(
+        ".jvm-element",
+        "mouseover mouseout",
+        function (e) {
+          var i = k(t, this, !0),
+            s = t.params.showTooltip;
+          "mouseover" === e.type
+            ? e.defaultPrevented ||
+            (i.element.hover(!0),
+              s &&
+              (t.tooltip.text(i.tooltipText),
+                t.tooltip.show(),
+                t.emit(i.event, [t.tooltip, i.code])))
+            : (i.element.hover(!1), s && t.tooltip.hide());
+        },
+      ),
+        this.container.delegate(".jvm-element", "mouseup", function (e) {
+          var i = k(t, this);
+          if (
+            ("region" === i.type && t.params.regionsSelectable) ||
+            ("marker" === i.type &&
+              t.params.markersSelectable &&
+              !e.defaultPrevented)
+          ) {
+            var s = i.element;
+            t.params[i.type + "sSelectableOne"] &&
+              t.clearSelected(i.type + "s"),
+              i.element.isSelected ? s.select(!1) : s.select(!0),
+              t.emit(i.event, [
+                i.code,
+                s.isSelected,
+                t.getSelected(i.type + "s"),
+              ]);
+          }
+        });
+    },
+    handleZoomButtons: function () {
+      var t = this,
+        e = this,
+        s = f.createElement("div", "jvm-zoom-btn jvm-zoomin", "&#43;", !0),
+        a = f.createElement("div", "jvm-zoom-btn jvm-zoomout", "&#x2212", !0);
+      this.container.append(s).append(a),
+        i(s, "click", function () {
+          t.setScale(
+            e.scale * e.params.zoomStep,
+            e.width / 2,
+            e.height / 2,
+            !1,
+            e.params.zoomAnimate,
+          );
+        }),
+        i(a, "click", function () {
+          t.setScale(
+            e.scale / e.params.zoomStep,
+            e.width / 2,
+            e.height / 2,
+            !1,
+            e.params.zoomAnimate,
+          );
+        });
+    },
+    bindContainerTouchEvents: function () {
+      var t,
+        e,
+        i,
+        s,
+        a,
+        r,
+        n,
+        o = this,
+        h = function (h) {
+          var l,
+            c,
+            u,
+            p,
+            d = h.touches;
+          if (("touchstart" == h.type && (n = 0), 1 == d.length))
+            1 == n &&
+              ((u = o.transX),
                 (p = o.transY),
                 (o.transX -= (i - d[0].pageX) / o.scale),
                 (o.transY -= (s - d[0].pageY) / o.scale),
                 o.tooltip.hide(),
                 o.applyTransform(),
                 (u == o.transX && p == o.transY) || h.preventDefault()),
-                (i = d[0].pageX),
-                (s = d[0].pageY);
-            else if (2 == d.length)
-              if (2 == n)
-                (c =
-                  Math.sqrt(
-                    Math.pow(d[0].pageX - d[1].pageX, 2) +
-                      Math.pow(d[0].pageY - d[1].pageY, 2),
-                  ) / e),
-                  o.setScale(t * c, a, r),
-                  o.tooltip.hide(),
-                  h.preventDefault();
-              else {
-                var f = o.container.selector.getBoundingClientRect();
-                (l = {
-                  top: f.top + window.scrollY,
-                  left: f.left + window.scrollX,
-                }),
-                  (a =
-                    d[0].pageX > d[1].pageX
-                      ? d[1].pageX + (d[0].pageX - d[1].pageX) / 2
-                      : d[0].pageX + (d[1].pageX - d[0].pageX) / 2),
-                  (r =
-                    d[0].pageY > d[1].pageY
-                      ? d[1].pageY + (d[0].pageY - d[1].pageY) / 2
-                      : d[0].pageY + (d[1].pageY - d[0].pageY) / 2),
-                  (a -= l.left),
-                  (r -= l.top),
-                  (t = o.scale),
-                  (e = Math.sqrt(
-                    Math.pow(d[0].pageX - d[1].pageX, 2) +
-                      Math.pow(d[0].pageY - d[1].pageY, 2),
-                  ));
-              }
-            n = d.length;
-          };
-        this.container.on("touchstart", h).on("touchmove", h);
-      },
-      createRegions: function () {
-        var t, e;
-        for (t in ((this.regionLabelsGroup =
-          this.regionLabelsGroup ||
-          this.canvas.createGroup("jvm-regions-labels-group")),
-        this.mapData.paths))
-          (e = new M({
-            map: this,
-            code: t,
-            path: this.mapData.paths[t].path,
-            style: f.merge({}, this.params.regionStyle),
-            labelStyle: this.params.regionLabelStyle,
-            labelsGroup: this.regionLabelsGroup,
-            label: this.params.labels && this.params.labels.regions,
-          })),
-            (this.regions[t] = {
-              config: this.mapData.paths[t],
-              element: e,
-            });
-      },
-      createLines: function (t, e, i) {
-        var s = this;
-        void 0 === i && (i = !1);
-        var a,
-          r = !1,
-          n = !1;
-        for (var o in ((this.linesGroup =
-          this.linesGroup || this.canvas.createGroup("jvm-lines-group")),
-        t)) {
-          var h = t[o];
-          for (var l in e) {
-            var c = i ? e[l].config : e[l];
-            c.name === h.from && (r = this.getMarkerPosition(c)),
-              c.name === h.to && (n = this.getMarkerPosition(c));
-          }
-          !1 !== r &&
-            !1 !== n &&
-            ((a = new _({
-              index: o,
-              map: this,
-              style: f.mergeDeeply(
-                {
-                  initial: this.params.lineStyle,
-                },
-                {
-                  initial: h.style || {},
-                },
-              ),
-              x1: r.x,
-              y1: r.y,
-              x2: n.x,
-              y2: n.y,
-              group: this.linesGroup,
-            })),
-            i &&
-              Object.keys(this.lines).forEach(function (e) {
-                e === j(t[0].from, t[0].to) && s.lines[e].element.remove();
+              (i = d[0].pageX),
+              (s = d[0].pageY);
+          else if (2 == d.length)
+            if (2 == n)
+              (c =
+                Math.sqrt(
+                  Math.pow(d[0].pageX - d[1].pageX, 2) +
+                  Math.pow(d[0].pageY - d[1].pageY, 2),
+                ) / e),
+                o.setScale(t * c, a, r),
+                o.tooltip.hide(),
+                h.preventDefault();
+            else {
+              var f = o.container.selector.getBoundingClientRect();
+              (l = {
+                top: f.top + window.scrollY,
+                left: f.left + window.scrollX,
               }),
+                (a =
+                  d[0].pageX > d[1].pageX
+                    ? d[1].pageX + (d[0].pageX - d[1].pageX) / 2
+                    : d[0].pageX + (d[1].pageX - d[0].pageX) / 2),
+                (r =
+                  d[0].pageY > d[1].pageY
+                    ? d[1].pageY + (d[0].pageY - d[1].pageY) / 2
+                    : d[0].pageY + (d[1].pageY - d[0].pageY) / 2),
+                (a -= l.left),
+                (r -= l.top),
+                (t = o.scale),
+                (e = Math.sqrt(
+                  Math.pow(d[0].pageX - d[1].pageX, 2) +
+                  Math.pow(d[0].pageY - d[1].pageY, 2),
+                ));
+            }
+          n = d.length;
+        };
+      this.container.on("touchstart", h).on("touchmove", h);
+    },
+    createRegions: function () {
+      var t, e;
+      for (t in ((this.regionLabelsGroup =
+        this.regionLabelsGroup ||
+        this.canvas.createGroup("jvm-regions-labels-group")),
+        this.mapData.paths))
+        (e = new M({
+          map: this,
+          code: t,
+          path: this.mapData.paths[t].path,
+          style: f.merge({}, this.params.regionStyle),
+          labelStyle: this.params.regionLabelStyle,
+          labelsGroup: this.regionLabelsGroup,
+          label: this.params.labels && this.params.labels.regions,
+        })),
+          (this.regions[t] = {
+            config: this.mapData.paths[t],
+            element: e,
+          });
+    },
+    createLines: function (t, e, i) {
+      var s = this;
+      void 0 === i && (i = !1);
+      var a,
+        r = !1,
+        n = !1;
+      for (var o in ((this.linesGroup =
+        this.linesGroup || this.canvas.createGroup("jvm-lines-group")),
+        t)) {
+        var h = t[o];
+        for (var l in e) {
+          var c = i ? e[l].config : e[l];
+          c.name === h.from && (r = this.getMarkerPosition(c)),
+            c.name === h.to && (n = this.getMarkerPosition(c));
+        }
+        !1 !== r &&
+          !1 !== n &&
+          ((a = new _({
+            index: o,
+            map: this,
+            style: f.mergeDeeply(
+              {
+                initial: this.params.lineStyle,
+              },
+              {
+                initial: h.style || {},
+              },
+            ),
+            x1: r.x,
+            y1: r.y,
+            x2: n.x,
+            y2: n.y,
+            group: this.linesGroup,
+          })),
+            i &&
+            Object.keys(this.lines).forEach(function (e) {
+              e === j(t[0].from, t[0].to) && s.lines[e].element.remove();
+            }),
             (this.lines[j(h.from, h.to)] = {
               element: a,
               config: h,
             }));
-        }
-      },
-      createMarkers: function (t, e) {
-        var i,
-          s,
-          a,
-          r,
-          n = this;
-        for (var o in (void 0 === t && (t = {}),
+      }
+    },
+    createMarkers: function (t, e) {
+      var i,
+        s,
+        a,
+        r,
+        n = this;
+      for (var o in (void 0 === t && (t = {}),
         void 0 === e && (e = !1),
         (this.markersGroup =
           this.markersGroup || this.canvas.createGroup("jvm-markers-group")),
@@ -1206,324 +1206,324 @@
           this.markerLabelsGroup ||
           this.canvas.createGroup("jvm-markers-labels-group")),
         t)) {
-          if (
-            ((i = t[o]),
+        if (
+          ((i = t[o]),
             (a = this.getMarkerPosition(i)),
             (r = i.coords.join(":")),
             e)
-          ) {
-            if (
-              f.keys(this.markers).filter(function (t) {
-                return n.markers[t]._uid === r;
-              }).length
-            )
-              continue;
-            o = f.keys(this.markers).length;
-          }
-          !1 !== a &&
-            ((s = new E({
-              index: o,
-              map: this,
-              style: f.mergeDeeply(this.params.markerStyle, {
-                initial: i.style || {},
-              }),
-              label: this.params.labels && this.params.labels.markers,
-              labelsGroup: this.markerLabelsGroup,
-              cx: a.x,
-              cy: a.y,
-              group: this.markersGroup,
-              marker: i,
-              isRecentlyCreated: e,
-            })),
+        ) {
+          if (
+            f.keys(this.markers).filter(function (t) {
+              return n.markers[t]._uid === r;
+            }).length
+          )
+            continue;
+          o = f.keys(this.markers).length;
+        }
+        !1 !== a &&
+          ((s = new E({
+            index: o,
+            map: this,
+            style: f.mergeDeeply(this.params.markerStyle, {
+              initial: i.style || {},
+            }),
+            label: this.params.labels && this.params.labels.markers,
+            labelsGroup: this.markerLabelsGroup,
+            cx: a.x,
+            cy: a.y,
+            group: this.markersGroup,
+            marker: i,
+            isRecentlyCreated: e,
+          })),
             this.markers[o] && this.removeMarkers([o]),
             (this.markers[o] = {
               _uid: r,
               config: i,
               element: s,
             }));
-        }
-      },
-      createTooltip: function () {
-        var t = this,
-          e = f.createElement("div", "jvm-tooltip");
-        (this.tooltip = f.$(document.body.appendChild(e))),
-          this.container.on("mousemove", function (i) {
-            if ("block" === t.tooltip.selector.style.display) {
-              var s = t.container.selector
-                  .querySelector("#jvm-regions-group")
-                  .getBoundingClientRect(),
-                a = e.getBoundingClientRect(),
-                r = a.height,
-                n = a.width,
-                o = i.clientY <= s.top + r + 5,
-                h = i.pageY - r - 5,
-                l = i.pageX - n - 5;
-              o && ((h += r + 5), (l -= 10)),
-                i.clientX < s.left + n + 5 &&
-                  ((l = i.pageX + 5 + 2), o && (l += 10)),
-                t.tooltip.css({
-                  top: h + "px",
-                  left: l + "px",
-                });
-            }
-          });
-      },
-      createSeries: function () {
-        for (var t in ((this.series = {
-          markers: [],
-          regions: [],
-        }),
-        this.params.series))
-          for (var e = 0; e < this.params.series[t].length; e++)
-            this.series[t][e] = new X(this.params.series[t][e], this[t], this);
-      },
-      applyTransform: function () {
-        var t, e, i, s;
-        this.defaultWidth * this.scale <= this.width
-          ? ((t =
-              (this.width - this.defaultWidth * this.scale) / (2 * this.scale)),
-            (i =
-              (this.width - this.defaultWidth * this.scale) / (2 * this.scale)))
-          : ((t = 0),
-            (i = (this.width - this.defaultWidth * this.scale) / this.scale)),
-          this.defaultHeight * this.scale <= this.height
-            ? ((e =
-                (this.height - this.defaultHeight * this.scale) /
-                (2 * this.scale)),
-              (s =
-                (this.height - this.defaultHeight * this.scale) /
-                (2 * this.scale)))
-            : ((e = 0),
-              (s =
-                (this.height - this.defaultHeight * this.scale) / this.scale)),
-          this.transY > e
-            ? (this.transY = e)
-            : this.transY < s && (this.transY = s),
-          this.transX > t
-            ? (this.transX = t)
-            : this.transX < i && (this.transX = i),
-          this.canvas.applyTransformParams(
-            this.scale,
-            this.transX,
-            this.transY,
-          ),
-          this.markers && this.repositionMarkers(),
-          this.lines && this.repositionLines(),
-          this.repositionLabels();
-      },
-      setFocus: function (t) {
-        var e = this;
-        void 0 === t && (t = {});
-        var i,
-          s = [];
-        if (
-          (t.region ? s.push(t.region) : t.regions && (s = t.regions), s.length)
-        )
-          return (
-            s.forEach(function (t) {
-              if (e.regions[t]) {
-                var s = e.regions[t].element.shape.getBBox();
-                s &&
-                  (i =
-                    void 0 === i
-                      ? s
-                      : {
-                          x: Math.min(i.x, s.x),
-                          y: Math.min(i.y, s.y),
-                          width:
-                            Math.max(i.x + i.width, s.x + s.width) -
-                            Math.min(i.x, s.x),
-                          height:
-                            Math.max(i.y + i.height, s.y + s.height) -
-                            Math.min(i.y, s.y),
-                        });
-              }
-            }),
-            this.setScale(
-              Math.min(this.width / i.width, this.height / i.height),
-              -(i.x + i.width / 2),
-              -(i.y + i.height / 2),
-              !0,
-              t.animate,
-            )
-          );
-        if (t.coords) {
-          var a = this.coordsToPoint(t.coords[0], t.coords[1]),
-            r = this.transX - a.x / this.scale,
-            n = this.transY - a.y / this.scale;
-          return this.setScale(t.scale * this.baseScale, r, n, !0, t.animate);
-        }
-      },
-      resize: function () {
-        var t = this.baseScale;
-        this.width / this.height > this.defaultWidth / this.defaultHeight
-          ? ((this.baseScale = this.height / this.defaultHeight),
-            (this.baseTransX =
-              Math.abs(this.width - this.defaultWidth * this.baseScale) /
-              (2 * this.baseScale)))
-          : ((this.baseScale = this.width / this.defaultWidth),
-            (this.baseTransY =
-              Math.abs(this.height - this.defaultHeight * this.baseScale) /
-              (2 * this.baseScale))),
-          (this.scale *= this.baseScale / t),
-          (this.transX *= this.baseScale / t),
-          (this.transY *= this.baseScale / t);
-      },
-      setScale: function (t, e, i, s, a) {
-        var r,
-          n,
-          o,
-          h,
-          l,
-          c,
-          u,
-          p,
-          d,
-          f,
-          m = this,
-          g = 0,
-          v = Math.abs(
-            Math.round((60 * (t - this.scale)) / Math.max(t, this.scale)),
-          );
-        t > this.params.zoomMax * this.baseScale
-          ? (t = this.params.zoomMax * this.baseScale)
-          : t < this.params.zoomMin * this.baseScale &&
-            (t = this.params.zoomMin * this.baseScale),
-          void 0 !== e &&
-            void 0 !== i &&
-            ((r = t / this.scale),
-            s
-              ? ((d =
-                  e +
-                  (this.defaultWidth * (this.width / (this.defaultWidth * t))) /
-                    2),
-                (f =
-                  i +
-                  (this.defaultHeight *
-                    (this.height / (this.defaultHeight * t))) /
-                    2))
-              : ((d = this.transX - ((r - 1) / t) * e),
-                (f = this.transY - ((r - 1) / t) * i))),
-          a && v > 0
-            ? ((o = this.scale),
-              (h = (t - o) / v),
-              (l = this.transX * this.scale),
-              (u = this.transY * this.scale),
-              (c = (d * t - l) / v),
-              (p = (f * t - u) / v),
-              (n = setInterval(function () {
-                (g += 1),
-                  (m.scale = o + h * g),
-                  (m.transX = (l + c * g) / m.scale),
-                  (m.transY = (u + p * g) / m.scale),
-                  m.applyTransform(),
-                  g == v &&
-                    (clearInterval(n),
-                    m.emit("viewport:changed", [m.scale, m.transX, m.transY]));
-              }, 10)))
-            : ((this.transX = d),
-              (this.transY = f),
-              (this.scale = t),
-              this.applyTransform(),
-              this.emit("viewport:changed", [
-                this.scale,
-                this.transX,
-                this.transY,
-              ]));
-      },
-      updateSize: function () {
-        (this.width = this.container.width()),
-          (this.height = this.container.height()),
-          this.resize(),
-          this.canvas.setSize(this.width, this.height),
-          this.applyTransform();
-      },
-      coordsToPoint: function (t, e) {
-        var i,
-          s,
-          a,
-          r = z.maps[this.params.map].projection,
-          n = r.centralMeridian;
-        return (
-          (i = Y[r.type](t, e, n)),
-          !!(s = this.getInsetForPoint(i.x, i.y)) &&
-            ((a = s.bbox),
-            (i.x = ((i.x - a[0].x) / (a[1].x - a[0].x)) * s.width * this.scale),
-            (i.y =
-              ((i.y - a[0].y) / (a[1].y - a[0].y)) * s.height * this.scale),
-            {
-              x: i.x + this.transX * this.scale + s.left * this.scale,
-              y: i.y + this.transY * this.scale + s.top * this.scale,
-            })
-        );
-      },
-      getInsetForPoint: function (t, e) {
-        var i,
-          s,
-          a = z.maps[this.params.map].insets;
-        for (i = 0; i < a.length; i++)
-          if (
-            t > (s = a[i].bbox)[0].x &&
-            t < s[1].x &&
-            e > s[0].y &&
-            e < s[1].y
-          )
-            return a[i];
-      },
-      getMarkerPosition: function (t) {
-        var e = t.coords;
-        return z.maps[this.params.map].projection
-          ? this.coordsToPoint.apply(this, e)
-          : {
-              x: e[0] * this.scale + this.transX * this.scale,
-              y: e[1] * this.scale + this.transY * this.scale,
-            };
-      },
-      repositionLines: function () {
-        var t = !1,
-          e = !1;
-        for (var i in this.lines) {
-          for (var s in this.markers) {
-            var a = this.markers[s];
-            a.config.name === this.lines[i].config.from &&
-              (t = this.getMarkerPosition(a.config)),
-              a.config.name === this.lines[i].config.to &&
-                (e = this.getMarkerPosition(a.config));
+      }
+    },
+    createTooltip: function () {
+      var t = this,
+        e = f.createElement("div", "jvm-tooltip");
+      (this.tooltip = f.$(document.body.appendChild(e))),
+        this.container.on("mousemove", function (i) {
+          if ("block" === t.tooltip.selector.style.display) {
+            var s = t.container.selector
+              .querySelector("#jvm-regions-group")
+              .getBoundingClientRect(),
+              a = e.getBoundingClientRect(),
+              r = a.height,
+              n = a.width,
+              o = i.clientY <= s.top + r + 5,
+              h = i.pageY - r - 5,
+              l = i.pageX - n - 5;
+            o && ((h += r + 5), (l -= 10)),
+              i.clientX < s.left + n + 5 &&
+              ((l = i.pageX + 5 + 2), o && (l += 10)),
+              t.tooltip.css({
+                top: h + "px",
+                left: l + "px",
+              });
           }
-          !1 !== t &&
-            !1 !== e &&
-            this.lines[i].element.setStyle({
-              x1: t.x,
-              y1: t.y,
-              x2: e.x,
-              y2: e.y,
-            });
+        });
+    },
+    createSeries: function () {
+      for (var t in ((this.series = {
+        markers: [],
+        regions: [],
+      }),
+        this.params.series))
+        for (var e = 0; e < this.params.series[t].length; e++)
+          this.series[t][e] = new X(this.params.series[t][e], this[t], this);
+    },
+    applyTransform: function () {
+      var t, e, i, s;
+      this.defaultWidth * this.scale <= this.width
+        ? ((t =
+          (this.width - this.defaultWidth * this.scale) / (2 * this.scale)),
+          (i =
+            (this.width - this.defaultWidth * this.scale) / (2 * this.scale)))
+        : ((t = 0),
+          (i = (this.width - this.defaultWidth * this.scale) / this.scale)),
+        this.defaultHeight * this.scale <= this.height
+          ? ((e =
+            (this.height - this.defaultHeight * this.scale) /
+            (2 * this.scale)),
+            (s =
+              (this.height - this.defaultHeight * this.scale) /
+              (2 * this.scale)))
+          : ((e = 0),
+            (s =
+              (this.height - this.defaultHeight * this.scale) / this.scale)),
+        this.transY > e
+          ? (this.transY = e)
+          : this.transY < s && (this.transY = s),
+        this.transX > t
+          ? (this.transX = t)
+          : this.transX < i && (this.transX = i),
+        this.canvas.applyTransformParams(
+          this.scale,
+          this.transX,
+          this.transY,
+        ),
+        this.markers && this.repositionMarkers(),
+        this.lines && this.repositionLines(),
+        this.repositionLabels();
+    },
+    setFocus: function (t) {
+      var e = this;
+      void 0 === t && (t = {});
+      var i,
+        s = [];
+      if (
+        (t.region ? s.push(t.region) : t.regions && (s = t.regions), s.length)
+      )
+        return (
+          s.forEach(function (t) {
+            if (e.regions[t]) {
+              var s = e.regions[t].element.shape.getBBox();
+              s &&
+                (i =
+                  void 0 === i
+                    ? s
+                    : {
+                      x: Math.min(i.x, s.x),
+                      y: Math.min(i.y, s.y),
+                      width:
+                        Math.max(i.x + i.width, s.x + s.width) -
+                        Math.min(i.x, s.x),
+                      height:
+                        Math.max(i.y + i.height, s.y + s.height) -
+                        Math.min(i.y, s.y),
+                    });
+            }
+          }),
+          this.setScale(
+            Math.min(this.width / i.width, this.height / i.height),
+            -(i.x + i.width / 2),
+            -(i.y + i.height / 2),
+            !0,
+            t.animate,
+          )
+        );
+      if (t.coords) {
+        var a = this.coordsToPoint(t.coords[0], t.coords[1]),
+          r = this.transX - a.x / this.scale,
+          n = this.transY - a.y / this.scale;
+        return this.setScale(t.scale * this.baseScale, r, n, !0, t.animate);
+      }
+    },
+    resize: function () {
+      var t = this.baseScale;
+      this.width / this.height > this.defaultWidth / this.defaultHeight
+        ? ((this.baseScale = this.height / this.defaultHeight),
+          (this.baseTransX =
+            Math.abs(this.width - this.defaultWidth * this.baseScale) /
+            (2 * this.baseScale)))
+        : ((this.baseScale = this.width / this.defaultWidth),
+          (this.baseTransY =
+            Math.abs(this.height - this.defaultHeight * this.baseScale) /
+            (2 * this.baseScale))),
+        (this.scale *= this.baseScale / t),
+        (this.transX *= this.baseScale / t),
+        (this.transY *= this.baseScale / t);
+    },
+    setScale: function (t, e, i, s, a) {
+      var r,
+        n,
+        o,
+        h,
+        l,
+        c,
+        u,
+        p,
+        d,
+        f,
+        m = this,
+        g = 0,
+        v = Math.abs(
+          Math.round((60 * (t - this.scale)) / Math.max(t, this.scale)),
+        );
+      t > this.params.zoomMax * this.baseScale
+        ? (t = this.params.zoomMax * this.baseScale)
+        : t < this.params.zoomMin * this.baseScale &&
+        (t = this.params.zoomMin * this.baseScale),
+        void 0 !== e &&
+        void 0 !== i &&
+        ((r = t / this.scale),
+          s
+            ? ((d =
+              e +
+              (this.defaultWidth * (this.width / (this.defaultWidth * t))) /
+              2),
+              (f =
+                i +
+                (this.defaultHeight *
+                  (this.height / (this.defaultHeight * t))) /
+                2))
+            : ((d = this.transX - ((r - 1) / t) * e),
+              (f = this.transY - ((r - 1) / t) * i))),
+        a && v > 0
+          ? ((o = this.scale),
+            (h = (t - o) / v),
+            (l = this.transX * this.scale),
+            (u = this.transY * this.scale),
+            (c = (d * t - l) / v),
+            (p = (f * t - u) / v),
+            (n = setInterval(function () {
+              (g += 1),
+                (m.scale = o + h * g),
+                (m.transX = (l + c * g) / m.scale),
+                (m.transY = (u + p * g) / m.scale),
+                m.applyTransform(),
+                g == v &&
+                (clearInterval(n),
+                  m.emit("viewport:changed", [m.scale, m.transX, m.transY]));
+            }, 10)))
+          : ((this.transX = d),
+            (this.transY = f),
+            (this.scale = t),
+            this.applyTransform(),
+            this.emit("viewport:changed", [
+              this.scale,
+              this.transX,
+              this.transY,
+            ]));
+    },
+    updateSize: function () {
+      (this.width = this.container.width()),
+        (this.height = this.container.height()),
+        this.resize(),
+        this.canvas.setSize(this.width, this.height),
+        this.applyTransform();
+    },
+    coordsToPoint: function (t, e) {
+      var i,
+        s,
+        a,
+        r = z.maps[this.params.map].projection,
+        n = r.centralMeridian;
+      return (
+        (i = Y[r.type](t, e, n)),
+        !!(s = this.getInsetForPoint(i.x, i.y)) &&
+        ((a = s.bbox),
+          (i.x = ((i.x - a[0].x) / (a[1].x - a[0].x)) * s.width * this.scale),
+          (i.y =
+            ((i.y - a[0].y) / (a[1].y - a[0].y)) * s.height * this.scale),
+        {
+          x: i.x + this.transX * this.scale + s.left * this.scale,
+          y: i.y + this.transY * this.scale + s.top * this.scale,
+        })
+      );
+    },
+    getInsetForPoint: function (t, e) {
+      var i,
+        s,
+        a = z.maps[this.params.map].insets;
+      for (i = 0; i < a.length; i++)
+        if (
+          t > (s = a[i].bbox)[0].x &&
+          t < s[1].x &&
+          e > s[0].y &&
+          e < s[1].y
+        )
+          return a[i];
+    },
+    getMarkerPosition: function (t) {
+      var e = t.coords;
+      return z.maps[this.params.map].projection
+        ? this.coordsToPoint.apply(this, e)
+        : {
+          x: e[0] * this.scale + this.transX * this.scale,
+          y: e[1] * this.scale + this.transY * this.scale,
+        };
+    },
+    repositionLines: function () {
+      var t = !1,
+        e = !1;
+      for (var i in this.lines) {
+        for (var s in this.markers) {
+          var a = this.markers[s];
+          a.config.name === this.lines[i].config.from &&
+            (t = this.getMarkerPosition(a.config)),
+            a.config.name === this.lines[i].config.to &&
+            (e = this.getMarkerPosition(a.config));
         }
-      },
-      repositionMarkers: function () {
-        var t;
-        for (var e in this.markers)
-          !1 !== (t = this.getMarkerPosition(this.markers[e].config)) &&
-            this.markers[e].element.setStyle({
-              cx: t.x,
-              cy: t.y,
-            });
-      },
-      repositionLabels: function () {
-        var t = this.params.labels;
-        if (t) {
-          if (t.regions)
-            for (var e in this.regions)
-              this.regions[e].element.updateLabelPosition();
-          if (t.markers)
-            for (var i in this.markers)
-              this.markers[i].element.updateLabelPosition();
-        }
-      },
-      visualizeData: function (t) {
-        f.isObj(t) && (this.dataVisualization = new L(t, this));
-      },
-    }),
+        !1 !== t &&
+          !1 !== e &&
+          this.lines[i].element.setStyle({
+            x1: t.x,
+            y1: t.y,
+            x2: e.x,
+            y2: e.y,
+          });
+      }
+    },
+    repositionMarkers: function () {
+      var t;
+      for (var e in this.markers)
+        !1 !== (t = this.getMarkerPosition(this.markers[e].config)) &&
+          this.markers[e].element.setStyle({
+            cx: t.x,
+            cy: t.y,
+          });
+    },
+    repositionLabels: function () {
+      var t = this.params.labels;
+      if (t) {
+        if (t.regions)
+          for (var e in this.regions)
+            this.regions[e].element.updateLabelPosition();
+        if (t.markers)
+          for (var i in this.markers)
+            this.markers[i].element.updateLabelPosition();
+      }
+    },
+    visualizeData: function (t) {
+      f.isObj(t) && (this.dataVisualization = new L(t, this));
+    },
+  }),
     A = {
       onViewportChange: "viewport:changed",
       onRegionSelected: "region:select",
@@ -1536,8 +1536,8 @@
       function t(e) {
         if (
           (void 0 === e && (e = {}),
-          (this.params = f.mergeDeeply(t.defaults, e)),
-          !t.maps[this.params.map])
+            (this.params = f.mergeDeeply(t.defaults, e)),
+            !t.maps[this.params.map])
         )
           throw new Error("Attempt to use map which was not loaded: " + e.map);
         (this.mapData = t.maps[this.params.map]),
@@ -1558,9 +1558,9 @@
           "loading" !== window.document.readyState
             ? this.init(e.selector)
             : window.addEventListener(
-                "DOMContentLoaded",
-                this.init.bind(this, e.selector),
-              );
+              "DOMContentLoaded",
+              this.init.bind(this, e.selector),
+            );
       }
       var e = t.prototype;
       return (
@@ -1583,23 +1583,23 @@
             e.focusOn && this.setFocus(e.focusOn),
             e.visualizeData && this.visualizeData(e.visualizeData),
             e.bindTouchEvents &&
-              ("ontouchstart" in window ||
-                (window.DocumentTouch && document instanceof DocumentTouch)) &&
-              this.bindContainerTouchEvents(),
+            ("ontouchstart" in window ||
+              (window.DocumentTouch && document instanceof DocumentTouch)) &&
+            this.bindContainerTouchEvents(),
             e.series &&
-              (this.container
-                .append(
-                  (this.legendHorizontal = f.createElement(
-                    "div",
-                    "jvm-series-container jvm-series-h",
-                  )),
-                )
-                .append(
-                  (this.legendVertical = f.createElement(
-                    "div",
-                    "jvm-series-container jvm-series-v",
-                  )),
-                ),
+            (this.container
+              .append(
+                (this.legendHorizontal = f.createElement(
+                  "div",
+                  "jvm-series-container jvm-series-h",
+                )),
+              )
+              .append(
+                (this.legendVertical = f.createElement(
+                  "div",
+                  "jvm-series-container jvm-series-v",
+                )),
+              ),
               this.createSeries()),
             this.emit("map:loaded", [this]);
         }),
@@ -1686,9 +1686,9 @@
               this.series[t][e].clear();
           this.legendHorizontal &&
             (f.removeElement(this.legendHorizontal),
-            (this.legendHorizontal = null)),
+              (this.legendHorizontal = null)),
             this.legendVertical &&
-              (f.removeElement(this.legendVertical),
+            (f.removeElement(this.legendVertical),
               (this.legendVertical = null)),
             (this.scale = this.baseScale),
             (this.transX = this.baseTransX),
@@ -1709,11 +1709,11 @@
               s(i[t].selector, t, i[t].handler);
             }),
             t &&
-              n(this).forEach(function (t) {
-                try {
-                  delete e[t];
-                } catch (t) {}
-              });
+            n(this).forEach(function (t) {
+              try {
+                delete e[t];
+              } catch (t) { }
+            });
         }),
         (e.extend = function (e, i) {
           t.prototype[e] = i;

@@ -56,14 +56,14 @@ class AvailabilityImpact(str, Enum):
 
 
 class Values(IntEnum):
-    R = 0
-
     N = 1
-    H = 2
-    L = 3
+    L = 2
+    H = 3
 
-    U = 4
-    C = 5
+    R = 4
+
+    U = 5
+    C = 6
 
 
 class CVSSRecordV3():
@@ -82,6 +82,13 @@ class CVSSRecordV3():
             self.vector_string_attributes[tmp[0]] = tmp[1]
 
     def meets(self, rule: BaseMetricAttributes) -> bool:
+        """
+        Checks if Category meets Rule conditions: 
+        e.g - Rule(AC.HIGH) = I want to know about vulnerabilities 
+        that are complex to perform (attack complexity = HIGH),
+        will meet all Categories with AC.HIGH or(!) AC.LOW
+        (because they are easier to perform)
+        """
         if not rule.vector_string_attributes:
             return False
 
@@ -89,13 +96,13 @@ class CVSSRecordV3():
             rule_val = rule.vector_string_attributes[key]
             self_val = self.vector_string_attributes[key]
             if key == "AV":
-                if rule_val != self_val:
+                if self_val != rule_val:
                     return False
-            elif key == "AC" or key == "PR":
-                if Values[rule_val] < Values[self_val]:
+            elif key == "AC" or key == "PR" or key == "UI":
+                if Values[self_val] > Values[rule_val]:
                     return False
             else:
-                if Values[rule_val] > Values[self_val]:
+                if Values[self_val] < Values[rule_val]:
                     return False
         return True
 
