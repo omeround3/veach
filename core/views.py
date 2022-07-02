@@ -24,11 +24,11 @@ class Login(ObtainAuthToken):
     """
     Authenticates a sudo user and returns authorization token
     based on existing django superuser
-    
+
     * Requires sudo username and password.
     """
     serializer_class = AuthTokenSerializer
-    
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -38,17 +38,25 @@ class Login(ObtainAuthToken):
         authenticator = Authenticator(username, password)
         if authenticator.authenticated:
             logger.info(f'[LOGIN] User authenticated successfully')
-            token = Token.objects.get(user="veach")
-            content = {
-                'token': token.key
-            }
+            try:
+                user = User.objects.get(username="veach")
+            except User.DoesNotExist as err:
+                logger.error(f"[LOGIN] User 'veach' doesn't exists \n {err}", exc_info=True)
+            if user:
+                try:
+                    token = Token.objects.get(user=user)
+                    content = {
+                        'token': token.key
+                    }
+                except Token.DoesNotExist as err:
+                    logger.error(f"[LOGIN] Token for user 'veach' doesn't exists \n {err}", exc_info=True)
         else:
             logger.info(f'[LOGIN] User was not authenticated')
             content = {
                 'token': 'null'
             }
         return Response(content)
-    
+
 
 @api_view(['GET'])
 def cve_db_info(request: Request):
