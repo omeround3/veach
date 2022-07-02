@@ -65,7 +65,7 @@ import ProjectCard from "./components/ProjectCard.vue";
 // import userState from "@/store/user-state";
 // import api from "@/api/veach-api";
 import Constants from "../utils/constants";
-import userState from "@/store/user-state";
+// import userState from "@/store/user-state";
 
 const API_ROOT_URL = Constants.API_ROOT_URL;
 const API_PORT = Constants.API_PORT;
@@ -95,15 +95,14 @@ export default {
       config: {
         headers: {
           'Accept': "application/json",
-          // 'Authorization': `Token ${this.token}`,
-          'Authorization': "Token f789e11d38e9e47b8952e2858a5c3b48bdf987b5",
+          'Authorization': `Token ${window.localStorage.getItem("token")}`,
         },
       },
     };
     
   },
   async created() {
-    // await this.setToken();
+    this.token = window.localStorage.getItem("token");
     console.log(`Dashboard::Token ${this.token}`);
     this.totalCategoriesCard = {
       text: "Total Vulnerabilities Categories",
@@ -130,12 +129,6 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
-    async setToken() {
-      return new Promise((resolve) => {
-        this.token = userState.getters.getToken;
-        resolve()
-      })
-    },
     async getIsScanning() {
       var element = this;
       const res = await axios.get(
@@ -187,7 +180,6 @@ export default {
     },
     async getCveCategories() {
       var element = this;
-      console.log(`config: ${JSON.stringify(this.config)}`);
       await axios
         .get(`${API_ROOT_URL}:${API_PORT}/api/cve_categories`, )
         .then(function (res) {
