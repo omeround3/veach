@@ -62,6 +62,8 @@ $warning: #fb8c00 !default;
 $danger: #f44335 !default;
 $light: $gray-200 !default;
 $dark: $h-color !default;
+$veach-red: #A80030 !default;
+$veach-bg: #F7F7F7 !default;
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
@@ -74,6 +76,8 @@ $theme-colors: (
   "light": $light,
   "dark": $dark,
   "white": $white,
+  "veach-red": $veach-red,
+  "veach-bg": $veach-bg,
 ) !default;
 // scss-docs-end theme-colors-map
 

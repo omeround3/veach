@@ -1,16 +1,18 @@
 import threading
 from core import orchestrator
 from core.db import sync_collections
+from core.authenticator.authenticator import Authenticator
 from core.encoder import VEACHEncoder
-from core.obj.cpe_record import CPERecord
 from core.orchestrator.orchestrator import Orchetrator
-from core.serializers import UserSerializer, GroupSerializer
+from core.serializers import UserSerializer, GroupSerializer, AuthTokenSerializer
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import status, viewsets, permissions
+from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.authtoken.views import ObtainAuthToken
 import json
 import logging
 import csv
@@ -62,6 +64,46 @@ def num_of_components(request: Request):
     output = {'num': len(cpe_uris)}
 
     return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
+
+
+class Login(ObtainAuthToken):
+    """
+    Authenticates a sudo user and returns authorization token
+    based on existing django superuser
+
+    * Requires sudo username and password.
+    """
+    serializer_class = AuthTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+        logger.debug(f'[LOGIN] User {username} and password {password}')
+        authenticator = Authenticator(username, password)
+        if authenticator.authenticated:
+            logger.info(f'[LOGIN] User authenticated successfully')
+            try:
+                user = User.objects.get(username="veach")
+            except User.DoesNotExist as err:
+                logger.error(
+                    f"[LOGIN] User 'veach' doesn't exists \n {err}", exc_info=True)
+            if user:
+                try:
+                    token = Token.objects.get(user=user)
+                    content = {
+                        'token': token.key
+                    }
+                except Token.DoesNotExist as err:
+                    logger.error(
+                        f"[LOGIN] Token for user 'veach' doesn't exists \n {err}", exc_info=True)
+        else:
+            logger.info(f'[LOGIN] User was not authenticated')
+            content = {
+                'token': 'null'
+            }
+        return Response(content)
 
 
 @api_view(['GET'])

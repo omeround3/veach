@@ -1,6 +1,7 @@
 from core import views
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.authtoken import views as drf_views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -15,6 +16,6 @@ urlpatterns = [
     path('num_of_components', views.num_of_components, name='num_of_components'),
     path('mitigate', views.mitigate, name='mitigate'),
     path('is_scanning', views.is_scanning, name='is_scanning'),
-    # path('test_run', views.test_run, name='test_run'),
-    # path('test_get', views.test_get, name='test_get'),
+    path('login/', views.Login.as_view()),
+    path('api-token-auth/', drf_views.obtain_auth_token)
 ]

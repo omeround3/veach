@@ -1,37 +1,35 @@
 <template>
-  <navbar btnBackground="bg-gradient-success" />
-  <div
-    class="page-header align-items-start min-vh-100"
-    style="
-      background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');
-    "
-  >
-    <span class="mask bg-gradient-dark opacity-6"></span>
+  <div class="page-header align-items-start min-vh-100 bg-veach-red">
+    <span class="mask bg-gradient-dark opacity-7"></span>
     <div class="container my-auto">
+      <div class="row">
+        <div class="mx-auto w-40">
+          <img
+            src="@/assets/img/logos/veach-transperent.png"
+            class="img-fluid"
+            alt="VEACH"
+          />
+        </div>
+      </div>
       <div class="row">
         <div class="col-lg-4 col-md-8 col-12 mx-auto">
           <div class="card z-index-0 fadeIn3 fadeInBottom">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div
-                class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1"
-              >
-                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+              <div class="bg-veach-bg shadow-dark border-radius-lg py-3 pe-1">
+                <h4
+                  class="text-veach-red font-weight-bolder text-center mt-2 mb-0"
+                >
                   Sign in
                 </h4>
                 <div class="row mt-3">
-                  <div class="col-2 text-center ms-auto">
-                    <a class="btn btn-link px-3" href="javascript:;">
-                      <i class="fab fa-facebook text-white text-lg"></i>
-                    </a>
-                  </div>
-                  <div class="col-2 text-center px-1">
-                    <a class="btn btn-link px-3" href="javascript:;">
-                      <i class="fab fa-github text-white text-lg"></i>
-                    </a>
-                  </div>
-                  <div class="col-2 text-center me-auto">
-                    <a class="btn btn-link px-3" href="javascript:;">
-                      <i class="fab fa-google text-white text-lg"></i>
+                  <div class="text-center ms-auto">
+                    <a
+                      class=""
+                      href="https://jumpcloud.com/blog/how-to-create-a-new-sudo-user-manage-sudo-access-on-ubuntu-20-04"
+                    >
+                      <p class="text-veach-red text-lg">
+                        Please sign in with a sudo user
+                      </p>
                     </a>
                   </div>
                 </div>
@@ -41,10 +39,12 @@
               <form role="form" class="text-start mt-3">
                 <div class="mb-3">
                   <material-input
-                    id="email"
-                    type="email"
-                    label="Email"
-                    name="email"
+                    id="username"
+                    type="username"
+                    label="username"
+                    name="username"
+                    @input="onUserInput"
+                    @keyup.enter="onLoginClicked"
                   />
                 </div>
                 <div class="mb-3">
@@ -53,28 +53,25 @@
                     type="password"
                     label="Password"
                     name="password"
+                    @input="onPassInput"
+                    @keyup.enter="onLoginClicked"
                   />
                 </div>
                 <material-switch id="rememberMe" name="rememberMe"
                   >Remember me</material-switch
                 >
                 <div class="text-center">
-                  <material-button
-                    class="my-4 mb-2"
-                    variant="gradient"
-                    color="success"
-                    fullWidth
-                    >Sign in</material-button
+                  <button
+                    type="button"
+                    class="btn w-100 mb-2 bg-gradient-dark active"
+                    @click="onLoginClicked"
                   >
+                    Sign in
+                  </button>
                 </div>
-                <p class="mt-4 text-sm text-center">
-                  Don't have an account?
-                  <router-link
-                    :to="{ name: 'SignUp' }"
-                    class="text-success text-gradient font-weight-bold"
-                    >Sign up</router-link
-                  >
-                </p>
+                <div class="h-20 text-center">
+                  {{ loginErrorMessage }}
+                </div>
               </form>
             </div>
           </div>
@@ -89,12 +86,12 @@
               © {{ new Date().getFullYear() }}, made with
               <i class="fa fa-heart" aria-hidden="true"></i> by
               <a
-                href="https://www.creative-tim.com"
+                href="https://github.com/omeround3/veach"
                 class="font-weight-bold text-white"
                 target="_blank"
-                >Creative Tim</a
+                >VEACH Team</a
               >
-              for a better web.
+              for better security.
             </div>
           </div>
           <div class="col-12 col-md-6">
@@ -103,31 +100,15 @@
             >
               <li class="nav-item">
                 <a
-                  href="https://www.creative-tim.com"
+                  href="https://github.com/omeround3/veach"
                   class="nav-link text-white"
                   target="_blank"
-                  >Creative Tim</a
+                  ><i class="fa fa-github"></i> GitHub</a
                 >
               </li>
               <li class="nav-item">
                 <a
-                  href="https://www.creative-tim.com/presentation"
-                  class="nav-link text-white"
-                  target="_blank"
-                  >About Us</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  href="https://www.creative-tim.com/blog"
-                  class="nav-link text-white"
-                  target="_blank"
-                  >Blog</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  href="https://www.creative-tim.com/license"
+                  href="https://github.com/omeround3/veach/blob/main/LICENSE"
                   class="nav-link pe-0 text-white"
                   target="_blank"
                   >License</a
@@ -142,19 +123,25 @@
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
 import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
-import MaterialButton from "@/components/MaterialButton.vue";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
+import userState from "@/store/user-state";
+import api from "@/api/veach-api";
 
 export default {
   name: "sign-in",
   components: {
-    Navbar,
     MaterialInput,
     MaterialSwitch,
-    MaterialButton,
+  },
+  data() {
+    return {
+      username: null,
+      password: null,
+      loginError: false,
+      loginErrorMessage: "",
+    };
   },
   beforeMount() {
     this.toggleEveryDisplay();
@@ -164,8 +151,52 @@ export default {
     this.toggleEveryDisplay();
     this.toggleHideConfig();
   },
+  computed: {
+  },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    ...mapActions(["login"]),
+    onUserInput: function (input) {
+      this.username = input.target.value;
+    },
+    onPassInput: function (input) {
+      this.password = input.target.value;
+    },
+    onLoginClicked() {
+      if (!this.username || !this.password) {
+        this.DisplayLoginError();
+      } else {
+        let response = api.login(this.username, this.password);
+        response.then((token) => {
+          if (token != "null") {
+            this.login({
+              username: this.username,
+              password: this.password,
+              token: token,
+            });
+            if (userState.getters.isLoggedIn) {
+              this.$router.push("/")
+            }
+          } else {
+            this.loginErrorMessage =
+              "User and/or password does not match, check your credentials.";
+          }
+        });
+      }
+    },
+    DisplayLoginError() {
+      let emptyName = this.username == null || this.username == "";
+      let emptyPass = this.password == null || this.password == "";
+
+      if (!emptyName && !emptyPass)
+        this.loginErrorMessage =
+          "User and/or password does not match, check your credentials.";
+      else if (emptyName && !emptyPass)
+        this.loginErrorMessage = "Username is required.";
+      else if (!emptyName && emptyPass)
+        this.loginErrorMessage = "Password is required.";
+      else this.loginErrorMessage = "Username & Password are required.";
+    },
   },
 };
 </script>
