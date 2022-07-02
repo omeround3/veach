@@ -1,7 +1,6 @@
 from collections import defaultdict
 import configparser
 from gc import collect
-from msilib.schema import Error
 
 from core.errors import MissingConfigFileOption, MissingConfigFileSection
 from core.matcher.enums import CPEAttributes
@@ -15,7 +14,7 @@ class Matcher:
 
     def __init__(self, database: database.Database = None) -> None:
         self._database = database
-        self.matches: dict[str, set[CVERecord]] = defaultdict(set)
+        #self.matches: dict[str, set[CVERecord]] = defaultdict(set)
 
-    def match(self, cpe: str):
+    def match(self, cpe_uri: str):
         pass

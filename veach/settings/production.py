@@ -17,6 +17,20 @@ DEBUG = os.getenv("DEBUG", False)
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS",
                           "127.0.0.1,localhost,0.0.0.0").split(",")
 
+# Database
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'remote-db',
+#         'CLIENT': {
+#             'host': 'mongodb+srv://veach:gfFVGjpGfeayd3Qe@cluster0.gnukl.mongodb.net/?retryWrites=true&w=majority',
+#             'name': 'mytestdb',
+#             'authMechanism': 'SCRAM-SHA-1'
+#         }
+#     }
+# }
 
 ##### Security Settings #####
 # CSRF_COOKIE_SECURE = True

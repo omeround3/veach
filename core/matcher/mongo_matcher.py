@@ -49,7 +49,7 @@ class MongoMatcher(Matcher):
         """
         cve_matches = None
         cpe_matches: set[CPERecord] = set()
-
+        matches: dict[str, set[CVERecord]] = defaultdict(set)
         if cpe_uri in self.matches_cache.keys():
             start = time.time()
             for s in self.matches_cache[cpe_uri]:
@@ -59,22 +59,21 @@ class MongoMatcher(Matcher):
             start = time.time()
             cpe_matches = self._get_cpe_matches_by_name(cpe_uri)
             end = time.time()
-            self.matches_cache[cpe_uri] = {
-                x._generated_id for x in cpe_matches}
-        print(f"Get CPE: {end-start}")
+            self.matches_cache[cpe_uri] = {x._generated_id for x in cpe_matches}
+        #print(f"Get CPE: {end-start}")
         if cpe_matches:
             for cpe_match in cpe_matches:
                 start = time.time()
                 cve_matches = list(self._get_cve_matches(cpe_match))
                 end = time.time()
-                print(f"Get CVE: {end-start}")
+                #print(f"Get CVE: {end-start}")
                 if cve_matches:
                     cve_matches = list(
                         map(lambda x: CVERecord(x), cve_matches))
                     for cve_match in cve_matches:
-                        self.matches[cpe_uri].add(cve_match)
+                        matches[cpe_uri].add(cve_match)
         self._save_cache()
-        return cve_matches
+        return matches
 
     def _save_cache(self) -> None:
         """saves last_match dictionary to file"""
@@ -178,3 +177,11 @@ class MongoMatcher(Matcher):
             cpe = cpe.replace(suffix_match.group(
                 0), ":.*")
         return {"$regex": '^'+cpe}
+
+    def get_cve_collection_info(self) -> dict:
+        """
+        Returns info about the CVE collection"""
+        info = {}
+        info['size'] = self._database.command(
+            "collstats", self._cve_collection_name)['count']
+        return info
