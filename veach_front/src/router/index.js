@@ -7,7 +7,7 @@ import Notifications from "../views/Notifications.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
-import userState from "@/store/user-state";
+import store from "@/store/index";
 
 const routes = [
   {
@@ -17,33 +17,45 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    children: [
-      {
-        path: "/tables/:id",
-        name: "Tables",
-        component: Tables,
-      },
-      {
-        path: "/billing",
-        name: "Billing",
-        component: Billing,
-      },
-      {
-        path: "/rtl-page",
-        name: "RTL",
-        component: RTL,
-      },
-      {
-        path: "/notifications",
-        name: "Notifications",
-        component: Notifications,
-      },
-      {
-        path: "/profile",
-        name: "Profile",
-        component: Profile,
-      },
-    ]
+  },
+  {
+    path: "/tables",
+    name: "Tables",
+    component: Tables,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: "/tables/:id",
+    name: "Tables",
+    component: Tables,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: "/billing",
+    name: "Billing",
+    component: Billing,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: "/rtl-page",
+    name: "RTL",
+    component: RTL,
+  },
+  {
+    path: "/notifications",
+    name: "Notifications",
+    component: Notifications,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
   },
   {
     path: "/dashboard",
@@ -75,12 +87,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const user = userState
   if (to.meta.requiresAuth) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    console.log(`isLogged: ${user.getters.isLoggedIn}`);
-    if (!user.getters.isLoggedIn) {
+    console.log(`isLogged: ${store.getters.isLoggedIn}`);
+    if (!store.getters.isLoggedIn) {
       next({ name: 'SignIn' })
     } else {
       next() // go to wherever I'm going

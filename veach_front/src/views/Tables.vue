@@ -78,6 +78,10 @@
 
 <script>
 import axios from 'axios'
+import Constants from "../utils/constants";
+
+const API_ROOT_URL = Constants.API_ROOT_URL;
+const API_PORT = Constants.API_PORT;
 
 export default {
   name: "tables",
@@ -85,10 +89,18 @@ export default {
     return {
       category: {},
       records: [],
-      category_id: null
+      category_id: null,
+      config: {
+        headers: {
+          'Accept': "application/json",
+          'Authorization': `Token ${window.localStorage.getItem("token")}`,
+        },
+      },
+      token: null,
     }
   },
   created() {
+    this.token = window.localStorage.getItem("token");
     var id = this.$route.params.id
     id = id.replaceAll("-", "/")
     console.log(id)
@@ -104,7 +116,7 @@ export default {
     async getMitigation(cpe) {
       var element = this
       console.log(cpe);
-      const res = await axios.post('http://127.0.0.1:8000/api/mitigate', { "cpe23Uri": cpe })
+      const res = await axios.post(`${API_ROOT_URL}:${API_PORT}/api/mitigate`, { "cpe23Uri": cpe }, this.config)
       if (res) {
         if (res.data !== null) {
           for (let [key, value] of Object.entries(res.data)) {
@@ -132,12 +144,7 @@ export default {
     async getCategory(id) {
       this.category_id = id
       var element = this
-      let config = {
-        headers: {
-          'Accept': 'application/json'
-        }
-      }
-      const res = await axios.get('http://127.0.0.1:8000/api/cve_categories', config)
+      const res = await axios.get(`${API_ROOT_URL}:${API_PORT}/api/cve_categories`, this.config)
       if (res) {
         element.category = res.data[id]
         Object.values(res.data[id].affected_records).forEach(record => {

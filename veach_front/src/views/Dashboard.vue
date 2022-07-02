@@ -65,7 +65,6 @@ import ProjectCard from "./components/ProjectCard.vue";
 // import userState from "@/store/user-state";
 // import api from "@/api/veach-api";
 import Constants from "../utils/constants";
-// import userState from "@/store/user-state";
 
 const API_ROOT_URL = Constants.API_ROOT_URL;
 const API_PORT = Constants.API_PORT;
@@ -181,7 +180,7 @@ export default {
     async getCveCategories() {
       var element = this;
       await axios
-        .get(`${API_ROOT_URL}:${API_PORT}/api/cve_categories`, )
+        .get(`${API_ROOT_URL}:${API_PORT}/api/cve_categories`, this.config)
         .then(function (res) {
           if (res.status == 200) {
             let numOfCVERecordsFound = 0;

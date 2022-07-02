@@ -19,6 +19,9 @@ export default createStore({
     navbarFixed:
       "position-sticky blur shadow-blur left-auto top-1 z-index-sticky px-0 mx-4",
     absolute: "position-absolute px-4 mx-0 w-100 z-index-2",
+    username: null,
+    password: null,
+    token: window.localStorage.getItem("token"),
   },
   mutations: {
     toggleConfigurator(state) {
@@ -53,11 +56,44 @@ export default createStore({
     color(state, payload) {
       state.color = payload;
     },
+    setUser(state, value) {
+      state.username = value == null ? null : value;
+    },
+    setPassword(state, value) {
+      state.password = value == null ? null : value;
+    },
+    setToken(state, value) {
+      state.token = value == null ? null : value;
+    },
   },
   actions: {
     setColor({ commit }, payload) {
       commit("color", payload);
     },
+    logout: ({ commit }) => {
+      commit("setToken", null);
+      // setTimeout(() => router.push("/sign-in"), 500);
+    },
+    login({ commit }, { username, password, token }) {
+      console.log(
+        `Username ${username} | Password ${password} | Token ${token}`
+      );
+      if (token != "null") {
+        commit("setUser", username);
+        commit("setPassword", password);
+        commit("setToken", token);
+        window.localStorage.setItem("username", username);
+        window.localStorage.setItem("password", password);
+        window.localStorage.setItem("token", token);
+        // setting timeout for the store to be completed 500 milliseconds in order for user details to load before redirecting to main dashboard
+        // setTimeout(() => router.push("/"), 500);
+      }
+    },
   },
-  getters: {},
+  getters: {
+    getUsername: (state) => state.username,
+    getPassword: (state) => state.password,
+    getToken: (state) => state.token,
+    isLoggedIn: (state) => !!state.token,
+  },
 });

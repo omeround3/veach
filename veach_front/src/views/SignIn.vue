@@ -126,7 +126,7 @@
 import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import { mapMutations, mapActions } from "vuex";
-import userState from "@/store/user-state";
+// import userState from "@/store/user-state";
 import api from "@/api/veach-api";
 
 export default {
@@ -174,8 +174,8 @@ export default {
               password: this.password,
               token: token,
             });
-            if (userState.getters.isLoggedIn) {
-              this.$router.push("/")
+            if (this.$store.getters.isLoggedIn) {
+              setTimeout(() => this.$router.push("/"), 300);
             }
           } else {
             this.loginErrorMessage =
