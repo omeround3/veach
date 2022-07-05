@@ -1,6 +1,16 @@
 # from uuid import uuid4
 # from django.db import models
-# # Create your models here
+from djongo import models
+# Create your models here
+
+class SyncMeta(models.Model):
+    DATA_CHOICES = (
+        (1, 'CVE'),
+        (2, 'CPE')
+    )
+
+    type = models.IntegerField(choices=DATA_CHOICES, default='CVE')
+    last_modified_date = models.DateTimeField(auto_now_add=True)
 
 
 # class CPERecordModel(models.Model):

@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from core.db.db_init import init_db
 
 
 class CoreConfig(AppConfig):
@@ -7,3 +8,4 @@ class CoreConfig(AppConfig):
 
     def ready(self):
         import core.signals
+        init_db()
