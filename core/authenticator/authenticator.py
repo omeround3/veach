@@ -1,4 +1,5 @@
 import subprocess
+from tempfile import TemporaryFile
 
 
 class Authenticator:
@@ -20,19 +21,20 @@ class Authenticator:
 
         sudos = subprocess.Popen(
             ["cut", "-d", ":", "-f", "4"], stdin=grep.stdout, stdout=subprocess.PIPE)
+
         sudo_list = sudos.communicate()[0].decode(
-            "utf-8").replace("/n", "").split(",")
-
-        password = subprocess.Popen(
-            ["echo", self.password], stdout=subprocess.PIPE)
-
+            "utf-8").replace("\n", "").split(",")
+        result = None
         if self.username in sudo_list:
             subprocess.Popen(
                 ["sudo", "-k"], stdout=subprocess.PIPE).communicate()
 
-            login = subprocess.Popen(
-                ["sudo", "-S", "echo", "I AM SUDO"], stdin=password.stdout, stdout=subprocess.PIPE)
+            password = subprocess.Popen(
+                ["echo", self.password], stdout=subprocess.PIPE)
 
-            result = login.communicate()[0].decode("utf-8")
-            if result == "I AM SUDO\n":
-                self.authenticated = True
+            login = subprocess.Popen(
+                ["sudo", "-S", "echo", "I AM SUDO"], stdin=password.stdout, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+
+        result = login.communicate()[0].decode("utf-8")
+        if result == "I AM SUDO\n":
+            self.authenticated = True

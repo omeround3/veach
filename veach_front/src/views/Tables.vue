@@ -42,7 +42,7 @@
               ) of records" :key="index">
                     <td>
                       <div class="d-flex px-3">
-                        <h6 class="mb-0 text-sm">{{ id }}</h6>
+                        <h6 class="mb-0 text-sm"><a :href="'https://www.cvedetails.com/cve/' + id">{{ id }}</a></h6>
                       </div>
                     </td>
                     <td>
@@ -115,7 +115,11 @@ export default {
   {
     async getMitigation(cpe) {
       var element = this
-      console.log(cpe);
+      this.records.forEach(record => {
+        if (record.cpe === cpe) {
+          record.mitigate = "..."
+        }
+      })
       const res = await axios.post(`${API_ROOT_URL}:${API_PORT}/api/mitigate`, { "cpe23Uri": cpe }, this.config)
       if (res) {
         if (res.data !== null) {

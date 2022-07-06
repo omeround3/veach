@@ -9,13 +9,14 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="tables" navText="Mitigation Panel">
+      <!-- <li class="nav-item">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="tables"
+          navText="Mitigation Panel">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">assignment</i>
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
       <!-- <li class="nav-item">
         <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="billing" navText="Billing">
           <template v-slot:icon>
@@ -59,7 +60,8 @@
         </sidenav-collapse>
       </li> -->
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/sign-in" navText="Logout" @click="onLogoutClicked">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="/sign-in" navText="Logout"
+          @click="onLogoutClicked">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">logout</i>
           </template>
