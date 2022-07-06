@@ -1,6 +1,7 @@
+from os import sync
 import threading
 from core import orchestrator
-from core.db import sync_collections
+from core.db.sync_db import SyncDb
 from core.authenticator.authenticator import Authenticator
 from core.encoder import VEACHEncoder
 from core.orchestrator.orchestrator import Orchetrator
@@ -9,7 +10,7 @@ from django.contrib.auth.models import User, Group
 from django.http import HttpResponse
 from rest_framework import status, viewsets, permissions, authentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -173,17 +174,29 @@ def cve_categories(request: Request):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
+@authentication_classes([BasicAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def sync_db(request: Request, format=None):
-    content = {
-        'sync-status': False
-    }
+    """
+    API get endpoint to trigger local database synchronization
+    """
 
-    if sync_collections.dump(["cvedetails", "cpematches"]) \
-            and sync_collections.restore(["cvedetails", "cpematches"]):
-        content['sync-status'] = True
-    return Response(data=content)
+    sync_db = SyncDb.instance()
+    content = {
+        'is_syncing': SyncDb.is_syncing,
+        'state': sync_db.state,
+        'is_synced': SyncDb.is_synced
+    }
+    # if not SyncDb.is_synced:
+        # if not SyncDb.is_syncing:
+    #         content['is_syncing'] = SyncDb.is_syncing
+    #         content['state'] = sync_db.state
+    #     else:
+    #         content['is_syncing'] = SyncDb.is_syncing
+    #         content['state'] = sync_db.state
+    # else:
+    #     content['is_synced'] = SyncDb.is_synced
+    return Response(data=content, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -1,15 +1,18 @@
-# from uuid import uuid4
+from uuid import uuid4
 # from django.db import models
 from djongo import models
 # Create your models here
 
 class SyncMeta(models.Model):
-    DATA_CHOICES = (
-        (1, 'CVE'),
-        (2, 'CPE')
-    )
+    CVE = 'CVE'
+    CPE = 'CPE'
+    DATA_CHOICES = [
+        (CVE, ('CVE')),
+        (CPE, ('CPE'))
+    ]
 
-    type = models.IntegerField(choices=DATA_CHOICES, default='CVE')
+    _id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    type = models.IntegerField(choices=DATA_CHOICES, default=1)
     last_modified_date = models.DateTimeField(auto_now_add=True)
 
 

@@ -9,7 +9,7 @@ from core.scanner.hardware import Hardware
 from core.parser.parser import Parser
 from core.matcher.mongo_matcher import MongoMatcher
 from core.analyser.analyser import Analyser
-from core.db.db_utils import *
+from core.db.db_utils import get_local_db, get_remote_db
 from core.mitigator.mitigator import Mitigator
 
 
