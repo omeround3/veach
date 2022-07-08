@@ -11,6 +11,7 @@ from pymongo import database
 import re
 
 
+
 class MongoMatcher(Matcher):
 
     def __init__(self, database: database.Database, cpe_collection: str, cve_collection: str) -> None:
@@ -44,7 +45,7 @@ class MongoMatcher(Matcher):
     def match(self, cpe_uri: str) -> dict:
         """
         match CPE URI to CVE records and place results in "matches" dictionary
-        :param cpe_uri: a cpe string 
+        :param cpe_uri: a cpe string
         :return: dictionary [cpe_uri : cve_matches]
         """
         cve_matches = None
@@ -61,13 +62,13 @@ class MongoMatcher(Matcher):
             end = time.time()
             self.matches_cache[cpe_uri] = {
                 x._generated_id for x in cpe_matches}
-        #print(f"Get CPE: {end-start}")
+        # print(f"Get CPE: {end-start}")
         if cpe_matches:
             for cpe_match in cpe_matches:
                 start = time.time()
                 cve_matches = list(self._get_cve_matches(cpe_match))
                 end = time.time()
-                #print(f"Get CVE: {end-start}")
+                # print(f"Get CVE: {end-start}")
                 if cve_matches:
                     cve_matches = list(
                         map(lambda x: CVERecord(x), cve_matches))

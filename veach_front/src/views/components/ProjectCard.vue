@@ -14,7 +14,8 @@
           <thead>
             <tr>
               <th v-for="(heading, index) of headers" :key="index"
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                style="white-space: pre-wrap;">
                 {{ heading }}
               </th>
             </tr>
@@ -24,8 +25,10 @@
                 {
                 vector,
                 complexity,
-                severity,
                 score,
+                confidentiality,
+                integrity,
+                availability,
                 size,
                 critical,
                 string
@@ -33,35 +36,49 @@
                 index
               ) of projects" :key="index" @click="goTo(string)">
               <td>
-                <div class="d-flex px-2 py-1 border-dark">
+                <div class="d-flex ps-3 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ vector }}</h6>
                   </div>
                 </div>
               </td>
               <td>
-                <div class="d-flex px-2 py-1">
+                <div class="d-flex ps-3 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ complexity }}</h6>
                   </div>
                 </div>
               </td>
               <td>
-                <div class="d-flex px-2 py-1">
+                <div class="d-flex ps-3 py-1">
                   <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">{{ severity }}</h6>
+                    <h6 class="mb-0 text-sm">{{ confidentiality }}</h6>
                   </div>
                 </div>
               </td>
               <td>
-                <div class="d-flex px-2 py-1">
+                <div class="d-flex ps-3 py-1">
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{ integrity }}</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex ps-3 py-1">
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{ availability }}</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex ps-3 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ score }}</h6>
                   </div>
                 </div>
               </td>
               <td>
-                <div class="d-flex px-2 py-1">
+                <div class="d-flex ps-3 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ size }}</h6>
                   </div>
@@ -94,15 +111,17 @@ export default {
     projects: {
       vector: String,
       complexity: String,
-      severity: String,
       score: Number,
       size: Number,
+      confidentiality: String,
+      integrity: String,
+      availability: String,
       critical: Boolean
     }
   },
   methods: {
     goTo(string) {
-      this.$router.push('/tables/' + string)
+      this.$router.push('/' + string)
     }
   }
 };

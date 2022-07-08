@@ -17,7 +17,7 @@ def dump(collections: str, path: str = None) -> bool:
     >>> DB_BACKUP_DIR = '/path/backups/'
     >>> collections = ['collection_name', 'collection_name1', 'collection_name2']
     >>> dump(collections, DB_BACKUP_DIR)
-    
+
     Example: sync_collections.dump(["cvedetails", "cpematches"])
     Example: sync_collections.dump(["cvedetails", "cpematches"], "/root/veach")
     """
@@ -55,6 +55,7 @@ def dump(collections: str, path: str = None) -> bool:
             f'[VEACH DB] Could not dump remote collections: {collections} | Error: {err}', exc_info=True)
     return False
 
+
 def restore(collections: str, path: str = "dump/") -> bool:
     """
     MongoDB Restore collections
@@ -80,7 +81,7 @@ def restore(collections: str, path: str = "dump/") -> bool:
             command = f'mongorestore --uri="{connection_string}" --drop --nsInclude=nvdcve.{coll} {path}'
             logger.debug(f'[VEACH DB] Running command: {command}')
             subprocess.run(["bash", "-c", command],
-                            check=True, stdout=subprocess.PIPE)
+                           check=True, stdout=subprocess.PIPE)
             logger.debug(f'[VEACH DB] Restored collection {coll}')
         logger.info(
             f'[VEACH DB] Finished restoring mongo db collections: {collections}')

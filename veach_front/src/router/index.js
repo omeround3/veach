@@ -19,15 +19,7 @@ const routes = [
     },
   },
   {
-    path: "/tables",
-    name: "Tables",
-    component: Tables,
-    meta: {
-      requiresAuth: true
-    },
-  },
-  {
-    path: "/tables/:id",
+    path: "/:id",
     name: "Tables",
     component: Tables,
     meta: {
