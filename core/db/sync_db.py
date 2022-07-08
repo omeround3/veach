@@ -11,7 +11,9 @@ logger = logging.getLogger("veach")
 
 
 class SyncDb():
-
+    """ 
+    A singleton class for syncing the local mongodb database.
+    """
     __instance = None
     is_synced = False
     is_syncing = False
