@@ -31,9 +31,6 @@ export default createStore({
       // setTimeout(() => router.push("/sign-in"), 500);
     },
     login({ commit }, { username, password, token }) {
-      console.log(
-        `Username ${username} | Password ${password} | Token ${token}`
-      );
       if (token != "null") {
         commit("setUser", username);
         commit("setPassword", password);

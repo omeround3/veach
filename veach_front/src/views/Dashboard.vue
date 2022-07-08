@@ -81,7 +81,6 @@ export default {
   },
   async created() {
     this.token = window.localStorage.getItem("token");
-    console.log(`Dashboard::Token ${this.token}`);
     this.totalCategoriesCard = {
       text: "Total Vulnerabilities Categories",
       value: "-",
@@ -117,7 +116,6 @@ export default {
         this.config
       );
       if (res) {
-        console.log(res);
         element.status = res.data["status"];
         if (element.status === "scanning") {
           element.buttonText = "SCANNING - CLICK TO STOP"
@@ -168,12 +166,19 @@ export default {
         this.totalCategories = [];
         this.isScanning = true;
         // var element = this
+        let data = {
+          username: window.localStorage.getItem("username"),
+          password: window.localStorage.getItem("password"),
+        }
         await axios
-          .get(`${API_ROOT_URL}:${API_PORT}/api/start_scan`, this.config)
+          .post(`${API_ROOT_URL}:${API_PORT}/api/start_scan`, data, this.config)
           .then(function (res) {
             if (res.status == 200) {
               element.getStatus()
             }
+          })
+          .catch((error) => {
+            console.error(error)
           });
       } else {
         this.isScanning = false;
@@ -183,6 +188,9 @@ export default {
             if (res.status != 200) {
               element.getStatus()
             }
+          })
+          .catch((error) => {
+            console.error(error)
           });
       }
     },

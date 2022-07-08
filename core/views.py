@@ -110,17 +110,21 @@ def cve_db_info(request: Request):
     return HttpResponse(json.dumps(orchestrator.get_cve_collection_info()), status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def start_scan(request: Request):
     '''
     Starts the scanning process
     '''
+    username = request.data['username']
+    password = request.data['password']
+
     global is_scanned
     if is_scanned:
         global orchestrator
         orchestrator = Orchetrator()
+    orchestrator.set_credentials(username, password)
     is_scanned = True
     orchestrator.is_scanning = True
     orchestrator.is_stopped = False
@@ -129,8 +133,11 @@ def start_scan(request: Request):
     # reader = csv.reader(csv_file, delimiter=',')
     # for row in reader:
     #     cpe_uris.append(row[0].lower())
-
+    # try:
     cpe_uris = orchestrator.invoke_scanner()
+    # except Exception as err:
+        # logger.error(f"[START SCAN] Error invoking scanner \n {err}", exc_info=True)
+        # return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
     global th
     th = threading.Thread(target=orchestrator.invoke_matcher, args=[cpe_uris])
     th.start()

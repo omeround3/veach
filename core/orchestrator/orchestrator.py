@@ -17,6 +17,8 @@ from core.authenticator.authenticator import Authenticator
 class Orchetrator:
 
     def __init__(self):
+        self.username = None
+        self.password = None
         self.is_stopped = False
         self.is_scanning = False
         self.is_matched = False
@@ -24,7 +26,7 @@ class Orchetrator:
         self.hardware_list = []
         self.invoker = Scan_Invoker()
         self.parser = Parser()
-        #self.db = get_local_db()[0]
+        # self.db = get_local_db()[0]
         # temp because no mongodb installed on this machine
         self.db = get_remote_db()[0]
         self.cpe_collection = get_settings_value(
@@ -35,7 +37,14 @@ class Orchetrator:
             self.db, self.cpe_collection, self.cve_collection)
         self.analyser = Analyser()
 
+    def set_credentials(self, username, password):
+        print(f'username: {username} | password: {password}')
+        self.username = username
+        self.password = password
+
     def _invoke_authenticator(self, username, password):
+        self.username = username
+        self.password = password
         auth = Authenticator(username, password)
         if auth.authenticated:
             return True
@@ -44,7 +53,7 @@ class Orchetrator:
 
     def invoke_scanner(self):
         """ This method will invoke software/hardware scanning and store the result in self.hardware_list & self.software_list """
-        if self._invoke_authenticator("daniel", "123456"):
+        if self._invoke_authenticator(self.username, self.password):
             if get_settings_value("SCANNER", "software"):
                 self.invoker.set_on_start(Software())
                 self.software_list = self.invoker.invoke()
