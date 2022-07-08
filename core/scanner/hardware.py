@@ -8,7 +8,6 @@ class Hardware(Scanner):
 
     def __init__(self):
         self.hardware_packages = []
-        self.password = "123456"
 
     def execute(self) -> list:
         """ 

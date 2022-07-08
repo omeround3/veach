@@ -8,7 +8,6 @@ class Software(Scanner):
 
     def __init__(self):
         self.software_packages = []
-        self.password = "123456"
 
     def execute(self) -> list:
         """
