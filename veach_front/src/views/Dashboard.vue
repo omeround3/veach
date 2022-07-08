@@ -41,7 +41,7 @@ import axios from "axios";
 import MiniStatisticsCard from "./components/MiniStatisticsCard.vue";
 import ProjectCard from "./components/ProjectCard.vue";
 // import userState from "@/store/user-state";
-// import api from "@/api/veach-api";
+import api from "@/api/veach-api";
 import Constants from "../utils/constants";
 
 const API_ROOT_URL = Constants.API_ROOT_URL;
@@ -111,10 +111,7 @@ export default {
   methods: {
     async getStatus() {
       var element = this;
-      const res = await axios.get(
-        `${API_ROOT_URL}:${API_PORT}/api/get_status`,
-        this.config
-      );
+      const res = await api.fetchScanStatus(this.config)
       if (res) {
         element.status = res.data["status"];
         if (element.status === "scanning") {

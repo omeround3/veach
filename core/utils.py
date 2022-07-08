@@ -8,10 +8,10 @@ import time
 import re
 
 cfg = configparser.ConfigParser()
-cfg.read('config.ini')
 
 
 def get_settings_value(class_name: str, key: str):
+    cfg.read('config.ini')
     class_name = class_name.upper()
     key = key.lower()
     try:
@@ -23,6 +23,20 @@ def get_settings_value(class_name: str, key: str):
             raise MissingConfigFileOption(e)
     return ret_val
 
+def set_settings_value(class_name: str, key: str, value: str) -> bool: 
+    """ Sets a settings in the config file by class_name, key and value """
+    class_name = class_name.upper()
+    key = key.lower()
+    try:
+        cfg.set(class_name, key, value)
+        with open('config.ini', 'w') as config_file:
+            cfg.write(config_file)
+        return True
+    except KeyError as e:
+        if e.args[0] == class_name:
+            raise MissingConfigFileSection(e)
+        else:
+            raise MissingConfigFileOption(e)
 
 def get_attribute(my_dict: dict, path: str):
     if not my_dict or not path:

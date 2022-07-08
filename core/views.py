@@ -1,14 +1,13 @@
-from os import sync
-import threading
 from core import orchestrator
-from core.db.sync_db import SyncDb
 from core.authenticator.authenticator import Authenticator
+from core.db.sync_db import SyncDb
 from core.encoder import VEACHEncoder
 from core.orchestrator.orchestrator import Orchetrator
 from core.serializers import UserSerializer, GroupSerializer, AuthTokenSerializer
+from core.utils import get_settings_value, set_settings_value
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, HttpResponseServerError
-from rest_framework import status, viewsets, permissions, authentication
+from rest_framework import status, viewsets, authentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 from rest_framework.authtoken.models import Token
@@ -16,14 +15,41 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.views import ObtainAuthToken
+import threading
 import json
 import logging
-import csv
 
 logger = logging.getLogger("veach")
 th = None  # thread needs to be global so we can stop the scan if we want
 is_scanned = False
 
+@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def scan_settings(request: Request):
+    """
+    GET: gets scan settings
+    POST: updates scan settings
+    """
+    content = {}
+    if request.method == 'GET':
+        content['is_scan_software'] = get_settings_value("SCANNER", "software")
+        content['is_scan_hardware'] = get_settings_value("SCANNER", "hardware")
+        return Response(data=content, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        is_scan_software = request.data['is_scan_software']
+        is_scan_hardware = request.data['is_scan_hardware']
+        
+        res1 = set_settings_value("SCANNER", "software", is_scan_software)
+        res2 = set_settings_value("SCANNER", "hardware", is_scan_hardware)
+
+        if res1 and res2:
+            content['updated_scan_software'] = res1
+            content['updated_scan_hardware'] = res2
+            content['response'] = "Updated config file successfully"
+            return Response(data=content, status=status.HTTP_200_OK)
+        else:
+            return Response(data="Couldn't update config file", status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])

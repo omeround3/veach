@@ -8,6 +8,14 @@ import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 // import SignUp from "../views/SignUp.vue";
 import store from "@/store/index";
+// import api from "@/api/veach-api";
+
+// const config = {
+//   headers: {
+//     'Accept': "application/json",
+//     'Authorization': `Token ${window.localStorage.getItem("token")}`,
+//   },
+// }
 
 const routes = [
   {
@@ -55,7 +63,8 @@ const routes = [
     name: "Settings",
     component: Profile,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresNotScanning: true
     },
   },
   {
@@ -94,7 +103,21 @@ router.beforeEach((to, from, next) => {
     console.log(`isLogged: ${store.getters.isLoggedIn}`);
     if (!store.getters.isLoggedIn) {
       next({ name: 'SignIn' })
-    } else {
+    }
+    // else if (to.meta.requiresNotScanning) {
+    //   console.log(`config in router: ${JSON.stringify(config)}`);
+    //   const res = api.fetchScanStatus(config)
+    //   console.log(`routerGuard res: ${res.data}`);
+    //   let scanStatus = res.data["status"];
+    //   store.actions.setScanStatus(scanStatus)
+    //   if (scanStatus === "scanning") {
+    //     console.log(`scan status: ${scanStatus}`);
+    //   }
+    //   else {
+    //     next() // go to wherever I'm going
+    //   }
+    // } 
+    else {
       next() // go to wherever I'm going
     }
   } else {
