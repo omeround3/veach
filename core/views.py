@@ -7,7 +7,7 @@ from core.encoder import VEACHEncoder
 from core.orchestrator.orchestrator import Orchetrator
 from core.serializers import UserSerializer, GroupSerializer, AuthTokenSerializer
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from rest_framework import status, viewsets, permissions, authentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
@@ -21,23 +21,8 @@ import logging
 import csv
 
 logger = logging.getLogger("veach")
+th = None  # thread needs to be global so we can stop the scan if we want
 is_scanned = False
-
-# @api_view(['GET'])
-# def test_run(request: Request):
-#     '''
-#     Returns info on the CVE db (size, last updated, etc..)
-#     '''
-#     test.wait()
-#     return HttpResponse({"OK": "OK"}, status=status.HTTP_200_OK)
-
-
-# @api_view(['GET'])
-# def test_get(request: Request):
-#     '''
-#     Returns info on the CVE db (size, last updated, etc..)
-#     '''
-#     return HttpResponse(json.dumps(test.get_vals()), status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -63,13 +48,14 @@ def num_of_components(request: Request):
     '''
     Returns info on the CVE db (size, last updated, etc..)
     '''
-    # output = {'num': len(orchestrator.invoke_scanner())}
-    cpe_uris = []
-    csv_file = open("core/scanner/fake_scanner.csv")
-    reader = csv.reader(csv_file, delimiter=',')
-    for row in reader:
-        cpe_uris.append(row[0].lower())
-    output = {'num': len(cpe_uris)}
+    output = {'num': len(orchestrator.software_list) +
+              len(orchestrator.hardware_list)}
+    # cpe_uris = []
+    # csv_file = open("core/scanner/fake_scanner.csv")
+    # reader = csv.reader(csv_file, delimiter=',')
+    # for row in reader:
+    #     cpe_uris.append(row[0].lower())
+    # output = {'num': len(cpe_uris)}
 
     return HttpResponse(json.dumps(output), status=status.HTTP_200_OK)
 
@@ -127,16 +113,6 @@ def cve_db_info(request: Request):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def is_scanning(request: Request):
-    '''
-    Starts the scanning process
-    '''
-    return HttpResponse(json.dumps({"is_scanning": orchestrator.is_scanning}), status=status.HTTP_200_OK)
-
-
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
 def start_scan(request: Request):
     '''
     Starts the scanning process
@@ -147,19 +123,62 @@ def start_scan(request: Request):
         orchestrator = Orchetrator()
     is_scanned = True
     orchestrator.is_scanning = True
-    cpe_uris = []
-    csv_file = open("core/scanner/fake_scanner.csv")
-    reader = csv.reader(csv_file, delimiter=',')
-    for row in reader:
-        cpe_uris.append(row[0].lower())
+    orchestrator.is_stopped = False
+    # cpe_uris = []
+    # csv_file = open("core/scanner/fake_scanner.csv")
+    # reader = csv.reader(csv_file, delimiter=',')
+    # for row in reader:
+    #     cpe_uris.append(row[0].lower())
 
-    # cpe_uris = orchestrator.invoke_scanner()
-
+    cpe_uris = orchestrator.invoke_scanner()
+    global th
     th = threading.Thread(target=orchestrator.invoke_matcher, args=[cpe_uris])
     th.start()
     th.join()
+    orchestrator.is_matched = True
     orchestrator.is_scanning = False
     return HttpResponse(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_status(request: Request):
+    '''
+    Gets the scanning status
+    '''
+    output = None
+    global orchestrator
+    if not orchestrator.is_stopped and orchestrator.is_scanning:
+        output = "scanning"
+    elif orchestrator.is_stopped and not orchestrator.is_scanning:
+        output = "stopped"
+    elif orchestrator.is_matched:
+        output = "finished"
+    else:
+        output = "new"
+
+    return HttpResponse(json.dumps({"status": output}), status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def stop_scan(request: Request):
+    '''
+    Stops the scanning process
+    '''
+    global orchestrator
+    orchestrator.is_stopped = True
+
+    while (orchestrator.is_stopped):
+        pass
+
+    global th
+    if th.is_alive():
+        return HttpResponseServerError()
+    else:
+        return HttpResponse(status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

@@ -11,12 +11,15 @@ from core.matcher.mongo_matcher import MongoMatcher
 from core.analyser.analyser import Analyser
 from core.db.db_utils import get_local_db, get_remote_db
 from core.mitigator.mitigator import Mitigator
+from core.authenticator.authenticator import Authenticator
 
 
 class Orchetrator:
 
     def __init__(self):
+        self.is_stopped = False
         self.is_scanning = False
+        self.is_matched = False
         self.software_list = []
         self.hardware_list = []
         self.invoker = Scan_Invoker()
@@ -32,22 +35,31 @@ class Orchetrator:
             self.db, self.cpe_collection, self.cve_collection)
         self.analyser = Analyser()
 
+    def _invoke_authenticator(self, username, password):
+        auth = Authenticator(username, password)
+        if auth.authenticated:
+            return True
+        else:
+            return False
+
     def invoke_scanner(self):
-        """ This method will invoke software/hardware scanning and pass the result to parser component """
+        """ This method will invoke software/hardware scanning and store the result in self.hardware_list & self.software_list """
+        if self._invoke_authenticator("daniel", "123456"):
+            if get_settings_value("SCANNER", "software"):
+                self.invoker.set_on_start(Software())
+                self.software_list = self.invoker.invoke()
 
-        if get_settings_value("SCANNER", "software"):
-            self.invoker.set_on_start(Software())
-            self.software_list = self.invoker.invoke()
+            if get_settings_value("SCANNER", "hardware"):
+                self.invoker.set_on_start(Hardware())
+                self.hardware_list = self.invoker.invoke()
 
-        if get_settings_value("SCANNER", "hardware"):
-            self.invoker.set_on_start(Hardware())
-            self.hardware_list = self.invoker.invoke()
-
-        print("Step 1 : Scanner is Done\n")
-        return self._invoke_parser()
+            print("Step 1 : Scanner is Done\n")
+            return self._invoke_parser()
+        else:
+            raise Exception("sudo authentication failed")
 
     def _invoke_parser(self):
-        """ This method will invoke parser to parse data to cpe format """
+        """ This method will invoke parser to parse data in self.hardware_list & self.software_list to cpe format """
 
         if self.software_list is not None:
             cpe_list = self.parser.parse_data_to_cpe(self.software_list)
@@ -61,12 +73,13 @@ class Orchetrator:
         """ This method will invoke matcher to find cpe and cve match in the db"""
         matches_record: set[CVERecord] = set()
         for cpe_uri in cpe_list:
-            matches = self.matcher.match(cpe_uri.lower())
-            if matches:
-                print(matches)
-                for key in matches.keys():
-                    matches_record.update(matches[key])
-                    self._invoke_analyser(matches[key])
+            if not self.is_stopped:
+                matches = self.matcher.match(cpe_uri.lower())
+                if matches:
+                    print(matches)
+                    for key in matches.keys():
+                        matches_record.update(matches[key])
+                        self._invoke_analyser(matches[key])
         print("Step 3 : Matcher is Done\n")
         return list(matches_record)
 

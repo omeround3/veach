@@ -1,10 +1,16 @@
+from core.orchestrator.orchestrator import Orchetrator
+
+orc = Orchetrator()
+orc._invoke_authenticator("daniel", "123456")
+
+cpes = orc.invoke_scanner()
+
+print("OK")
 
 
-dict1 = {"a": [1], "b": 2}
-dict2 = {"a": [3], "d": 4}
+# from core.db.sync_collections import *
 
-dict3 = dict1 | dict2
-print(dict3)
+# dump(["cvedetails", "cpematches"])
 # from core.orchestrator.orchestrator import Orchetrator
 # from core.orchestrator import *
 # from core.matcher.tests import *

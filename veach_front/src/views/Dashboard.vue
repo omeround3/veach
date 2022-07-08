@@ -18,26 +18,8 @@
           <div class="row mt-4">
             <div class="col-lg-12 col-md-12">
               <div class="d-grid gap-2" style="height: 100%">
-                <button
-                  v-if="!isScanning"
-                  type="button"
-                  @click="startScan"
-                  name=""
-                  id=""
-                  class="btn btn-veach-red"
-                  style="font-size: 40px"
-                >
-                  SCAN NOW
-                </button>
-                <button
-                  v-else
-                  type="button"
-                  name=""
-                  id=""
-                  class="btn btn-veach-red disabled"
-                  style="font-size: 40px"
-                >
-                  Scanning...
+                <button type="button" name="" id="" class="btn btn-veach-red" style="font-size: 40px" @click="scan">
+                  {{ buttonText }}
                 </button>
               </div>
             </div>
@@ -47,13 +29,9 @@
     </div>
     <div class="row">
       <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-        <project-card
-          title="Categories"
-          description=""
-          :headers="['vector', 'complexity', 'severity', 'score', 'size']"
-          :projects="totalCategories"
-          style=""
-        />
+        <project-card title="Categories" description=""
+          :headers="['Category\nvector', 'attack\ncomplexity', 'confidentiality\nimpact', 'integrity\nimpact', 'availability\nimpact', 'average\nscore', 'number\nof cve\'s']"
+          :projects="totalCategories" style="" />
       </div>
     </div>
   </div>
@@ -73,8 +51,9 @@ export default {
   name: "dashboard-default",
   data() {
     return {
+      buttonText: null,
       token: null,
-      isScanning: true,
+      status: null,
       totalCVERecordsCard: {},
       totalCPERecordsCard: {},
       totalCategoriesCard: {},
@@ -98,7 +77,7 @@ export default {
         },
       },
     };
-    
+
   },
   async created() {
     this.token = window.localStorage.getItem("token");
@@ -116,11 +95,14 @@ export default {
     this.getCveCategories();
   },
   mounted() {
-    this.getIsScanning();
+    this.getStatus();
     this.timer = setInterval(() => {
-      this.getIsScanning();
-      if (this.isScanning === true) {
-        this.getCveCategories();
+      this.getStatus();
+      if (this.status === "scanning") {
+        this.getCveCategories()
+      }
+      if (this.totalCPERecordsCard.value === "-") {
+        this.getTotalCPERecords()
       }
     }, 5000);
   },
@@ -128,14 +110,26 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
-    async getIsScanning() {
+    async getStatus() {
       var element = this;
       const res = await axios.get(
-        `${API_ROOT_URL}:${API_PORT}/api/is_scanning`,
+        `${API_ROOT_URL}:${API_PORT}/api/get_status`,
         this.config
       );
       if (res) {
-        element.isScanning = res.data["is_scanning"];
+        console.log(res);
+        element.status = res.data["status"];
+        if (element.status === "scanning") {
+          element.buttonText = "SCANNING - CLICK TO STOP"
+        } else if (element.status === "stopped") {
+          element.buttonText = "SCAN STOPPED - CLICK TO START AGAIN"
+
+        } else if (element.status === "finished") {
+          element.buttonText = "SCAN COMPLETED - CLICK TO START AGAIN"
+
+        } else if (element.status === "new") {
+          element.buttonText = "START NEW SCAN"
+        }
       }
     },
     async getTotalCVERecords() {
@@ -162,20 +156,35 @@ export default {
         this.config
       );
       if (res) {
-        this.totalCPERecordsCard.value = Number(res.data.num).toLocaleString();
+        if (res.data.num !== 0) {
+          this.totalCPERecordsCard.value = Number(res.data.num).toLocaleString();
+        }
       }
     },
-    async startScan() {
-      this.totalCategories = [];
-      this.isScanning = true;
-      // var element = this
-      await axios
-        .get(`${API_ROOT_URL}:${API_PORT}/api/start_scan`, this.config)
-        .then(function (res) {
-          if (res.status == 200) {
-            this.isScanning = false;
-          }
-        });
+    async scan() {
+      this.buttonText = "..."
+      var element = this
+      if (this.status === "new" || this.status === "finished" || this.status === "stopped") {
+        this.totalCategories = [];
+        this.isScanning = true;
+        // var element = this
+        await axios
+          .get(`${API_ROOT_URL}:${API_PORT}/api/start_scan`, this.config)
+          .then(function (res) {
+            if (res.status == 200) {
+              element.getStatus()
+            }
+          });
+      } else {
+        this.isScanning = false;
+        await axios
+          .get(`${API_ROOT_URL}:${API_PORT}/api/stop_scan`, this.config)
+          .then(function (res) {
+            if (res.status != 200) {
+              element.getStatus()
+            }
+          });
+      }
     },
     async getCveCategories() {
       var element = this;
@@ -183,6 +192,7 @@ export default {
         .get(`${API_ROOT_URL}:${API_PORT}/api/cve_categories`, this.config)
         .then(function (res) {
           if (res.status == 200) {
+            let totalCategories = [];
             let numOfCVERecordsFound = 0;
             let numOfCategoriesFound = 0;
             Object.values(res.data).forEach((category) => {
@@ -192,13 +202,21 @@ export default {
                 let data = {
                   vector:
                     element.vectorLegend[
-                      category.record_scheme.vector_string_attributes.AV
+                    category.record_scheme.vector_string_attributes.AV
                     ],
                   complexity:
                     element.levelLegend[
-                      category.record_scheme.vector_string_attributes.AC
+                    category.record_scheme.vector_string_attributes.AC
                     ],
-                  severity: category.severity,
+                  confidentiality: element.levelLegend[
+                    category.record_scheme.vector_string_attributes.C
+                  ],
+                  integrity: element.levelLegend[
+                    category.record_scheme.vector_string_attributes.I
+                  ],
+                  availability: element.levelLegend[
+                    category.record_scheme.vector_string_attributes.A
+                  ],
                   score: category.average,
                   size: category.affected_records.length,
                   string: category.record_scheme.vector_string.replaceAll(
@@ -207,18 +225,23 @@ export default {
                   ),
                   critical: category.is_critical,
                 };
-                element.totalCategories.push(data);
+                totalCategories.push(data);
               }
             });
-            element.totalCategories.sort((a, b) =>
+            totalCategories.sort((a, b) =>
               a.score < b.score ? 1 : -1
             );
-            element.totalCategoriesCard.value = Number(
-              numOfCategoriesFound
-            ).toLocaleString();
-            element.totalVulnerabilitiesCard.value = Number(
-              numOfCVERecordsFound
-            ).toLocaleString();
+            element.totalCategories = totalCategories
+            if (numOfCategoriesFound !== 0) {
+              element.totalCategoriesCard.value = Number(
+                numOfCategoriesFound
+              ).toLocaleString();
+            }
+            if (numOfCVERecordsFound !== 0) {
+              element.totalVulnerabilitiesCard.value = Number(
+                numOfCVERecordsFound
+              ).toLocaleString();
+            }
           }
         });
     },
