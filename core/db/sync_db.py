@@ -34,7 +34,7 @@ class SyncDb():
             logger.debug(f"[SYNC DB] Creating SyncDB singleton")
             SyncDb()
         return SyncDb.__instance
-    
+
     def init_db(self):
         """ 
         A function to initialize the local mongodb database CVE and CPE records.
@@ -44,7 +44,8 @@ class SyncDb():
         try:
             db = self.client[NVD_CVE]
             collections = [coll for coll in db.list_collection_names()]
-            logger.debug(f'[DB INIT] List of collections in local database: {collections}')
+            logger.debug(
+                f'[DB INIT] List of collections in local database: {collections}')
             if CVE_DETAILS and CPE_MATCHES not in collections:
                 logger.info(f'[DB INIT] Initializing local mongodb database')
                 self.state = SyncStates.STARTED
@@ -56,13 +57,15 @@ class SyncDb():
                 restore([CPE_MATCHES])
                 self.state = SyncStates.RESTORED
                 self.create_or_update_sync_meta(SyncMeta.CPE)
-                logger.info(f'[DB INIT] Finished initializing local mongodb database')
+                logger.info(
+                    f'[DB INIT] Finished initializing local mongodb database')
                 self.state = SyncStates.SYNCED
                 SyncDb.is_synced = True
                 SyncDb.is_syncing = False
                 self.state = SyncStates.SYNCED
             else:
-                logger.info(f'[DB INIT] Local mongodb database already initialized')
+                logger.info(
+                    f'[DB INIT] Local mongodb database already initialized')
                 self.state = SyncStates.SYNCED
                 SyncDb.is_synced = True
         except Exception as err:
@@ -72,16 +75,17 @@ class SyncDb():
     def create_or_update_sync_meta(self, type: str) -> None:
         type_id = 1 if type == SyncMeta.CVE else 2
         try:
-            sync_meta, created = SyncMeta.objects.get_or_create(type=type_id, defaults={'type': 1})
+            sync_meta, created = SyncMeta.objects.get_or_create(
+                type=type_id, defaults={'type': 1})
+            if not created:
+                sync_meta.last_modified_date = timezone.now()
+                sync_meta.save()
+                logger.info(f'[SYNCMETA UPDATED] Update {type} SyncMeta')
+            else:
+                logger.info(f'[SYNCMETA CREATED] Created a {type} SyncMeta')
         except MultipleObjectsReturned as err:
-            logger.error(f'[GET OR CREATE SYNCMETA] Error: {err}', exc_info=True)
-
-        if not created:
-            sync_meta.last_modified_date = timezone.now()
-            sync_meta.save()
-            logger.info(f'[SYNCMETA UPDATED] Update {type} SyncMeta')
-        else:
-            logger.info(f'[SYNCMETA CREATED] Created a {type} SyncMeta')
+            logger.error(
+                f'[GET OR CREATE SYNCMETA] Error: {err}', exc_info=True)
 
 
 class SyncStates(str, Enum):
@@ -91,5 +95,3 @@ class SyncStates(str, Enum):
     RESTORED = "restored"
     SYNCED = "synced"
     READY = "ready"
-    
-    

@@ -26,9 +26,9 @@ class Orchetrator:
         self.hardware_list = []
         self.invoker = Scan_Invoker()
         self.parser = Parser()
-        # self.db = get_local_db()[0]
+        self.db = get_local_db()[0]
         # temp because no mongodb installed on this machine
-        self.db = get_remote_db()[0]
+        # self.db = get_remote_db()[0]
         self.cpe_collection = get_settings_value(
             "COLLECTIONS", "cpe_collection_name")
         self.cve_collection = get_settings_value(
