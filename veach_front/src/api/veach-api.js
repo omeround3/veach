@@ -47,12 +47,21 @@ export default {
   },
   async fetchScanStatus(config) {
     return axios
-    .get(`${API_ROOT_URL}:${API_PORT}/api/get_status`, config)
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .get(`${API_ROOT_URL}:${API_PORT}/api/get_status`, config)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, async sync_db(config) {
+    return axios
+      .get(`${API_ROOT_URL}:${API_PORT}/api/sync-db`, config)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 };

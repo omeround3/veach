@@ -86,7 +86,7 @@ export default {
       value: "-",
     };
     this.totalVulnerabilitiesCard = {
-      text: "Total Vulnerabilities On This Machine",
+      text: "Total Vulnerabilities Found",
       value: "-",
     };
     this.getTotalCVERecords();
