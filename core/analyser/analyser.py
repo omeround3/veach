@@ -39,7 +39,6 @@ class Analyser:
         Perform the analysis on records added to the analyser engine
         :return: dictionary of CVE categories and CVE Records
         """
-        # self.cve_categories: dict[str, Category] = defaultdict(None)
         for record in records:
             base_metrics = record.get_metrics(self.base_metric)
             if base_metrics:

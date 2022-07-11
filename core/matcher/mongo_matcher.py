@@ -40,7 +40,7 @@ class MongoMatcher(Matcher):
             with open(self._last_match_file, "rb") as file:
                 self.matches_cache = pickle.load(file)
         except FileNotFoundError:
-            pass  # Do nothing
+            logger.error("[UTILS] FileNotFoundError")
 
     def match(self, cpe_uri: str) -> dict:
         """
@@ -52,23 +52,15 @@ class MongoMatcher(Matcher):
         cpe_matches: set[CPERecord] = set()
         matches: dict[str, set[CVERecord]] = defaultdict(set)
         if cpe_uri in self.matches_cache.keys():
-            start = time.time()
             for s in self.matches_cache[cpe_uri]:
                 cpe_matches.update(self._get_cpe_matches_by_id(s))
-            end = time.time()
         else:
-            start = time.time()
             cpe_matches = self._get_cpe_matches_by_name(cpe_uri)
-            end = time.time()
             self.matches_cache[cpe_uri] = {
                 x._generated_id for x in cpe_matches}
-        # print(f"Get CPE: {end-start}")
         if cpe_matches:
             for cpe_match in cpe_matches:
-                start = time.time()
                 cve_matches = list(self._get_cve_matches(cpe_match))
-                end = time.time()
-                # print(f"Get CVE: {end-start}")
                 if cve_matches:
                     cve_matches = list(
                         map(lambda x: CVERecord(x), cve_matches))
