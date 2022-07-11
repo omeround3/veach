@@ -196,22 +196,30 @@
                     <div class="d-flex">
                       <span class="px-2">Attack Vector: </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red-selected" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_vector'].includes('NETWORK'), 'btn-veach-red': !rulesData['attack_vector'].includes('NETWORK') }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_vector', 'NETWORK')">
                           Network
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red-selected" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_vector'].includes('LOCAL'), 'btn-veach-red': !rulesData['attack_vector'].includes('LOCAL') }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_vector', 'LOCAL')">
                           Local
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_vector'].includes('PHYSICAL'), 'btn-veach-red': !rulesData['attack_vector'].includes('PHYSICAL') }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_vector', 'PHYSICAL')">
                           Physical
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_vector'].includes('ADJACENT'), 'btn-veach-red': !rulesData['attack_vector'].includes('ADJACENT') }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_vector', 'ADJACENT')">
                           Adjacent
                         </button>
                       </span>
@@ -221,12 +229,16 @@
                     <div class="d-flex">
                       <span class="px-2">Attack Complexity: </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_complexity'] == 'LOW', 'btn-veach-red': rulesData['attack_complexity'] != 'LOW' }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_complexity', 'LOW')">
                           Low
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red-selected" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_complexity'] == 'HIGH', 'btn-veach-red': rulesData['attack_complexity'] != 'HIGH' }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_complexity', 'HIGH')">
                           High
                         </button>
                       </span>
@@ -236,16 +248,22 @@
                     <div class="d-flex">
                       <span class="px-2">Confidentiality Impact: </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['confidentiality_impact'] == 'NONE', 'btn-veach-red': rulesData['confidentiality_impact'] != 'NONE' }"
+                          style="font-size: 10px" @click="setRulesSettings('confidentiality_impact', 'NONE')">
                           None
                         </button>
                       </span> <span class="px-1">
-                        <button type="button" class="btn btn-veach-red-selected" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['confidentiality_impact'] == 'LOW', 'btn-veach-red': rulesData['confidentiality_impact'] != 'LOW' }"
+                          style="font-size: 10px" @click="setRulesSettings('confidentiality_impact', 'LOW')">
                           Low
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['confidentiality_impact'] == 'HIGH', 'btn-veach-red': rulesData['confidentiality_impact'] != 'HIGH' }"
+                          style="font-size: 10px" @click="setRulesSettings('confidentiality_impact', 'HIGH')">
                           High
                         </button>
                       </span>
@@ -255,16 +273,22 @@
                     <div class="d-flex">
                       <span class="px-2">Integrity Impact: </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['integrity_impact'] == 'NONE', 'btn-veach-red': rulesData['integrity_impact'] != 'NONE' }"
+                          style="font-size: 10px" @click="setRulesSettings('integrity_impact', 'NONE')">
                           None
                         </button>
                       </span> <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['integrity_impact'] == 'LOW', 'btn-veach-red': rulesData['integrity_impact'] != 'LOW' }"
+                          style="font-size: 10px" @click="setRulesSettings('integrity_impact', 'LOW')">
                           Low
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red-selected" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['integrity_impact'] == 'HIGH', 'btn-veach-red': rulesData['integrity_impact'] != 'HIGH' }"
+                          style="font-size: 10px" @click="setRulesSettings('integrity_impact', 'HIGH')">
                           High
                         </button>
                       </span>
@@ -274,16 +298,22 @@
                     <div class="d-flex">
                       <span class="px-2">Availability Impact: </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['availability_impact'] == 'NONE', 'btn-veach-red': rulesData['availability_impact'] != 'NONE' }"
+                          style="font-size: 10px" @click="setRulesSettings('availability_impact', 'NONE')">
                           None
                         </button>
                       </span> <span class="px-1">
-                        <button type="button" class="btn btn-veach-red" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['availability_impact'] == 'LOW', 'btn-veach-red': rulesData['availability_impact'] != 'LOW' }"
+                          style="font-size: 10px" @click="setRulesSettings('availability_impact', 'LOW')">
                           Low
                         </button>
                       </span>
                       <span class="px-1">
-                        <button type="button" class="btn btn-veach-red-selected" style="font-size: 10px" @click="scan">
+                        <button type="button" class="btn"
+                          :class="{ 'btn-veach-red-selected': rulesData['availability_impact'] == 'HIGH', 'btn-veach-red': rulesData['availability_impact'] != 'HIGH' }"
+                          style="font-size: 10px" @click="setRulesSettings('availability_impact', 'HIGH')">
                           High
                         </button>
                       </span>
@@ -352,6 +382,13 @@ export default {
   name: "profile-overview",
   data() {
     return {
+      rulesData: {
+        attack_vector: [],
+        attack_complexity: null,
+        confidentiality_impact: null,
+        integrity_impact: null,
+        availability_impact: null
+      },
       showMenu: false,
       sophie,
       marie,
@@ -384,6 +421,7 @@ export default {
   },
   created() {
     this.getScanSettings()
+    this.getRulesSettings()
   },
   mounted() {
     this.$store.state.isAbsolute = true;
@@ -415,6 +453,35 @@ export default {
         .catch((error) => {
           console.error(error)
         });
+    }, getRulesSettings() {
+      api.fetchRulesSettings(this.config)
+        .then((res) => {
+          console.log(res);
+          this.rulesData = res
+        })
+        .catch((error) => {
+          console.error(error)
+        });
+    },
+    setRulesSettings(rule, value) {
+      if (rule === 'attack_vector') {
+        if (this.rulesData[rule].includes(value)) {
+          this.rulesData[rule].splice(this.rulesData[rule].indexOf(value), 1)
+        }
+        else {
+          this.rulesData[rule].push(value)
+        }
+        api.updateRulesSettings(this.config, this.rulesData)
+          .catch((error) => {
+            console.error(error)
+          });
+      } else if (this.rulesData[rule] !== value) {
+        this.rulesData[rule] = value
+        api.updateRulesSettings(this.config, this.rulesData)
+          .catch((error) => {
+            console.error(error)
+          });
+      }
     }
   }
 };

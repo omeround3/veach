@@ -45,6 +45,27 @@ export default {
         console.log(error);
       });
   },
+  fetchRulesSettings(config) {
+    return axios
+      .get(`${API_ROOT_URL}:${API_PORT}/api/rules-settings`, config)
+      .then((result) => {
+        return result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  updateRulesSettings(config, data) {
+    console.log(data);
+    return axios
+      .post(`${API_ROOT_URL}:${API_PORT}/api/rules-settings`, data, config)
+      .then((result) => {
+        return result.status;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
   async fetchScanStatus(config) {
     return axios
       .get(`${API_ROOT_URL}:${API_PORT}/api/get_status`, config)

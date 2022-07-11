@@ -23,6 +23,58 @@ logger = logging.getLogger("veach")
 th = None  # thread needs to be global so we can stop the scan if we want
 is_scanned = False
 
+
+@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def rules_settings(request: Request):
+    """
+    GET: gets rules settings
+    POST: updates rules settings
+    """
+    content = {}
+    if request.method == 'GET':
+        content['attack_vector'] = get_settings_value(
+            "RULES", "attack_vector").split(",")
+        content['attack_complexity'] = get_settings_value(
+            "RULES", "attack_complexity")
+        content['confidentiality_impact'] = get_settings_value(
+            "RULES", "confidentiality_impact")
+        content['integrity_impact'] = get_settings_value(
+            "RULES", "integrity_impact")
+        content['availability_impact'] = get_settings_value(
+            "RULES", "availability_impact")
+        return Response(data=content, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        attack_vector = request.data['attack_vector']
+        attack_complexity = request.data['attack_complexity']
+        confidentiality_impact = request.data['confidentiality_impact']
+        integrity_impact = request.data['integrity_impact']
+        availability_impact = request.data['availability_impact']
+
+        res1 = set_settings_value(
+            "RULES", "attack_vector", ",".join(attack_vector))
+        res2 = set_settings_value(
+            "RULES", "attack_complexity", attack_complexity)
+        res3 = set_settings_value(
+            "RULES", "confidentiality_impact", confidentiality_impact)
+        res4 = set_settings_value(
+            "RULES", "integrity_impact", integrity_impact)
+        res5 = set_settings_value(
+            "RULES", "availability_impact", availability_impact)
+
+        if res1 and res2 and res3 and res4 and res5:
+            content['updated_attack_vector'] = res1
+            content['updated_attack_complexity'] = res2
+            content['updated_confidentiality_impact'] = res3
+            content['updated_integrity_impact'] = res4
+            content['updated_availability_impact'] = res5
+            content['response'] = "Updated config file successfully"
+            return Response(data=content, status=status.HTTP_200_OK)
+        else:
+            return Response(data="Couldn't update config file", status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -39,7 +91,7 @@ def scan_settings(request: Request):
     elif request.method == 'POST':
         is_scan_software = request.data['is_scan_software']
         is_scan_hardware = request.data['is_scan_hardware']
-        
+
         res1 = set_settings_value("SCANNER", "software", is_scan_software)
         res2 = set_settings_value("SCANNER", "hardware", is_scan_hardware)
 
@@ -50,6 +102,7 @@ def scan_settings(request: Request):
             return Response(data=content, status=status.HTTP_200_OK)
         else:
             return Response(data="Couldn't update config file", status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
@@ -146,10 +199,8 @@ def start_scan(request: Request):
     username = request.data['username']
     password = request.data['password']
 
-    global is_scanned
-    if is_scanned:
-        global orchestrator
-        orchestrator = Orchetrator()
+    global orchestrator
+    orchestrator = Orchetrator()
     orchestrator.set_credentials(username, password)
     is_scanned = True
     orchestrator.is_scanning = True
@@ -162,8 +213,8 @@ def start_scan(request: Request):
     # try:
     cpe_uris = orchestrator.invoke_scanner()
     # except Exception as err:
-        # logger.error(f"[START SCAN] Error invoking scanner \n {err}", exc_info=True)
-        # return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+    # logger.error(f"[START SCAN] Error invoking scanner \n {err}", exc_info=True)
+    # return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
     global th
     th = threading.Thread(target=orchestrator.invoke_matcher, args=[cpe_uris])
     th.start()
@@ -240,7 +291,7 @@ def sync_db(request: Request, format=None):
         'is_synced': SyncDb.is_synced
     }
     # if not SyncDb.is_synced:
-        # if not SyncDb.is_syncing:
+    # if not SyncDb.is_syncing:
     #         content['is_syncing'] = SyncDb.is_syncing
     #         content['state'] = sync_db.state
     #     else:
