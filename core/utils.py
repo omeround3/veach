@@ -23,7 +23,8 @@ def get_settings_value(class_name: str, key: str):
             raise MissingConfigFileOption(e)
     return ret_val
 
-def set_settings_value(class_name: str, key: str, value: str) -> bool: 
+
+def set_settings_value(class_name: str, key: str, value: str) -> bool:
     """ Sets a settings in the config file by class_name, key and value """
     class_name = class_name.upper()
     key = key.lower()
@@ -38,6 +39,7 @@ def set_settings_value(class_name: str, key: str, value: str) -> bool:
         else:
             raise MissingConfigFileOption(e)
 
+
 def get_attribute(my_dict: dict, path: str):
     if not my_dict or not path:
         return None
@@ -45,7 +47,7 @@ def get_attribute(my_dict: dict, path: str):
     if isinstance(path, Enum):
         path = path.value
 
-    pattern = get_settings_value('OTHER', 'attributes_string_pattern')
+    pattern = '^[a-zA-Z0-9_]+(\\.{1}[a-zA-Z0-9_][a-zA-Z0-9_]*)*$'
     pattern = re.compile(pattern)
     match = pattern.match(path)
     if match:

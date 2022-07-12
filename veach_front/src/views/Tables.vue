@@ -58,11 +58,11 @@
                     <td>
                       <div class="d-flex px-3">
                         <button v-if="mitigate === ''" type="button" @click="getMitigation(cpe)" name="" id=""
-                          class="btn btn-success" style="width: 200px;">MITIGATE</button>
+                          class="btn btn-success" style="width: 250px;">MITIGATE</button>
                         <button v-else-if="mitigate === 'NO MITIGATION FOUND'" type="button" name="" id=""
-                          class="btn btn-danger" style="width: 200px;">{{ mitigate }}</button>
+                          class="btn btn-danger" style="width: 250px;">{{ mitigate }}</button>
                         <button v-else type="button" name="" id="" class="btn btn-info"
-                          style="white-space: pre-wrap;width: 200px;">{{ mitigate }}</button>
+                          style="white-space: pre-wrap;width: 250px;">{{ mitigate }}</button>
                       </div>
                     </td>
                   </tr>

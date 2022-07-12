@@ -149,7 +149,10 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div v-if="scanStatus == 'scanning'" class="row text-center">
+        <h6 class="mb-0 text-danger">You Can't Change Settings While There Is A Scan In Progress</h6>
+      </div>
+      <div v-else class="row">
         <div class="mt-3 row">
           <div class="col-12 col-md-6 col-xl-6 position-relative">
             <div class="card card-plain h-100">
@@ -404,6 +407,7 @@ export default {
       img3,
       isScanHardware: false,
       isScanSoftware: false,
+      scanStatus: "scanning",
       config: {
         headers: {
           'Accept': "application/json",
@@ -420,6 +424,7 @@ export default {
     // MaterialAvatar,
   },
   created() {
+    this.getScanStatus()
     this.getScanSettings()
     this.getRulesSettings()
   },
@@ -427,11 +432,22 @@ export default {
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip();
+    this.timer = setInterval(() => {
+      this.getScanStatus()
+    }, 2000);
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
+    clearInterval(this.timer);
   },
   methods: {
+    async getScanStatus() {
+      var element = this;
+      const res = await api.fetchScanStatus(this.config)
+      if (res) {
+        element.scanStatus = res.data["status"];
+      }
+    },
     getScanSettings() {
       api.fetchScanSettings(this.config)
         .then((res) => {
