@@ -100,7 +100,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    console.log(`isLogged: ${store.getters.isLoggedIn}`);
+    // console.log(`isLogged: ${store.getters.isLoggedIn}`);
     if (!store.getters.isLoggedIn) {
       next({ name: 'SignIn' })
     }

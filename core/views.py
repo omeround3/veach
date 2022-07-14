@@ -115,8 +115,10 @@ def mitigate(request: Request):
     # output = {'num': len(orchestrator.invoke_scanner())}
     cpe_uri = request.data
     output = orchestrator.invoke_mitigator(cpe_uri)
-    if not output:
-        output
+    if output:
+        for key, val in output.items():
+            if not val:
+                output[key] = None
     return HttpResponse(json.dumps(output, cls=VEACHEncoder, indent=4), status=status.HTTP_200_OK)
 
 
@@ -242,7 +244,8 @@ def get_status(request: Request):
     else:
         output = "new"
 
-    return HttpResponse(json.dumps({"status": output}), status=status.HTTP_200_OK)
+    sync_db = SyncDb.instance()
+    return HttpResponse(json.dumps({"status": output, 'db_status': sync_db.state}), status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -283,8 +286,8 @@ def sync_db(request: Request, format=None):
     """
     API get endpoint to trigger local database synchronization
     """
-
     sync_db = SyncDb.instance()
+    sync_db.update_db()
     content = {
         'is_syncing': SyncDb.is_syncing,
         'state': sync_db.state,

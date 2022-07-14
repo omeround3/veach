@@ -176,7 +176,7 @@
                       @click="setScanSettings('hardware')">Scan Hardware</material-switch>
                   </li>
                 </ul>
-                <h6 class="mt-4 text-xs text-uppercase text-body font-weight-bolder">
+                <!-- <h6 class="mt-4 text-xs text-uppercase text-body font-weight-bolder">
                   Application
                 </h6>
                 <ul class="list-group">
@@ -190,8 +190,8 @@
                       Local Database Status
                     </material-badge>
                   </li>
-                </ul>
-                <h6 class="mt-4 text-xs text-uppercase text-body font-weight-bolder">
+                </ul> -->
+                <h6 class="mt-7 text-xs text-uppercase text-body font-weight-bolder">
                   IMPACT INTERESTS
                 </h6>
                 <ul class="list-group">
@@ -221,8 +221,8 @@
                       </span>
                       <span class="px-1">
                         <button type="button" class="btn"
-                          :class="{ 'btn-veach-red-selected': rulesData['attack_vector'].includes('ADJACENT'), 'btn-veach-red': !rulesData['attack_vector'].includes('ADJACENT') }"
-                          style="font-size: 10px" @click="setRulesSettings('attack_vector', 'ADJACENT')">
+                          :class="{ 'btn-veach-red-selected': rulesData['attack_vector'].includes('ADJACENT_NETWORK'), 'btn-veach-red': !rulesData['attack_vector'].includes('ADJACENT_NETWORK') }"
+                          style="font-size: 10px" @click="setRulesSettings('attack_vector', 'ADJACENT_NETWORK')">
                           Adjacent
                         </button>
                       </span>
@@ -376,7 +376,7 @@ import team2 from "@/assets/img/team-2.jpg";
 import team3 from "@/assets/img/team-3.jpg";
 import team4 from "@/assets/img/team-4.jpg";
 
-import MaterialBadge from "@/components/MaterialBadge.vue";
+// import MaterialBadge from "@/components/MaterialBadge.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
 import api from "@/api/veach-api";
@@ -418,7 +418,7 @@ export default {
   },
   components: {
     ProfileInfoCard,
-    MaterialBadge,
+    // MaterialBadge,
     // DefaultProjectCard,
     MaterialSwitch,
     // MaterialAvatar,
@@ -472,7 +472,6 @@ export default {
     }, getRulesSettings() {
       api.fetchRulesSettings(this.config)
         .then((res) => {
-          console.log(res);
           this.rulesData = res
         })
         .catch((error) => {

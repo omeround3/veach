@@ -1,6 +1,6 @@
 import requests
 import re
-from core.db.db_utils import get_remote_db
+from core.db.db_utils import get_local_db
 from core.matcher.matcher import Matcher
 from core.analyser.analyser import Analyser
 from core.matcher.mongo_matcher import MongoMatcher
@@ -22,7 +22,7 @@ class Mitigator:
         :param matcher: A Matcher instance we want to find mitigation in
         :param parser: A Parser instance
         """
-        self.db = get_remote_db()[0]
+        self.db = get_local_db()[0]
         self.cpe_collection = get_settings_value(
             "COLLECTIONS", "cpe_collection_name")
         self.cve_collection = get_settings_value(

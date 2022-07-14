@@ -3,8 +3,15 @@
     <div class="row mb-4">
       <div class="col-lg-12 position-relative z-index-2">
         <div class="row mt-4">
-          <div class="col-lg-3 col-md-3 col-sm-3">
+          <div class="col-lg-3 col-md-3 col-sm-3 position-relative">
             <mini-statistics-card :title="totalCVERecordsCard" />
+            <div class="position-absolute top-10 end-10">
+              <button type="button" class="btn btn-veach-red" :class="{
+                'disabled': updateButton !== 'UPDATE'
+              }" style="font-size: 10px" @click="updateDatabase">
+                {{ updateButton }}
+              </button>
+            </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3">
             <mini-statistics-card :title="totalCPERecordsCard" />
@@ -18,7 +25,9 @@
           <div class="row mt-4">
             <div class="col-lg-12 col-md-12">
               <div class="d-grid gap-2" style="height: 100%">
-                <button type="button" name="" id="" class="btn btn-veach-red" style="font-size: 40px" @click="scan">
+                <button type="button" name="" id="" class="btn btn-veach-red"
+                  :class="{ 'disabled': buttonText === 'DATABASE IS UNAVAILABLE' }" style="font-size: 40px"
+                  @click="scan">
                   {{ buttonText }}
                 </button>
               </div>
@@ -51,6 +60,7 @@ export default {
   name: "dashboard-default",
   data() {
     return {
+      updateButton: null,
       buttonText: null,
       token: null,
       status: null,
@@ -97,34 +107,50 @@ export default {
     this.getStatus();
     this.timer = setInterval(() => {
       this.getStatus();
-      if (this.status === "scanning") {
-        this.getCveCategories()
-      }
+      this.getCveCategories()
       if (this.totalCPERecordsCard.value === "-") {
         this.getTotalCPERecords()
       }
-    }, 5000);
+    }, 1000);
   },
   beforeUnmount() {
     clearInterval(this.timer);
   },
   methods: {
+    async updateDatabase() {
+      this.buttonText = "DATABASE IS UNAVAILABLE"
+      this.updateButton = "UPDATING..."
+      const res = await api.sync_db(this.config)
+      if (res) {
+        this.updateButton = "UPDATE"
+      }
+    },
     async getStatus() {
       var element = this;
       const res = await api.fetchScanStatus(this.config)
       if (res) {
-        element.status = res.data["status"];
-        if (element.status === "scanning") {
-          element.buttonText = "SCANNING - CLICK TO STOP"
-        } else if (element.status === "stopped") {
-          element.buttonText = "SCAN STOPPED - CLICK TO START AGAIN"
-
-        } else if (element.status === "finished") {
-          element.buttonText = "SCAN COMPLETED - CLICK TO START AGAIN"
-
-        } else if (element.status === "new") {
-          element.buttonText = "START NEW SCAN"
+        element.dbStatus = res.data["db_status"];
+        if (element.dbStatus === 'synced') {
+          this.updateButton = "UPDATE"
+          element.status = res.data["status"];
+          if (element.status === "scanning") {
+            element.buttonText = "SCANNING - CLICK TO STOP"
+            this.updateButton = "SCANNING IN PROGRESS"
+          } else if (element.status === "stopped") {
+            element.buttonText = "SCAN STOPPED - CLICK TO START AGAIN"
+            this.updateButton = "UPDATE"
+          } else if (element.status === "finished") {
+            element.buttonText = "SCAN COMPLETED - CLICK TO START AGAIN"
+            this.updateButton = "UPDATE"
+          } else if (element.status === "new") {
+            element.buttonText = "START NEW SCAN"
+            this.updateButton = "UPDATE"
+          }
+        } else {
+          element.updateButton = "UPDATING..."
+          element.buttonText = "DATABASE IS UNAVAILABLE"
         }
+
       }
     },
     async getTotalCVERecords() {

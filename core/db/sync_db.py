@@ -1,3 +1,5 @@
+from time import sleep
+from core import orchestrator
 from core.db.db_utils import get_local_db
 from core.db.sync_collections import dump, restore
 from core.models import SyncMeta
@@ -11,7 +13,7 @@ logger = logging.getLogger("veach")
 
 
 class SyncDb():
-    """ 
+    """
     A singleton class for syncing the local mongodb database.
     """
     __instance = None
@@ -25,7 +27,6 @@ class SyncDb():
         else:
             SyncDb.__instance = self
             self.client = get_local_db()[1]
-            self.state = SyncStates.READY
             self.init_db()
 
     @classmethod
@@ -35,10 +36,40 @@ class SyncDb():
             SyncDb()
         return SyncDb.__instance
 
+    def update_db(self):
+        try:
+            db = self.client[NVD_CVE]
+            collections = [coll for coll in db.list_collection_names()]
+            logger.debug(
+                f'[DB INIT] List of collections in local database: {collections}')
+            self.state = SyncStates.STARTED
+            SyncDb.is_syncing = True
+            dump([CVE_DETAILS, CPE_MATCHES])
+            self.state = SyncStates.DUMPED
+            while orchestrator.is_scanning:
+                logger.info(
+                    f'[DB INIT] Waiting with restore action, there is a scan in progress')
+                sleep(5)
+            restore([CVE_DETAILS])
+            self.create_or_update_sync_meta(SyncMeta.CVE)
+            restore([CPE_MATCHES])
+            self.state = SyncStates.RESTORED
+            self.create_or_update_sync_meta(SyncMeta.CPE)
+            logger.info(
+                f'[DB INIT] Finished updating local mongodb database')
+            self.state = SyncStates.SYNCED
+            SyncDb.is_synced = True
+            SyncDb.is_syncing = False
+            self.state = SyncStates.SYNCED
+        except Exception as err:
+            logger.error(
+                f'[DB INIT] Could not initialize database | Error: {err}', exc_info=True)
+
     def init_db(self):
-        """ 
+        """
         A function to initialize the local mongodb database CVE and CPE records.
-        The function checks if local cvedetails and cpematches collections exist. If not, it dumps from the remote database and restores locally.
+        The function checks if local cvedetails and cpematches collections exist. 
+        If not, it dumps from the remote database and restores locally.
         """
 
         try:
@@ -94,4 +125,3 @@ class SyncStates(str, Enum):
     DUMPED = "dumped"
     RESTORED = "restored"
     SYNCED = "synced"
-    READY = "ready"
