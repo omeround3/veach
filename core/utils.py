@@ -6,6 +6,9 @@ import codecs
 import configparser
 import time
 import re
+import logging 
+
+logger = logging.getLogger("veach")
 
 cfg = configparser.ConfigParser()
 
@@ -16,11 +19,11 @@ def get_settings_value(class_name: str, key: str):
     key = key.lower()
     try:
         ret_val = cfg[class_name][key]
-    except KeyError as e:
-        if e.args[0] == class_name:
-            raise MissingConfigFileSection(e)
+    except KeyError as err:
+        if err.args[0] == class_name:
+            logger.error(f"[UTILS] MissingConfigFileSection")
         else:
-            raise MissingConfigFileOption(e)
+            logger.error(f"[UTILS] MissingConfigFileOption")
     return ret_val
 
 
@@ -33,11 +36,11 @@ def set_settings_value(class_name: str, key: str, value: str) -> bool:
         with open('config.ini', 'w') as config_file:
             cfg.write(config_file)
         return True
-    except KeyError as e:
-        if e.args[0] == class_name:
-            raise MissingConfigFileSection(e)
+    except KeyError as err:
+        if err.args[0] == class_name:
+            logger.error(f"[UTILS] MissingConfigFileSection")
         else:
-            raise MissingConfigFileOption(e)
+            logger.error(f"[UTILS] MissingConfigFileOption")
 
 
 def get_attribute(my_dict: dict, path: str):
@@ -59,7 +62,7 @@ def get_attribute(my_dict: dict, path: str):
                 return None
         return my_dict
     else:
-        raise InvalidStringFormat(path)
+        logger.error("[UTILS] InvalidStringFormat")
 
 
 def distinct_append_list(arr: list, items: Iterable):
