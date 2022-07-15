@@ -147,13 +147,13 @@ export default {
             if (value) {
               let average = 0
               value.forEach(category => {
-                if (category.record_scheme.vector_string === element.category_id) {
-                  average = category.average
-                }
+                // if (category.record_scheme.vector_string === element.category_id) {
+                average += category.average
+                // }
               })
-              if (average < this.category.average) {
-                mitigation_string += key.split(":")[4] + ":" + key.split(":")[5] + " (Score: " + average + ")\n"
-              }
+              // if (average < this.category.average) {
+              mitigation_string += key.split(":")[4] + ":" + key.split(":")[5] + " (Average: " + (average / value.length).toFixed(2) + ")\n"
+              // }
             }
           }
 
