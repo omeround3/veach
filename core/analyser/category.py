@@ -1,9 +1,7 @@
 import logging
-from os import sep
 from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
 from core.analyser.enums import CVSSV3Attributes, Severity
 from core.errors import *
-from core.matcher.enums import CVEAttributes
 from core.utils import *
 import json
 from core.obj.cve_record import CVERecord

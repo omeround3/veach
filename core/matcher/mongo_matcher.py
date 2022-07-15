@@ -1,7 +1,5 @@
 import pickle
 from collections import defaultdict
-import time
-from gc import collect
 from core.matcher.matcher import Matcher
 from core.matcher.enums import CPEAttributes
 from core.utils import *

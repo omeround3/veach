@@ -1,5 +1,4 @@
 import subprocess
-from tempfile import TemporaryFile
 
 
 class Authenticator:

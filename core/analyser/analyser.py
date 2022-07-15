@@ -1,13 +1,11 @@
 from collections import defaultdict
 import pickle
 
-from core.analyser.cvss.cvss_record_template_v3 import AttackComplexity, AttackVector, CVSSRecordV3, UserInteraction
-from core.analyser.enums import BaseMetricAttributes, CVSSV3Attributes, Severity
-from core.analyser.category import Category, Rule
-from core.errors import InvalidCVEFormat
+from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
+from core.analyser.enums import BaseMetricAttributes, CVSSV3Attributes
+from core.analyser.category import Category
 from core.obj.cve_record import CVERecord
-from core.obj.vector_string import VectorString
-from core.utils import get_attribute, get_settings_value
+from core.utils import get_attribute
 
 
 class Analyser:

@@ -1,7 +1,6 @@
 import requests
 import re
 from core.db.db_utils import get_local_db
-from core.matcher.matcher import Matcher
 from core.analyser.analyser import Analyser
 from core.matcher.mongo_matcher import MongoMatcher
 from core.obj.cpe_record import CPERecord

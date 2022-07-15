@@ -1,6 +1,5 @@
 import logging
 import copy
-from multiprocessing import connection
 from core.obj.cpe_record import CPERecord
 from core.obj.cve_record import CVERecord
 from core.utils import *
@@ -10,7 +9,7 @@ from core.scanner.hardware import Hardware
 from core.parser.parser import Parser
 from core.matcher.mongo_matcher import MongoMatcher
 from core.analyser.analyser import Analyser
-from core.db.db_utils import get_local_db, get_remote_db
+from core.db.db_utils import get_local_db
 from core.mitigator.mitigator import Mitigator
 from core.authenticator.authenticator import Authenticator
 from core.analyser.rules_generator import generate_rules
