@@ -108,15 +108,15 @@ To get a local copy up and running follow these simple example steps.
 
 ## Installation
 Install git (If not already installed)
-   ```sh
-   apt install git
+   ```
+   sudo apt install git
    ```
 Clone the repo
-   ```sh
+   ```
    git clone https://github.com/omeround3/veach.git
    ```
 cd into "veach" folder
-   ```sh
+   ```
    cd veach
    ```   
    
@@ -126,25 +126,50 @@ Install system dependencies by running
     xargs sudo apt-get install -y < requirements.system
   ```
 
-Install Python dependencies:
+Install Python3.9
+Update the packages list and install the prerequisites
 ```
 sudo apt update
 ```
 ```
+sudo apt install software-properties-common
+```
+Add the deadsnakes PPA to your system’s sources list
+```
+sudo add-apt-repository ppa:deadsnakes/ppa
+```
+Once the repository is enabled, you can install Python 3.9 
+```
 sudo apt install python3.9
 ```
 ```
-sudo  apt-get install python3.9-dev python3.9-venv
+sudo apt-get install python3.9-dev python3.9-venv
 ```
 Create python virutalenv
 ```
 python3.9 -m venv venv
 ```
+Activate python virutalenv
 ```
 source venv/bin/activate
 ```
+Install requirements
 ```
 pip install -r requirements.txt
+```
+Create django superuser
+```
+python manage.py makemigrations
+```
+```
+python manage.py migrate
+```
+```
+python manage.py createsuperuser_if_none_exists --user=veach --password=veach4Life!
+```
+Run django server (app backend)
+```
+python manage.py runserver
 ```
 
 Install MongoDB
@@ -156,9 +181,13 @@ Run the commands:
 ```
 wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
 ```
-Make sure to change the word **focal** to **bionic** if you are running on Ubuntu 18.04 and not 20.04
+Ubuntu 20.04
 ```
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+```
+Ubuntu 18.04
+```
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
 ```
 ```
 sudo apt-get update
@@ -181,12 +210,36 @@ if all is ok, enable mongodb to start on system startup
 sudo systemctl enable mongod
 ```
 
+Install Node.js and npm
+```
+sudo apt install curl
+```
+Enable the NodeSource repository
+```
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+```
+Once the NodeSource repository is enabled, install Node.js and npm
+```
+sudo apt install nodejs
+```
+cd into the frontend directory
+```
+cd veach_front
+```
+Install npm packages 
+```
+npm install
+```
+Run front-end app (default address is http://localhost:8080) 
+```
+npm run serve
+```
+
 ### Production Installation
 #### Installing dependencies**
 ```
 cat requirements.system requirements.prod | sudo xargs apt-get install -y
 ```
-
 - [] **TODO**
 
 
