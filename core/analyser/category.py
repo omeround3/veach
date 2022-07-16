@@ -54,8 +54,11 @@ class Category(Rule):
             try:
                 with open("core/analyser/attributes_mapping.json", "r", encoding='utf-8') as json_file:
                     Category.attribute_mapping = json.load(json_file)
-            except Exception as err:
+            except FileNotFoundError as err:
                 logger.error(f"[CATEGORY] FileNotFoundError")
+                quit()
+            except Exception as err: 
+                logger.error(f"[CATEGORY] {err}")
                 quit()
                 
 

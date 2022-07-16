@@ -204,19 +204,9 @@ def start_scan(request: Request):
     global orchestrator
     orchestrator = Orchetrator()
     orchestrator.set_credentials(username, password)
-    is_scanned = True
     orchestrator.is_scanning = True
     orchestrator.is_stopped = False
-    # cpe_uris = []
-    # csv_file = open("core/scanner/fake_scanner.csv")
-    # reader = csv.reader(csv_file, delimiter=',')
-    # for row in reader:
-    #     cpe_uris.append(row[0].lower())
-    # try:
     cpe_uris = orchestrator.invoke_scanner()
-    # except Exception as err:
-    # logger.error(f"[START SCAN] Error invoking scanner \n {err}", exc_info=True)
-    # return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
     global th
     th = threading.Thread(target=orchestrator.invoke_matcher, args=[cpe_uris])
     th.start()
@@ -293,15 +283,6 @@ def sync_db(request: Request, format=None):
         'state': sync_db.state,
         'is_synced': SyncDb.is_synced
     }
-    # if not SyncDb.is_synced:
-    # if not SyncDb.is_syncing:
-    #         content['is_syncing'] = SyncDb.is_syncing
-    #         content['state'] = sync_db.state
-    #     else:
-    #         content['is_syncing'] = SyncDb.is_syncing
-    #         content['state'] = sync_db.state
-    # else:
-    #     content['is_synced'] = SyncDb.is_synced
     return Response(data=content, status=status.HTTP_200_OK)
 
 
