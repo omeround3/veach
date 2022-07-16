@@ -108,15 +108,15 @@ To get a local copy up and running follow these simple example steps.
 
 ## Installation
 Install git (If not already installed)
-   ```sh
-   apt install git
+   ```
+   sudo apt install git
    ```
 Clone the repo
-   ```sh
+   ```
    git clone https://github.com/omeround3/veach.git
    ```
 cd into "veach" folder
-   ```sh
+   ```
    cd veach
    ```   
    
@@ -129,6 +129,12 @@ Install system dependencies by running
 Install Python dependencies:
 ```
 sudo apt update
+```
+```
+sudo apt install software-properties-common
+```
+```
+sudo add-apt-repository ppa:deadsnakes/ppa
 ```
 ```
 sudo apt install python3.9
@@ -146,6 +152,18 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+```
+python manage.py makemigrations
+```
+```
+python manage.py migrate
+```
+```
+python manage.py createsuperuser_if_none_exists --user=veach --password=veach4Life!
+```
+```
+python manage.py runserver
+```
 
 Install MongoDB
 Commands are are taken from MongoDB offical docs
@@ -156,9 +174,13 @@ Run the commands:
 ```
 wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
 ```
-Make sure to change the word **focal** to **bionic** if you are running on Ubuntu 18.04 and not 20.04
+Ubuntu 20.04
 ```
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+```
+Ubuntu 18.04
+```
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
 ```
 ```
 sudo apt-get update
@@ -181,12 +203,33 @@ if all is ok, enable mongodb to start on system startup
 sudo systemctl enable mongod
 ```
 
+Install Node.js and npm
+```
+sudo apt install curl
+```
+```
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+```
+```
+sudo apt install nodejs
+```
+Install npm packages 
+
+```
+cd veach_front
+```
+```
+npm install
+```
+```
+npm run serve
+```
+
 ### Production Installation
 #### Installing dependencies**
 ```
 cat requirements.system requirements.prod | sudo xargs apt-get install -y
 ```
-
 - [] **TODO**
 
 
