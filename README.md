@@ -107,13 +107,19 @@ To get a local copy up and running follow these simple example steps.
 
 
 ## Installation
-Clone the repo
+Install git (If not already installed)
    ```sh
    apt install git
    ```
+Clone the repo
    ```sh
    git clone https://github.com/omeround3/veach.git
    ```
+cd into "veach" folder
+   ```sh
+   cd veach
+   ```   
+   
 ### Standard Installation
 Install system dependencies by running
   ```sh
