@@ -105,9 +105,12 @@ The following are the frameworks and npm packages used in the project:
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
+
 ## Installation
 Clone the repo
-
+   ```sh
+   apt install git
+   ```
    ```sh
    git clone https://github.com/omeround3/veach.git
    ```
