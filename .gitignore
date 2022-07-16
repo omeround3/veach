@@ -3,6 +3,4 @@ __pycache__
 dump
 node_modules
 venv
-logs
-*.log
 last_match

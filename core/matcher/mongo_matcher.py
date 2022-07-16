@@ -38,8 +38,7 @@ class MongoMatcher(Matcher):
             with open(self._last_match_file, "rb") as file:
                 self.matches_cache = pickle.load(file)
         except FileNotFoundError:
-            logger.error("[UTILS] FileNotFoundError")
-
+            pass # Continue as usual
     def match(self, cpe_uri: str) -> dict:
         """
         match CPE URI to CVE records and place results in "matches" dictionary
