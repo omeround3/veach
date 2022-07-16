@@ -157,27 +157,12 @@ Install requirements
 ```
 pip install -r requirements.txt
 ```
-Create django superuser
-```
-python manage.py makemigrations
-```
-```
-python manage.py migrate
-```
-```
-python manage.py createsuperuser_if_none_exists --user=veach --password=veach4Life!
-```
-Run django server (app backend)
-```
-python manage.py runserver
-```
 
 Install MongoDB
 Commands are are taken from MongoDB offical docs
 * [Install MongoDB on Ubuntu](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/)
 
 Run the commands:
-
 ```
 wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
 ```
@@ -210,6 +195,17 @@ if all is ok, enable mongodb to start on system startup
 sudo systemctl enable mongod
 ```
 
+Create django superuser
+```
+python manage.py makemigrations
+```
+```
+python manage.py migrate
+```
+```
+python manage.py createsuperuser_if_none_exists --user=veach --password=veach4Life!
+```
+
 Install Node.js and npm
 ```
 sudo apt install curl
@@ -230,10 +226,51 @@ Install npm packages
 ```
 npm install
 ```
-Run front-end app (default address is http://localhost:8080) 
+
+Run django server (app backend)
+```
+python manage.py runserver
+```
+
+
+Open new terminal and run front-end app (default address is http://localhost:8080) 
 ```
 npm run serve
 ```
+
+If you get a DNS related error from python, follow whese steps:
+Install resolvconf from the official repositories
+```
+sudo apt install resolvconf
+```
+Start and enable it as follows
+```
+sudo systemctl start resolvconf.service
+```
+```
+sudo systemctl enable resolvconf.service
+```
+```
+sudo systemctl status resolvconf.service
+```
+Open the /etc/resolvconf/resolv.conf.d/head configuration file
+```
+sudo nano /etc/resolvconf/resolv.conf.d/head
+```
+Aadd the following lines in it
+```
+nameserver 8.8.8.8 
+nameserver 8.8.4.4
+```
+Save the changes and restart the resolvconf.service and systemd-resolved or reboot the system
+```
+sudo systemctl restart resolvconf.service
+```
+```
+sudo systemctl restart systemd-resolved.service
+```
+
+
 
 ### Production Installation
 #### Installing dependencies**
