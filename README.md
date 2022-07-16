@@ -85,7 +85,7 @@ VEACH project is designed to help novice Linux-Debian users to keep their system
 
 **Architecture Diagram**
 <br />
-<img src="" alt="Logo" width="500" height="500">
+<img src="https://user-images.githubusercontent.com/45568925/179365672-e31adfef-84e9-4b7a-ac4e-c540d4c0e741.png" alt="Logo" width="1000" height="500">
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -93,9 +93,15 @@ VEACH project is designed to help novice Linux-Debian users to keep their system
 
 The following are the frameworks and npm packages used in the project:
 
-* [Django]()
-* [MongoDB]()
-* [Ubuntu]()
+* [Django](https://www.djangoproject.com/) - Backend
+* [MongoDB](https://www.mongodb.com/)
+* [Ubuntu](https://ubuntu.com/download/desktop) - OS
+* [Vue](https://vuejs.org/) - Frontend
+* [Vuex](https://vuex.vuejs.org/)
+* [Vue Router](https://router.vuejs.org/)
+* [Axios](https://axios-http.com/docs/intro)
+* [Bootstrap](https://getbootstrap.com/)
+* [Chart.js](https://www.chartjs.org/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
