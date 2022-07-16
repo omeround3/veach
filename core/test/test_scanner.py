@@ -45,7 +45,7 @@ class TestScanner(unittest.TestCase):
         """ Then : Scanner find VMware Virtual Platform hardware and add him to the list """
         flag = False 
         for record in self.hardware_list:
-            if record["product"] == " VMware Virtual Platform":
+            if record["product"] == " DVD-RW DU8A5SH":
                 flag = True
         self.assertTrue(flag)       
 

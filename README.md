@@ -238,6 +238,7 @@ Open new terminal and run front-end app (default address is http://localhost:808
 npm run serve
 ```
 
+
 If you get a DNS related error from python, follow whese steps:
 Install resolvconf from the official repositories
 ```

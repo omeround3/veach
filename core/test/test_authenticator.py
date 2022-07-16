@@ -8,8 +8,8 @@ class TestParser(unittest.TestCase):
         """ Scenario : check if user is part of sudo group 
             Given : valid user name and password """
         """ When : authentication check """
-        username = "user"
-        password = "Password1"
+        username = "daniel"
+        password = "123456"
         """ Then : authenticator return true"""
         self.assertTrue(Authenticator(username, password).authenticated)
 
