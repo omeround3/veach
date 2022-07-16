@@ -1,4 +1,3 @@
-from core.matcher.matcher import Matcher
 from core.matcher.mongo_matcher import MongoMatcher
 import unittest
 import pymongo

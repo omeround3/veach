@@ -1,11 +1,6 @@
 from collections import defaultdict
-import configparser
-from gc import collect
 
-from core.errors import MissingConfigFileOption, MissingConfigFileSection
-from core.matcher.enums import CPEAttributes
 from ..obj.cve_record import CVERecord
-from ..obj.cpe_record import CPERecord
 from pymongo import database
 
 

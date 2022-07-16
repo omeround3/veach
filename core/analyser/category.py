@@ -1,13 +1,12 @@
-from os import sep
+import logging
 from core.analyser.cvss.cvss_record_template_v3 import CVSSRecordV3
 from core.analyser.enums import CVSSV3Attributes, Severity
 from core.errors import *
-from core.matcher.enums import CVEAttributes
 from core.utils import *
 import json
 from core.obj.cve_record import CVERecord
 
-
+logger = logging.getLogger("veach")
 class Rule:
     """
     A class used to set Rules to compare with categories, if category meets rule, it inherits the rule sevirity
@@ -55,9 +54,13 @@ class Category(Rule):
             try:
                 with open("core/analyser/attributes_mapping.json", "r", encoding='utf-8') as json_file:
                     Category.attribute_mapping = json.load(json_file)
-            except FileNotFoundError as e:
-                print(e)
+            except FileNotFoundError as err:
+                logger.error(f"[CATEGORY] FileNotFoundError")
                 quit()
+            except Exception as err: 
+                logger.error(f"[CATEGORY] {err}")
+                quit()
+                
 
         super().__init__(record_scheme, severity, is_critical)
         self.rules: list[Rule] = []

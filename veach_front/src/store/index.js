@@ -22,6 +22,7 @@ export default createStore({
     username: null,
     password: null,
     token: window.localStorage.getItem("token"),
+    scanStatus: null,
   },
   mutations: {
     toggleConfigurator(state) {
@@ -65,22 +66,27 @@ export default createStore({
     setToken(state, value) {
       state.token = value == null ? null : value;
     },
+    setScanStatus(state, value) {
+      state.scanStatus = value == null ? null : value;
+    },
   },
   actions: {
     setColor({ commit }, payload) {
       commit("color", payload);
+    },
+    setScanStatus({ commit }, status) {
+      commit("setScanStatus", status);
+      window.localStorage.setItem("scanStatus", status);
     },
     logout: ({ commit }) => {
       commit("setToken", null);
       window.localStorage.removeItem("username")
       window.localStorage.removeItem("password")
       window.localStorage.removeItem("token")
+      window.localStorage.removeItem("scanStatus")
       // setTimeout(() => router.push("/sign-in"), 500);
     },
     login({ commit }, { username, password, token }) {
-      console.log(
-        `Username ${username} | Password ${password} | Token ${token}`
-      );
       if (token != "null") {
         commit("setUser", username);
         commit("setPassword", password);
@@ -97,6 +103,7 @@ export default createStore({
     getUsername: (state) => state.username,
     getPassword: (state) => state.password,
     getToken: (state) => state.token,
+    getScanStatus: (state) => state.token,
     isLoggedIn: (state) => !!state.token,
   },
 });

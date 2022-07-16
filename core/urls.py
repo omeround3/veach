@@ -17,6 +17,8 @@ urlpatterns = [
     path('cve_categories', views.cve_categories, name='cve_categories'),
     path('num_of_components', views.num_of_components, name='num_of_components'),
     path('mitigate', views.mitigate, name='mitigate'),
+    path('scan-settings', views.scan_settings, name='scan_settings'),
+    path('rules-settings', views.rules_settings, name='rules_settings'),
     path('login/', views.Login.as_view()),
     path('api-token-auth/', drf_views.obtain_auth_token)
 ]
