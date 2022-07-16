@@ -3,25 +3,21 @@ import unittest
 
 
 class TestParser(unittest.TestCase):
-    def setUp(self):
-        pass
 
-    def valid_username_and_password(self):
+    def test_valid_username_and_password(self):
         """ Scenario : check if user is part of sudo group 
             Given : valid user name and password """
         """ When : authentication check """
-        username = ""
-        password = ""
+        username = "user"
+        password = "Password1"
         """ Then : authenticator return true"""
-        auth = Authenticator(username, password)
-        self.assertTrue(auth.authenticated)
+        self.assertTrue(Authenticator(username, password).authenticated)
 
-    def non_valid_username_password(self):
+    def test_non_valid_username_password(self):
         """ Scenario : check if  user is part of the sudo group 
             Given : Non valid user name and password """
         """ When : authentication check """
-        username = ""
-        password = ""
+        username = "user1"
+        password = "Password2"
         """ Then : authenticator return false"""
-        auth = Authenticator(username, password)
-        self.assertFlase(auth.authenticated)
+        self.assertFalse(Authenticator(username, password).authenticated)
