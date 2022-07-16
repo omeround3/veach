@@ -230,7 +230,7 @@ Install npm packages
 ```
 npm install
 ```
-Run frontend up (default address is http://localhost:8080) 
+Run front-end app (default address is http://localhost:8080) 
 ```
 npm run serve
 ```
