@@ -107,10 +107,7 @@ The following are the frameworks and npm packages used in the project:
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
+To get a local copy up and running, follow these steps.
 
 ## Installation
 Install git (If not already installed)
@@ -201,7 +198,7 @@ if all is ok, enable mongodb to start on system startup
 sudo systemctl enable mongod
 ```
 
-Create django superuser
+Create Django superuser
 ```
 python manage.py makemigrations
 ```
@@ -233,7 +230,7 @@ Install npm packages
 npm install
 ```
 
-Run django server (app backend)
+Run Django server (app backend)
 ```
 python manage.py runserver
 ```
@@ -292,7 +289,18 @@ cat requirements.system requirements.prod | sudo xargs apt-get install -y
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Login Page
+![VEAHC-Login](https://user-images.githubusercontent.com/45568925/179366283-aa233e8e-885d-4fad-9d0c-58bbcfdac77b.jpg)
 
+Dashboard
+![VEACH-Dashboard-1](https://user-images.githubusercontent.com/45568925/179366290-52cff9aa-bce0-4358-877e-67cd45046f8c.png)
+![VEACH-Dashboard-2](https://user-images.githubusercontent.com/45568925/179366295-f713de53-4f3f-4d7f-8498-6be8669308a3.png)
+
+Mitigation Page
+![VEACH-mitigate](https://user-images.githubusercontent.com/45568925/179366304-f74e83f4-820a-41bb-9110-8b6a7eefabee.png)
+
+Settings Page
+![VEACH-settings](https://user-images.githubusercontent.com/45568925/179366310-8cf6beb7-1912-4f42-943d-abf9cfae4271.png)
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
