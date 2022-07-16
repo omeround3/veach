@@ -126,32 +126,38 @@ Install system dependencies by running
     xargs sudo apt-get install -y < requirements.system
   ```
 
-Install Python dependencies:
+Install Python3.9
+Update the packages list and install the prerequisites
 ```
 sudo apt update
 ```
 ```
 sudo apt install software-properties-common
 ```
+Add the deadsnakes PPA to your system’s sources list
 ```
 sudo add-apt-repository ppa:deadsnakes/ppa
 ```
+Once the repository is enabled, you can install Python 3.9 
 ```
 sudo apt install python3.9
 ```
 ```
-sudo  apt-get install python3.9-dev python3.9-venv
+sudo apt-get install python3.9-dev python3.9-venv
 ```
 Create python virutalenv
 ```
 python3.9 -m venv venv
 ```
+Activate python virutalenv
 ```
 source venv/bin/activate
 ```
+Install requirements
 ```
 pip install -r requirements.txt
 ```
+Create django superuser
 ```
 python manage.py makemigrations
 ```
@@ -161,6 +167,7 @@ python manage.py migrate
 ```
 python manage.py createsuperuser_if_none_exists --user=veach --password=veach4Life!
 ```
+Run django server (app backend)
 ```
 python manage.py runserver
 ```
@@ -207,20 +214,23 @@ Install Node.js and npm
 ```
 sudo apt install curl
 ```
+Enable the NodeSource repository
 ```
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 ```
+Once the NodeSource repository is enabled, install Node.js and npm
 ```
 sudo apt install nodejs
 ```
-Install npm packages 
-
+cd into the frontend directory
 ```
 cd veach_front
 ```
+Install npm packages 
 ```
 npm install
 ```
+Run frontend up (default address is http://localhost:8080) 
 ```
 npm run serve
 ```
