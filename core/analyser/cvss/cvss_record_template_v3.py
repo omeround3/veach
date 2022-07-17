@@ -1,5 +1,7 @@
-from enum import Enum
-from .cvss_record_template import RecordTemplate
+from collections import defaultdict
+from enum import Enum, IntEnum
+
+from core.analyser.enums import BaseMetricAttributes
 
 
 class Version(Enum):
@@ -7,133 +9,108 @@ class Version(Enum):
     V3_0 = '3.0'
 
 
-class AttackVector(Enum):
+class AttackVector(str, Enum):
     ADJACENT_NETWORK = 'ADJACENT_NETWORK'
     NETWORK = 'NETWORK'
     LOCAL = 'LOCAL'
     PHYSICAL = 'PHYSICAL'
 
 
-class AttackComplexity(Enum):
+class AttackComplexity(str, Enum):
     HIGH = 'HIGH'
     LOW = 'LOW'
 
 
-class PrivilegesRequired(Enum):
+class PrivilegesRequired(str, Enum):
     HIGH = 'HIGH'
-    NONE = 'NONE'
     LOW = 'LOW'
-
-
-class UserInteraction(Enum):
     NONE = 'NONE'
+
+
+class UserInteraction(str, Enum):
     REQUIRED = 'REQUIRED'
+    NONE = 'NONE'
 
 
-class Scope(Enum):
+class Scope(str, Enum):
     UNCHANGED = 'UNCHANGED'
     CHANGED = 'CHANGED'
 
 
-class ConfidentialityImpact(Enum):
-    HIGH = 'HIGH'
+class ConfidentialityImpact(str, Enum):
     NONE = 'NONE'
     LOW = 'LOW'
-
-
-class IntegrityImpact(Enum):
     HIGH = 'HIGH'
+
+
+class IntegrityImpact(str, Enum):
     NONE = 'NONE'
     LOW = 'LOW'
-
-
-class AvailabilityImpact(Enum):
     HIGH = 'HIGH'
+
+
+class AvailabilityImpact(str, Enum):
     NONE = 'NONE'
     LOW = 'LOW'
+    HIGH = 'HIGH'
 
 
-# class BaseSeverity(Enum):
-#     MEDIUM = 'MEDIUM'
-#     HIGH = 'HIGH'
-#     CRITICAL = 'CRITICAL'
-#     LOW = 'LOW'
+class Values(IntEnum):
+    N = 1
+    L = 2
+    H = 3
+
+    R = 4
+
+    U = 5
+    C = 6
 
 
-class RecordTemplateV3(RecordTemplate):
-    def __init__(self,
-                 version: Version = None,
-                 attack_vector: AttackVector = None,
-                 attack_complexity: AttackComplexity = None,
-                 privileges_required: PrivilegesRequired = None,
-                 user_interaction: UserInteraction = None,
-                 scope: Scope = None,
-                 confidentiality_impact: ConfidentialityImpact = None,
-                 integrity_impact: IntegrityImpact = None,
-                 availability_impact: AvailabilityImpact = None,
-                 # base_score: float = None,
-                 # base_severity: BaseSeverity = None
-                 ):
+class CVSSRecordV3():
+    type = BaseMetricAttributes.V3
+
+    def __init__(self, vector_string: str):
+        if not isinstance(vector_string, str):
+            vector_string = str(vector_string)
+        # validate string using regex
         """deserialization class for cvssV3 record"""
-        # self.version = version
-        # self.attack_vector = attack_vector
-        # self.attack_complexity = attack_complexity
-        # self.privileges_required = privileges_required
-        # self.user_interaction = user_interaction
-        # self.scope = scope
-        # self.confidentiality_impact = confidentiality_impact
-        # self.integrity_impact = integrity_impact
-        # self.availability_impact = availability_impact
-        # self.base_score = base_score
-        # self.base_severity = base_severity
-        super().__init__()
-        if version:
-            self.vector_string_attributes.append(f"CVSS:{version.value}")
-        if attack_vector:
-            self.vector_string_attributes.append(
-                f"AV:{attack_vector.value[0]}")
-        if attack_complexity:
-            self.vector_string_attributes.append(
-                f"AC:{attack_complexity.value[0]}")
-        if privileges_required:
-            self.vector_string_attributes.append(
-                f"PR:{privileges_required.value[0]}")
-        if user_interaction:
-            self.vector_string_attributes.append(
-                f"UI:{user_interaction.value[0]}")
-        if scope:
-            self.vector_string_attributes.append(f"S:{scope.value[0]}")
-        if confidentiality_impact:
-            self.vector_string_attributes.append(
-                f"C:{confidentiality_impact.value[0]}")
-        if integrity_impact:
-            self.vector_string_attributes.append(
-                f"I:{integrity_impact.value[0]}")
-        if availability_impact:
-            self.vector_string_attributes.append(
-                f"A:{availability_impact.value[0]}")
-    #
-    # def __str__(self):
-    #     ret_str = str()
-    #     if self.version:
-    #         self.vector_string.append(f"CVSS:{self.version.value}/")
-    #         ret_str += f"CVSS:{self.version.value}/"
-    #     if self.attack_vector:
-    #         ret_str += f"AV:{self.attack_vector.value[0]}/"
-    #     if self.attack_complexity:
-    #         ret_str += f"AC:{self.attack_complexity.value[0]}/"
-    #     if self.privileges_required:
-    #         ret_str += f"PR:{self.privileges_required.value[0]}/"
-    #     if self.user_interaction:
-    #         ret_str += f"UI:{self.user_interaction.value[0]}/"
-    #     if self.scope:
-    #         ret_str += f"S:{self.scope.value[0]}/"
-    #     if self.confidentiality_impact:
-    #         ret_str += f"C:{self.confidentiality_impact.value[0]}/"
-    #     if self.integrity_impact:
-    #         ret_str += f"I:{self.integrity_impact.value[0]}/"
-    #     if self.availability_impact:
-    #         ret_str += f"A:{self.availability_impact.value[0]}"
-    #     if ret_str[-1] == '/':
-    #         ret_str = ret_str[:-1]
-    #     return ret_str
+        self.vector_string_attributes: dict = defaultdict(str)
+        self.vector_string = vector_string
+
+        for attr in self.vector_string.split("/"):
+            tmp = attr.split(":")
+            self.vector_string_attributes[tmp[0]] = tmp[1]
+
+    def meets(self, rule: BaseMetricAttributes) -> bool:
+        """
+        Checks if Category meets Rule conditions: 
+        e.g - Rule(AC.HIGH) = I want to know about vulnerabilities 
+        that are complex to perform (attack complexity = HIGH),
+        will meet all Categories with AC.HIGH or(!) AC.LOW
+        (because they are easier to perform)
+        """
+        if not rule.vector_string_attributes:
+            return False
+
+        for key in rule.vector_string_attributes.keys():
+            rule_val = rule.vector_string_attributes[key]
+            self_val = self.vector_string_attributes[key]
+            if key == "AV":
+                if self_val != rule_val:
+                    return False
+            elif key == "AC" or key == "PR" or key == "UI":
+                if Values[self_val] > Values[rule_val]:
+                    return False
+            else:
+                if Values[self_val] < Values[rule_val]:
+                    return False
+        return True
+
+    def __hash__(self) -> int:
+        return self.vector_string.__hash__()
+
+    def __eq__(self, __o: object) -> bool:
+        return self.vector_string == __o.vector_string
+
+    def __str__(self) -> str:
+        return self.vector_string

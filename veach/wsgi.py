@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'veach.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'veach.settings.production')
 
 application = get_wsgi_application()

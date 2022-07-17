@@ -1,4 +1,4 @@
-from enum import IntEnum, Enum, auto
+from enum import Enum, IntEnum
 
 
 class Severity(IntEnum):
@@ -14,3 +14,9 @@ class BaseMetricAttributes(str, Enum):
     """An enum class for Common Vulnerability Scoring System (CVSS) options"""
     V2 = "baseMetricV2"
     V3 = "baseMetricV3"
+
+
+class CVSSV3Attributes(str, Enum):
+    """An enum class for Common Vulnerability Scoring System (CVSS) options"""
+    BASE_SCORE = "baseScore"
+    VECTOR_STRING = "vectorString"

@@ -1,0 +1,347 @@
+DEBUG 2022-07-16 11:52:14,870: [LOGIN] User user and password Password1
+INFO 2022-07-16 11:52:14,991: [LOGIN] User authenticated successfully
+ERROR 2022-07-16 11:52:15,025: [LOGIN] User 'veach' doesn't exists 
+ User matching query does not exist.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/views.py", line 163, in post
+    user = User.objects.get(username="veach")
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 496, in get
+    raise self.model.DoesNotExist(
+django.contrib.auth.models.User.DoesNotExist: User matching query does not exist.
+ERROR 2022-07-16 11:52:15,171: Internal Server Error: /api/login/
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/views/generic/base.py", line 84, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/user/Desktop/veach/core/views.py", line 167, in post
+    if user:
+UnboundLocalError: local variable 'user' referenced before assignment
+WARNING 2022-07-16 11:52:15,918: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:15,923: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:15,921: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:15,930: Unauthorized: /api/cve_db_info
+WARNING 2022-07-16 11:52:16,945: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:16,946: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:16,947: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:17,718: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:17,720: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:17,722: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:18,710: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:18,713: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:18,725: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:19,720: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:19,722: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:19,743: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:20,765: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:20,773: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:20,778: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:21,810: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:21,819: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:21,827: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:22,819: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:22,822: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:22,823: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:23,684: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:23,687: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:23,693: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:24,721: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:24,723: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:24,726: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:25,684: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:25,688: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:25,694: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:26,695: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:26,698: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:52:26,700: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:27,704: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:52:27,709: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:52:27,713: Unauthorized: /api/cve_categories
+INFO 2022-07-16 11:53:57,929: [TOKEN CREATED FOR USER] User ID: 1
+WARNING 2022-07-16 11:54:05,788: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:54:05,796: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:54:05,799: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:54:06,821: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:54:06,824: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:54:06,825: Unauthorized: /api/cve_categories
+WARNING 2022-07-16 11:54:07,760: Unauthorized: /api/num_of_components
+WARNING 2022-07-16 11:54:07,762: Unauthorized: /api/get_status
+WARNING 2022-07-16 11:54:07,763: Unauthorized: /api/cve_categories
+DEBUG 2022-07-16 11:54:25,576: [LOGIN] User user and password Password1
+INFO 2022-07-16 11:54:25,668: [LOGIN] User authenticated successfully
+DEBUG 2022-07-16 11:54:26,425: [SYNC DB] Creating SyncDB singleton
+INFO 2022-07-16 11:54:26,466: [VEACH DB] Connected to local MongoDB successfully
+DEBUG 2022-07-16 11:54:26,475: [DB INIT] List of collections in local database: []
+INFO 2022-07-16 11:54:26,475: [DB INIT] Initializing local mongodb database
+INFO 2022-07-16 11:54:27,099: [VEACH DB] Connected to remote MongoDB successfully
+INFO 2022-07-16 11:54:27,100: [VEACH DB] Dumping remote collections: ['cvedetails', 'cpematches']
+DEBUG 2022-07-16 11:54:28,754: [VEACH DB] The collection cvedetails has 191054 documents | dumping collections
+DEBUG 2022-07-16 11:54:28,754: [VEACH DB] Running command: mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails
+ERROR 2022-07-16 11:54:28,790: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 36, in dump
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+INFO 2022-07-16 11:54:28,800: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:54:28,800: [VEACH DB] Restoring remote collections: ['cvedetails']
+DEBUG 2022-07-16 11:54:28,800: [VEACH DB] Restoring the collection cvedetails 
+DEBUG 2022-07-16 11:54:28,800: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/
+ERROR 2022-07-16 11:54:28,842: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+INFO 2022-07-16 11:54:28,933: [SYNCMETA CREATED] Created a CVE SyncMeta
+INFO 2022-07-16 11:54:28,944: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:54:28,944: [VEACH DB] Restoring remote collections: ['cpematches']
+DEBUG 2022-07-16 11:54:28,944: [VEACH DB] Restoring the collection cpematches 
+DEBUG 2022-07-16 11:54:28,944: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/
+ERROR 2022-07-16 11:54:28,992: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+INFO 2022-07-16 11:54:29,016: [SYNCMETA CREATED] Created a CPE SyncMeta
+INFO 2022-07-16 11:54:29,017: [DB INIT] Finished initializing local mongodb database
+DEBUG 2022-07-16 11:55:27,292: [SYNC DB] Creating SyncDB singleton
+INFO 2022-07-16 11:55:27,323: [VEACH DB] Connected to local MongoDB successfully
+DEBUG 2022-07-16 11:55:27,326: [DB INIT] List of collections in local database: []
+INFO 2022-07-16 11:55:27,326: [DB INIT] Initializing local mongodb database
+INFO 2022-07-16 11:55:27,898: [VEACH DB] Connected to remote MongoDB successfully
+INFO 2022-07-16 11:55:27,900: [VEACH DB] Dumping remote collections: ['cvedetails', 'cpematches']
+DEBUG 2022-07-16 11:55:28,604: [VEACH DB] The collection cvedetails has 191054 documents | dumping collections
+DEBUG 2022-07-16 11:55:28,604: [VEACH DB] Running command: mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails
+ERROR 2022-07-16 11:55:28,640: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 36, in dump
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+INFO 2022-07-16 11:55:28,654: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:55:28,657: [VEACH DB] Restoring remote collections: ['cvedetails']
+DEBUG 2022-07-16 11:55:28,658: [VEACH DB] Restoring the collection cvedetails 
+DEBUG 2022-07-16 11:55:28,659: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/
+ERROR 2022-07-16 11:55:28,703: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+ERROR 2022-07-16 11:55:28,723: [GET OR CREATE SYNCMETA] Error: get() returned more than one SyncMeta -- it returned 2!
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_db.py", line 109, in create_or_update_sync_meta
+    sync_meta, created = SyncMeta.objects.get_or_create(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 657, in get_or_create
+    return self.get(**kwargs), False
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 499, in get
+    raise self.model.MultipleObjectsReturned(
+core.models.SyncMeta.MultipleObjectsReturned: get() returned more than one SyncMeta -- it returned 2!
+INFO 2022-07-16 11:55:28,743: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:55:28,744: [VEACH DB] Restoring remote collections: ['cpematches']
+DEBUG 2022-07-16 11:55:28,744: [VEACH DB] Restoring the collection cpematches 
+DEBUG 2022-07-16 11:55:28,744: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/
+ERROR 2022-07-16 11:55:28,775: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+INFO 2022-07-16 11:55:28,806: [SYNCMETA CREATED] Created a CPE SyncMeta
+INFO 2022-07-16 11:55:28,807: [DB INIT] Finished initializing local mongodb database
+DEBUG 2022-07-16 11:57:22,831: [SYNC DB] Creating SyncDB singleton
+INFO 2022-07-16 11:57:22,845: [VEACH DB] Connected to local MongoDB successfully
+DEBUG 2022-07-16 11:57:22,853: [DB INIT] List of collections in local database: []
+INFO 2022-07-16 11:57:22,853: [DB INIT] Initializing local mongodb database
+INFO 2022-07-16 11:57:22,870: [VEACH DB] Connected to remote MongoDB successfully
+INFO 2022-07-16 11:57:22,870: [VEACH DB] Dumping remote collections: ['cvedetails', 'cpematches']
+ERROR 2022-07-16 11:57:53,071: [VEACH DB] Could not dump remote collections: ['cvedetails', 'cpematches'] | Error: cluster0.gnukl.mongodb.net:27017: [Errno -2] Name or service not known, Timeout: 30s, Topology Description: <TopologyDescription id: 62d2a7a2f23be32c4385c71a, topology_type: Single, servers: [<ServerDescription ('cluster0.gnukl.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('cluster0.gnukl.mongodb.net:27017: [Errno -2] Name or service not known')>]>
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 31, in dump
+    f'[VEACH DB] The collection {coll} has {collection.count_documents({})} documents | dumping collections')
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/pymongo/collection.py", line 1827, in count_documents
+    return self.__database.client._retryable_read(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/pymongo/mongo_client.py", line 1514, in _retryable_read
+    server = self._select_server(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/pymongo/mongo_client.py", line 1346, in _select_server
+    server = topology.select_server(server_selector)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/pymongo/topology.py", line 244, in select_server
+    return random.choice(self.select_servers(selector,
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/pymongo/topology.py", line 202, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/pymongo/topology.py", line 218, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: cluster0.gnukl.mongodb.net:27017: [Errno -2] Name or service not known, Timeout: 30s, Topology Description: <TopologyDescription id: 62d2a7a2f23be32c4385c71a, topology_type: Single, servers: [<ServerDescription ('cluster0.gnukl.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('cluster0.gnukl.mongodb.net:27017: [Errno -2] Name or service not known')>]>
+INFO 2022-07-16 11:57:53,082: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:57:53,083: [VEACH DB] Restoring remote collections: ['cvedetails']
+DEBUG 2022-07-16 11:57:53,083: [VEACH DB] Restoring the collection cvedetails 
+DEBUG 2022-07-16 11:57:53,086: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/
+ERROR 2022-07-16 11:57:53,178: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+ERROR 2022-07-16 11:57:53,299: [GET OR CREATE SYNCMETA] Error: get() returned more than one SyncMeta -- it returned 3!
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_db.py", line 109, in create_or_update_sync_meta
+    sync_meta, created = SyncMeta.objects.get_or_create(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 657, in get_or_create
+    return self.get(**kwargs), False
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 499, in get
+    raise self.model.MultipleObjectsReturned(
+core.models.SyncMeta.MultipleObjectsReturned: get() returned more than one SyncMeta -- it returned 3!
+INFO 2022-07-16 11:57:53,316: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:57:53,327: [VEACH DB] Restoring remote collections: ['cpematches']
+DEBUG 2022-07-16 11:57:53,330: [VEACH DB] Restoring the collection cpematches 
+DEBUG 2022-07-16 11:57:53,331: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/
+ERROR 2022-07-16 11:57:53,406: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+INFO 2022-07-16 11:57:53,802: [SYNCMETA CREATED] Created a CPE SyncMeta
+INFO 2022-07-16 11:57:53,802: [DB INIT] Finished initializing local mongodb database
+DEBUG 2022-07-16 11:58:15,310: [SYNC DB] Creating SyncDB singleton
+INFO 2022-07-16 11:58:15,357: [VEACH DB] Connected to local MongoDB successfully
+DEBUG 2022-07-16 11:58:15,368: [DB INIT] List of collections in local database: []
+INFO 2022-07-16 11:58:15,369: [DB INIT] Initializing local mongodb database
+INFO 2022-07-16 11:58:15,931: [VEACH DB] Connected to remote MongoDB successfully
+INFO 2022-07-16 11:58:15,931: [VEACH DB] Dumping remote collections: ['cvedetails', 'cpematches']
+DEBUG 2022-07-16 11:58:16,643: [VEACH DB] The collection cvedetails has 191054 documents | dumping collections
+DEBUG 2022-07-16 11:58:16,644: [VEACH DB] Running command: mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails
+ERROR 2022-07-16 11:58:16,665: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 36, in dump
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+INFO 2022-07-16 11:58:16,687: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:58:16,689: [VEACH DB] Restoring remote collections: ['cvedetails']
+DEBUG 2022-07-16 11:58:16,692: [VEACH DB] Restoring the collection cvedetails 
+DEBUG 2022-07-16 11:58:16,693: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/
+ERROR 2022-07-16 11:58:16,779: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+ERROR 2022-07-16 11:58:16,811: [GET OR CREATE SYNCMETA] Error: get() returned more than one SyncMeta -- it returned 4!
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_db.py", line 109, in create_or_update_sync_meta
+    sync_meta, created = SyncMeta.objects.get_or_create(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 657, in get_or_create
+    return self.get(**kwargs), False
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 499, in get
+    raise self.model.MultipleObjectsReturned(
+core.models.SyncMeta.MultipleObjectsReturned: get() returned more than one SyncMeta -- it returned 4!
+INFO 2022-07-16 11:58:16,847: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:58:16,848: [VEACH DB] Restoring remote collections: ['cpematches']
+DEBUG 2022-07-16 11:58:16,850: [VEACH DB] Restoring the collection cpematches 
+DEBUG 2022-07-16 11:58:16,851: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/
+ERROR 2022-07-16 11:58:16,917: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+INFO 2022-07-16 11:58:17,825: [SYNCMETA CREATED] Created a CPE SyncMeta
+INFO 2022-07-16 11:58:17,832: [DB INIT] Finished initializing local mongodb database
+DEBUG 2022-07-16 11:58:30,296: [SYNC DB] Creating SyncDB singleton
+INFO 2022-07-16 11:58:30,358: [VEACH DB] Connected to local MongoDB successfully
+DEBUG 2022-07-16 11:58:30,366: [DB INIT] List of collections in local database: []
+INFO 2022-07-16 11:58:30,366: [DB INIT] Initializing local mongodb database
+INFO 2022-07-16 11:58:30,391: [VEACH DB] Connected to remote MongoDB successfully
+INFO 2022-07-16 11:58:30,392: [VEACH DB] Dumping remote collections: ['cvedetails', 'cpematches']
+DEBUG 2022-07-16 11:58:31,091: [VEACH DB] The collection cvedetails has 191054 documents | dumping collections
+DEBUG 2022-07-16 11:58:31,092: [VEACH DB] Running command: mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails
+ERROR 2022-07-16 11:58:31,121: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 36, in dump
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongodump --uri="mongodb+srv://veachy:4AzMlYFINolJuKDv@cluster0.gnukl.mongodb.net/nvdcve?retryWrites=true&w=majority" --collection=cvedetails']' returned non-zero exit status 1.
+INFO 2022-07-16 11:58:31,130: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:58:31,130: [VEACH DB] Restoring remote collections: ['cvedetails']
+DEBUG 2022-07-16 11:58:31,130: [VEACH DB] Restoring the collection cvedetails 
+DEBUG 2022-07-16 11:58:31,130: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/
+ERROR 2022-07-16 11:58:31,168: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cvedetails dump/']' returned non-zero exit status 1.
+ERROR 2022-07-16 11:58:31,186: [GET OR CREATE SYNCMETA] Error: get() returned more than one SyncMeta -- it returned 5!
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_db.py", line 109, in create_or_update_sync_meta
+    sync_meta, created = SyncMeta.objects.get_or_create(
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 657, in get_or_create
+    return self.get(**kwargs), False
+  File "/home/user/Desktop/veach/venv/lib/python3.9/site-packages/django/db/models/query.py", line 499, in get
+    raise self.model.MultipleObjectsReturned(
+core.models.SyncMeta.MultipleObjectsReturned: get() returned more than one SyncMeta -- it returned 5!
+INFO 2022-07-16 11:58:31,202: [VEACH DB] Connected to local MongoDB successfully
+INFO 2022-07-16 11:58:31,203: [VEACH DB] Restoring remote collections: ['cpematches']
+DEBUG 2022-07-16 11:58:31,203: [VEACH DB] Restoring the collection cpematches 
+DEBUG 2022-07-16 11:58:31,204: [VEACH DB] Running command: mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/
+ERROR 2022-07-16 11:58:31,301: [VEACH DB] Process failed because did not return a successful return code. Returned 1
+Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/user/Desktop/veach/core/db/sync_collections.py", line 83, in restore
+    subprocess.run(["bash", "-c", command],
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '-c', 'mongorestore --uri="mongodb://localhost:27017/" --drop --nsInclude=nvdcve.cpematches dump/']' returned non-zero exit status 1.
+INFO 2022-07-16 11:58:32,730: [SYNCMETA CREATED] Created a CPE SyncMeta
+INFO 2022-07-16 11:58:32,740: [DB INIT] Finished initializing local mongodb database

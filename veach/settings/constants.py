@@ -1,0 +1,5 @@
+CVE_DETAILS = 'cvedetails'
+CPE_MATCHES = 'cpematches'
+NVD_CVE = 'nvdcve'
+CVE = 'CVE'
+CPE = 'CPE'

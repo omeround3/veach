@@ -2,11 +2,12 @@ import subprocess
 from core.scanner.scanner import Scanner
 from core.scanner.enums import CPEPart, CPEFormat
 
+
 class Hardware(Scanner):
     """ Scan hardware components """
+
     def __init__(self):
         self.hardware_packages = []
-        self.password = "Password1"
 
     def execute(self) -> list:
         """ 
@@ -15,14 +16,12 @@ class Hardware(Scanner):
         :return: List of dictionaries in the following structure : {"part": "h", "vendor": "", "product": "", "version" : ""}
         """
 
-        command = "sudo -S lshw"
+        command = "sudo lshw"
         stdout_patterns = [CPEFormat.PART.value, CPEFormat.VENDOR.value, CPEFormat.PRODUCT.value,
                            CPEFormat.VERSION.value]
 
-        command_sudo = subprocess.Popen(['echo', self.password], stdin=None, stdout=subprocess.PIPE)
-
         args = command.split()
-        command_shell = subprocess.Popen(args, stdin=command_sudo.stdout, stdout=subprocess.PIPE)
+        command_shell = subprocess.Popen(args, stdout=subprocess.PIPE)
 
         if command_shell.stderr:
             raise Exception(command_shell.stderr.read().decode())
@@ -38,14 +37,15 @@ class Hardware(Scanner):
 
             elif CPEFormat.VERSION in record_tmp and product is not None and vendor is not None:
                 version = record_tmp.split(":")
-                record_tmp = [CPEPart.HARDWARE.value, vendor[1], product[1], version[1]]
+                record_tmp = [CPEPart.HARDWARE.value,
+                              vendor[1], product[1], version[1]]
 
                 vendor = None
                 product = None
 
-                self.hardware_packages.append(dict(zip(stdout_patterns, record_tmp)))
+                self.hardware_packages.append(
+                    dict(zip(stdout_patterns, record_tmp)))
             else:
                 pass
 
         return self.hardware_packages
-
